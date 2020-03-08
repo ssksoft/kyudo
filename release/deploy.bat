@@ -1,1 +1,1 @@
-scp -r ../src/* vagrant@192.168.10.99:/var/www/html/kyudo
+scp -r -i C:/Users/sasat/Desktop/kyudo/env/raspbian/.vagrant/machines/default/virtualbox/private_key ../src/* vagrant@192.168.10.99:/var/www/html/kyudo
