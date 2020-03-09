@@ -1,4 +1,4 @@
-for /F "delims== tokens=1,2" %%i in (kyudo.conf) do (
+for /F "delims== tokens=1,2" %%i in (../env/raspbian/kyudo.conf) do (
   set %%i=%%j
 )
 
