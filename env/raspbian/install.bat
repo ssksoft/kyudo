@@ -1,15 +1,11 @@
-@echo off
-if "%1" == "" goto PARAM_ERROR
+for /F "delims== tokens=1,2" %%i in (kyudo.conf) do (
+  set %%i=%%j
+)
 scp -i .vagrant/machines/default/virtualbox/private_key ^
 chmod_www.sh ^
 install.sh ^
 make_db.sh ^
 pg_hba.conf ^
 u_psql.sh ^
-vagrant@%1:/home/vagrant/
+vagrant@%server_ip%:/home/vagrant/
 vagrant ssh
-exit /B
-
-:PARAM_ERROR
-echo "Plese input server ip address"
-exit /B
