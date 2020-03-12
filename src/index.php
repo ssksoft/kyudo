@@ -29,8 +29,8 @@ $now = strftime('%F %T', time());
 	<font size="3">
 	</font>
 	<div class="left-column">
-		<a href="/todo/"> [All] </a>
-		<a href="/todo/?mode=edit">[Make]</a>
+		<a href="/kyudo/"> [All] </a>
+		<a href="/kyudo/?mode=edit">[Edit]</a>
 	</div>
 	<div class="right-column"><?php echo $now; ?></div>
 	<div>
@@ -59,7 +59,6 @@ $now = strftime('%F %T', time());
 					break;
 				case 'save':
 					// Save
-					//echo("1234");
 					include "save.php";
 					break;
 				default:
@@ -75,9 +74,9 @@ $now = strftime('%F %T', time());
 	</div>
 </div>
 <div class="left-column">
-	<img src="/icons/back.gif"><a href="/todo/">back</a><br />
+	<img src="/icons/back.gif"><a href="/kyudo/">back</a><br />
 </div>
 <?php end: ?>
 <div class="right-column">
-	<img src="/icons/layout.gif"><a href="/todo/index.php">To top</a>
+	<img src="/icons/layout.gif"><a href="/kyudo/index.php">To top</a>
 </div>
