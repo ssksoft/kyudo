@@ -1,6 +1,3 @@
-for /F "delims== tokens=1,2" %%i in (kyudo.conf) do (
-  set %%i=%%j
-)
 scp  -P 2222 -i .vagrant/machines/default/virtualbox/private_key ^
 chmod_www.sh ^
 install.sh ^
