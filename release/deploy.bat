@@ -1,5 +1,1 @@
-for /F "delims== tokens=1,2" %%i in (../env/raspbian/kyudo.conf) do (
-  set %%i=%%j
-)
-
-scp -r -i C:/Users/sasat/Desktop/kyudo/env/raspbian/.vagrant/machines/default/virtualbox/private_key ../src/* vagrant@%server_ip%:/var/www/html/kyudo
+scp -r -P 2222 -i C:/Users/sasat/Desktop/kyudo/env/raspbian/.vagrant/machines/default/virtualbox/private_key ../src/* vagrant@127.0.0.1:/var/www/html/kyudo
