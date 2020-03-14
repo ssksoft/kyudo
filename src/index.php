@@ -15,7 +15,7 @@ try {
 } catch (\PDOException $e) {
 	error_log("\PDO::Exception" . $e->getMessage());
 	echo ($e->getMessage());
-	echo ("Under maintenance");
+	echo ("... Under maintenance");
 	goto end;
 }
 

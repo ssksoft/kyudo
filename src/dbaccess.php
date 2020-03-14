@@ -78,27 +78,27 @@ function updateTodo($pdo, $id, $datetime, $subject, $detail){
 	
 }
 
-function getTodoById($pdo, $id){
+function getRecordById($pdo, $id){
 	// Prepare and execute SELECT statement
 	$id = (int)$id;
 	$condition = "WHERE id = $id";
 	$stmt = $pdo->query('SELECT *'
-		.' FROM todo_tbl1 '
+		.' FROM kyudo_tbl '
 		. $condition
 		);
 
 	// Get SELECT result
-	$todos = array();
+	$record = array();
 	while($row = $stmt->fetch(\pdo::FETCH_ASSOC)){
-		$todo = array(
+		$record = array(
 			'id' => $row['id'],
-			'datetime' => $row['todo_datetime'],
-			'subject' => $row['todo_detail'],
-			'detail' => $row['todo_detail'],
+			'datetime' => $row['kyudo_datetime'],
+			'player_name' => $row['player_neme'],
+			'hit_record' => $row['hit_record'],
 			);
 		break;
 	}
-	return $todo;
+	return $record;
 }
 
 function allTodo($pdo, $days=""){

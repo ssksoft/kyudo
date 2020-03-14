@@ -6,9 +6,9 @@ $id=NULL;
 if(isset($_GET['id'])){
 	echo($_GET['mode']);
 	$id = intval($_GET['id']);
-	// Get ToDo of selected id
+	// Get Result of selected id
 	try{
-	$todo = getTodoById($pdo, $id);
+	$record = getRecordById($pdo, $id);
 	} catch (\PDOException $e){
 		echo($e->getMessage());
 		error_log("\PDO::Exception: " . $e->getMessage() );
@@ -16,14 +16,14 @@ if(isset($_GET['id'])){
 	}
 	echo("no exception");
 	$title = "Edit($id)";
-	$datetime = htmlspecialchars($todo['datetime']);
-	$subject = htmlspecialchars($todo['subject']);
-	$detail = htmlspecialchars($todo['detail']);
+	$datetime = htmlspecialchars($record['datetime']);
+	$player_name = htmlspecialchars($record['player_name']);
+	$hit_record = htmlspecialchars($record['hit_record']);
 }else{
 	$title = "行射記録";
 	$datetime = $now; // Default value is current time as template
-	$subject = '';
-	$detail = '';
+	$player_name = '';
+	$hit_record = '';
 }
 // Form view as follows:
 ?>
@@ -35,7 +35,7 @@ echo($_GET['mode']);?></font>
 </center>
 <table>
 <tr><td>
-<form action="/todo/?mode=save" method="post">
+<form action="/kyudo/?mode=save" method="post">
 	<input type="hidden" name = "id" value="<?php echo $id; ?>"/>
 	<font size =-1><tt><b>Time</b></tt></font><br/>
 	<input type="text" name="DateTime" size="19" value="<?php echo $datetime;?>"/><br/>
