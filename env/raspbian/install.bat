@@ -5,4 +5,3 @@ make_db.sh ^
 pg_hba.conf ^
 u_psql.sh ^
 vagrant@127.0.0.1:/home/vagrant/
-vagrant ssh

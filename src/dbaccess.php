@@ -16,12 +16,9 @@ function connect($params){
 		$params['host'],
 		$params['port']
 	);
+	echo("new PDO\n");
 
-	//$dsn = 'pgsql: dbname=tododb host=localhost port=5432';
-	//$user = 'todo';
-	//$password = '2bChanged%';
 	$pdo = new PDO($conStr, $params['user'],$params['password']);
-	//$pdo = new PDO($dsn, $user, $password);
 	$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	$pdo->query("SET client_encoding TO 'UTF8'");
 
@@ -112,7 +109,7 @@ function allTodo($pdo, $days=""){
 		$todate = $today + $days*3600*24;
 		// Unix time stamp to ISO
 		$ftodate = strftime("'%F %T'", $todate);
-		$condition = "todo_datetime <= $ftodate";
+		$condition = "datetime <= $ftodate";
 		//echo($condition);
 	}else{
 		$condition = "(true)";
@@ -120,10 +117,10 @@ function allTodo($pdo, $days=""){
 
 	// Execute SELECT statement
 	$stmt = $pdo->query('SELECT *'
-	. ",'('|| substring(to_char(todo_datetime, 'Day') from 1 for 3) || ')' dow "
-	. ' FROM todo_tbl1'
+	. ",'('|| substring(to_char(datetime, 'Day') from 1 for 3) || ')' dow "
+	. ' FROM kyudo_tbl'
 	. ' WHERE '.$condition
-	. ' ORDER BY todo_datetime'
+	. ' ORDER BY datetime'
 	);
 
 	//Get SELECT result
@@ -131,10 +128,9 @@ function allTodo($pdo, $days=""){
 	while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
 		$todos[] = array(
 				'id' => $row['id'],
-				'datetime' => $row['todo_datetime'],
-				'subject' => $row['todo_subject'],
-				'detail' => $row['todo_detail'],
-				'dow' => $row['dow'],	
+				'datetime' => $row['datetime'],
+				'player_name' => $row['player_name'],
+				'hit_record' => $row['hit_record']
 				);
 	}
 	return $todos;
