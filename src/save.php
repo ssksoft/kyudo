@@ -8,27 +8,28 @@ if(! empty($_POST['id'])){
 }else{
 	$task = "Save";
 }
-//echo("id=$id");
 
 // View for confirmation
-$DateTime = htmlspecialchars($_POST['DateTime']);
-$Subject = htmlspecialchars($_POST['Subject']);
-$Detail = htmlspecialchars($_POST['Detail']);
+$datetime = htmlspecialchars($_POST['datetime']);
+$player_name = htmlspecialchars($_POST['player_name']);
+$hit_record = htmlspecialchars($_POST['hit_record']);
 echo<<<EOT
 	<table borderwith='1'>
-	<tr><th align="left">DateTime</th><td>$DateTime</td></tr>
-	<tr><th colspan="2" align="left">Detail</th></tr>
-	<tr><td></td><td>$Detail</td></tr>
+	<tr><th align="left">記録日</th><td>$datetime</td></tr>
+	<tr><th colspan="2" align="left">選手名</th></tr>
+	<tr><td></td><td>$player_name</td></tr>
+	<tr><th colspan="2" align="left">的中</th></tr>
+	<tr><td></td><td>$hit_record</td></tr>
 	</table>
 EOT;
 
-$datetime = ($_POST['DateTime']);
-$subject = ($_POST['Subject']);
-$detail = ($_POST['Detail']);
+$datetime = ($_POST['datetime']);
+$player_name = ($_POST['player_name']);
+$hit_record = ($_POST['hit_record']);
 if(isset($id)){
 	echo("id_not_null");
 	try{
-		$num = updateTodo($pdo, $id, $datetime, $subject, $detail);
+		$num = updateKyudo($pdo, $id, $datetime, $player_name, $hit_record);
 	}catch (\PDOException $e){
 	error_log( "\PDO::Exception: " . $e->getMessage());
 	echo("error message: <br />");	
@@ -37,13 +38,10 @@ if(isset($id)){
 	}
 	error_log("UPDATE: affected lins = $num");
 }else{
-	//echo("id_null");
 	try{
-		//echo("insert now");
-		$id = insertTodo($pdo, $datetime, $subject, $detail);
+		$id = insertKyudo($pdo, $datetime, $player_name, $hit_record);
 		
 }catch(\PDOException $e){
-	//echo($e->getMessage());
 	error_log( "\PDO::Exception: " . $e->getMessage() );
 	return;
 }
@@ -54,8 +52,8 @@ if(isset($id)){
 <center>
 <table borderwith='1'>
 	<tr>
-	<td>[<a href="/todo/?mode=list">All</a>]</td>
-	<td>[<a href="/todo/?mode=edit&id=<?php {echo $id;}?>">Re-edit</a>]</td>
+	<td>[<a href="/kyudo/?mode=list">All</a>]</td>
+	<td>[<a href="/kyudo/?mode=edit&id=<?php {echo $id;}?>">Re-edit</a>]</td>
 	</tr>
 </table>
 </center>

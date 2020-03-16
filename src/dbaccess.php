@@ -25,32 +25,29 @@ function connect($params){
 	return $pdo;
 }
 
-function insertTodo($pdo, $datetime, $subject='', $detail=''){
+function insertKyudo($pdo, $datetime, $player_name='', $hit_record=''){
 	ini_set( 'display_errors', 1 );
 	ini_set( 'error_reporting', E_ALL );
 	// Prepare INSERT statement
-	//echo("datetime=$datetime, subject=$subject,detail=$detail");
-	$sql = 'INSERT INTO todo_tbl1'
-	.'(todo_datetime, todo_subject, todo_detail)'
+	$sql = 'INSERT INTO kyudo_tbl'
+	.'(datetime, player_name, hit_record)'
 	.' VALUES'
-	.' (:datetime, :subject, :detail)';
-	//var_dump($pdo);
-	//echo("sql_command:$sql");
+	.' (:datetime, :player_name, :hit_record)';
 	$stmt = $pdo->prepare($sql);
 
 	// Pass value to statement
 	$stmt->bindValue(':datetime', strftime("%F %T", strtotime($datetime)));
-	$stmt->bindValue(':subject', pg_escape_string($subject));
-	$stmt->bindValue(':detail', pg_escape_string($detail));
+	$stmt->bindValue(':player_name', pg_escape_string($player_name));
+	$stmt->bindValue(':hit_record', pg_escape_string($hit_record));
 	
 	// Execute statement
 	$stmt->execute();
 
 	// Return numbered ID
-	return $pdo->lastInsertId('todo_tbl1_id_seq');
+	return $pdo->lastInsertId('id');
 }
 
-function updateTodo($pdo, $id, $datetime, $subject, $detail){
+function updateKyudo($pdo, $id, $datetime, $subject, $detail){
 	//Prepare UPDATE statement
 	$sql = 'UPDATE todo_tbl1'
 	.' SET todo_datetime = :datetime'
