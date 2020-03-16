@@ -40,11 +40,13 @@ if(isset($id)){
     try{
         $id = insertKyudo($pdo, $datetime, $player_name, $hit_record);
     }catch(\PDOException $e){
-    error_log( "\PDO::Exception: " . $e->getMessage() );
-    return;
+        echo($e->getMessage());
+        error_log( "\PDO::Exception: " . $e->getMessage() );
+        return;
 }
     error_log("INSERT: new id = $id");
 }
+
 
 ?>
 <center>

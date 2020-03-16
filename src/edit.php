@@ -41,7 +41,7 @@ if(isset($_GET['id'])){
 	<font size=-1><tt><b>選手名</b></tt></font><br/>
 	<input type = "text" name = "player_name" size="19" value="<?php echo $player_name;?>"/><br/>
 	
-	<font size=-1><tt><b>競技記録</b></tt></font><br/>
+	<font size=-1><tt><b>行射記録</b></tt></font><br/>
 	<input type = "text" name = "hit_record" size="19" value="<?php echo $hit_record;?>"/><br/>
 	<center><input type="submit" name="SaveOpt" value="Cancel"/>
 	<input type="submit" name="SaveOpt" value="Save"/></center>

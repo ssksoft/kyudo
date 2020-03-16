@@ -18,7 +18,6 @@ function connect($params)
         $params['host'],
         $params['port']
     );
-    echo ("new PDO\n");
 
     $pdo = new PDO($conStr, $params['user'], $params['password']);
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -47,7 +46,7 @@ function insertKyudo($pdo, $datetime, $player_name = '', $hit_record = '')
     $stmt->execute();
 
     // Return numbered ID
-    return $pdo->lastInsertId('id');
+    return $pdo->lastInsertId('kyudo_tbl_id_seq');
 }
 
 function updateKyudo($pdo, $id, $datetime, $player_name, $hit_record)
