@@ -4,26 +4,26 @@ ini_set( 'error_reporting', E_ALL );
 $id=NULL;
 
 if(isset($_GET['id'])){
-	echo($_GET['mode']);
-	$id = intval($_GET['id']);
-	// Get Result of selected id
-	try{
-	$record = getRecordById($pdo, $id);
-	} catch (\PDOException $e){
-		echo($e->getMessage());
-		error_log("\PDO::Exception: " . $e->getMessage() );
-		return;
-	}
-	echo("no exception");
-	$title = "Edit($id)";
-	$datetime = htmlspecialchars($record['datetime']);
-	$player_name = htmlspecialchars($record['player_name']);
-	$hit_record = htmlspecialchars($record['hit_record']);
+    echo($_GET['mode']);
+    $id = intval($_GET['id']);
+    // Get Result of selected id
+    try{
+    $record = getRecordById($pdo, $id);
+    } catch (\PDOException $e){
+        echo($e->getMessage());
+        error_log("\PDO::Exception: " . $e->getMessage() );
+        return;
+    }
+    echo("no exception");
+    $title = "Edit($id)";
+    $datetime = htmlspecialchars($record['datetime']);
+    $player_name = htmlspecialchars($record['player_name']);
+    $hit_record = htmlspecialchars($record['hit_record']);
 }else{
-	$title = "行射記録";
-	$datetime = $now; // Default value is current time as template
-	$player_name = '';
-	$hit_record = '';
+    $title = "行射記録";
+    $datetime = $now; // Default value is current time as template
+    $player_name = '';
+    $hit_record = '';
 }
 // Form view as follows:
 ?>
@@ -34,17 +34,34 @@ if(isset($_GET['id'])){
 <table>
 <tr><td>
 <form action="/kyudo/?mode=save" method="post">
-	<input type="hidden" name = "id" value="<?php echo $id; ?>"/>
-	<font size =-1><tt><b>日時</b></tt></font><br/>
-	<input type="text" name="datetime" size="19" value="<?php echo $datetime;?>"/><br/>
-	
-	<font size=-1><tt><b>選手名</b></tt></font><br/>
-	<input type = "text" name = "player_name" size="19" value="<?php echo $player_name;?>"/><br/>
-	
-	<font size=-1><tt><b>行射記録</b></tt></font><br/>
-	<input type = "text" name = "hit_record" size="19" value="<?php echo $hit_record;?>"/><br/>
-	<center><input type="submit" name="SaveOpt" value="Cancel"/>
-	<input type="submit" name="SaveOpt" value="Save"/></center>
+    <input type="hidden" name = "id" value="<?php echo $id; ?>"/>
+    <font size =-1><tt><b>日時</b></tt></font><br/>
+    <input type="text" name="datetime" size="19" value="<?php echo $datetime;?>"/><br/>
+</form>
+<form action="/kyudo/?mode=save" method="post">
+    <table>
+        <tr>
+            <td>4本目</td>
+            <td><input type="text" name="hit_record3" value=""</td>
+        </tr>
+        <tr>
+            <td>3本目</td>
+            <td><input type="text" name="hit_record3" value=""</td>
+        </tr>
+        <tr>
+            <td>2本目</td>
+            <td><input type="text" name="hit_record2" value=""</td>
+        </tr>
+        <tr>
+            <td>1本目</td>
+            <td><input type="text" name="hit_record1" value=""</td>
+        </tr>
+        <tr>
+            <td>選手名</td>
+            <td><input type="text" name="選手名" value=""</td>
+        </tr>
+    </table>
+
 </form>
 </td></tr>
 </table>
