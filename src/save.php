@@ -20,14 +20,25 @@ echo <<<EOM
     <tr><td></td><td>$player_name</td></tr>
     <tr><th colspan="2" align="left">的中</th></tr>
     <tr><td></td><td>
+    <table>
     EOM;
-foreach($hit_record_array as $hit_record){
-    echo $hit_record;
-}
-echo <<<EOM
-    </td></tr>
-    </table>
-EOM;
+    for($i = 0, $len=count($hit_record_array); $i < $len; ++$i){
+        $num = $len-$i;
+        echo <<<EOM
+        <tr>
+            <td>
+                $num 本目：
+        </td>
+            <td>
+        EOM;
+                echo $hit_record_array[$len-1-$i]."</td></tr>";
+        echo <<<EOM
+        <tr>
+            <td>
+        EOM;
+    }
+echo "</table>";
+
 
 $datetime = ($_POST['datetime']);
 $player_name = ($_POST['player_name']);
