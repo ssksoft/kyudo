@@ -12,20 +12,40 @@ if(! empty($_POST['id'])){
 // View for confirmation
 $datetime = htmlspecialchars($_POST['datetime']);
 $player_name = htmlspecialchars($_POST['player_name']);
-$hit_record = htmlspecialchars($_POST['hit_record']);
-echo<<<EOT
+$hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'],$_POST['hit_record3'],$_POST['hit_record4']];
+echo <<<EOM
     <table borderwith='1'>
     <tr><th align="left">記録日</th><td>$datetime</td></tr>
     <tr><th colspan="2" align="left">選手名</th></tr>
     <tr><td></td><td>$player_name</td></tr>
     <tr><th colspan="2" align="left">的中</th></tr>
-    <tr><td></td><td>$hit_record</td></tr>
+    <tr><td></td><td>
+    EOM;
+foreach($hit_record_array as $hit_record){
+    echo $hit_record;
+}
+echo <<<EOM
+    </td></tr>
     </table>
-EOT;
+EOM;
 
 $datetime = ($_POST['datetime']);
 $player_name = ($_POST['player_name']);
-$hit_record = ($_POST['hit_record']);
+$hit_record = 0;
+
+for($i = 0, $len=count($hit_record_array); $i < $len; ++$i){
+    switch ($hit_record_array[$i]){
+        case '〇':
+            $hit_record = $hit_record + 2**$i;
+            break;
+        case '×':
+            $hit_record = $hit_record;
+            break;
+        default:
+            $hit_record = 9999;
+            break;
+    }
+}
 if(isset($id)){
     try{
         $num = updateKyudo($pdo, $id, $datetime, $player_name, $hit_record);

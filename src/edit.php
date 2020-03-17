@@ -37,12 +37,10 @@ if(isset($_GET['id'])){
     <input type="hidden" name = "id" value="<?php echo $id; ?>"/>
     <font size =-1><tt><b>日時</b></tt></font><br/>
     <input type="text" name="datetime" size="19" value="<?php echo $datetime;?>"/><br/>
-</form>
-<form action="/kyudo/?mode=save" method="post">
     <table>
         <tr>
             <td>4本目</td>
-            <td><input type="text" name="hit_record3" value=""</td>
+            <td><input type="text" name="hit_record4" value=""</td>
         </tr>
         <tr>
             <td>3本目</td>
@@ -58,10 +56,11 @@ if(isset($_GET['id'])){
         </tr>
         <tr>
             <td>選手名</td>
-            <td><input type="text" name="選手名" value=""</td>
+            <td><input type="text" name="player_name" value=""</td>
         </tr>
     </table>
-
+    <center><input type="submit" name="SaveOpt" value="Cancel"/>
+	<input type="submit" name="SaveOpt" value="Save"/></center>
 </form>
 </td></tr>
 </table>
