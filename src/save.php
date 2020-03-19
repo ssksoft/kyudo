@@ -16,8 +16,6 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'],$_POST['hit_re
 echo <<<EOM
     <table borderwith='1'>
     <tr><th align="left">記録日</th><td>$datetime</td></tr>
-    <tr><th colspan="2" align="left">選手名</th></tr>
-    <tr><td></td><td>$player_name</td></tr>
     <tr><th colspan="2" align="left">的中</th></tr>
     <tr><td></td><td>
     <table>
@@ -37,6 +35,7 @@ echo <<<EOM
             <td>
         EOM;
     }
+    echo "<tr><td>選手名</td><td>$player_name</td></tr>";
 echo "</table>";
 
 
