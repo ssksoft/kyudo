@@ -1,18 +1,18 @@
 <?php
-ini_set( 'display_errors', 1 );
-ini_set( 'error_reporting', E_ALL );
-$id=NULL;
-if(! empty($_POST['id'])){
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
+$id = NULL;
+if (!empty($_POST['id'])) {
     $id = intval($_POST['id']);
     $task = "Refresh";
-}else{
+} else {
     $task = "Save";
 }
 
 // View for confirmation
 $datetime = htmlspecialchars($_POST['datetime']);
 $player_name = htmlspecialchars($_POST['player_name']);
-$hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'],$_POST['hit_record3'],$_POST['hit_record4']];
+$hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_record3'], $_POST['hit_record4']];
 echo <<<EOM
     <table borderwith='1'>
     <tr><th align="left">記録日</th><td>$datetime</td></tr>
@@ -20,22 +20,22 @@ echo <<<EOM
     <tr><td></td><td>
     <table>
     EOM;
-    for($i = 0, $len=count($hit_record_array); $i < $len; ++$i){
-        $num = $len-$i;
-        echo <<<EOM
+for ($i = 0, $len = count($hit_record_array); $i < $len; ++$i) {
+    $num = $len - $i;
+    echo <<<EOM
         <tr>
             <td>
                 $num 本目：
         </td>
             <td>
         EOM;
-                echo $hit_record_array[$len-1-$i]."</td></tr>";
-        echo <<<EOM
+    echo $hit_record_array[$len - 1 - $i] . "</td></tr>";
+    echo <<<EOM
         <tr>
             <td>
         EOM;
-    }
-    echo "<tr><td>選手名</td><td>$player_name</td></tr>";
+}
+echo "<tr><td>選手名</td><td>$player_name</td></tr>";
 echo "</table>";
 
 
@@ -43,10 +43,10 @@ $datetime = ($_POST['datetime']);
 $player_name = ($_POST['player_name']);
 $hit_record = 0;
 
-for($i = 0, $len=count($hit_record_array); $i < $len; ++$i){
-    switch ($hit_record_array[$i]){
+for ($i = 0, $len = count($hit_record_array); $i < $len; ++$i) {
+    switch ($hit_record_array[$i]) {
         case '〇':
-            $hit_record = $hit_record + 2**$i;
+            $hit_record = $hit_record + 2 ** $i;
             break;
         case '×':
             $hit_record = $hit_record;
@@ -56,34 +56,36 @@ for($i = 0, $len=count($hit_record_array); $i < $len; ++$i){
             break;
     }
 }
-if(isset($id)){
-    try{
+if (isset($id)) {
+    try {
         $num = updateKyudo($pdo, $id, $datetime, $player_name, $hit_record);
-    }catch (\PDOException $e){
-    error_log( "\PDO::Exception: " . $e->getMessage());
-    echo("error message: <br />");    
-    echo($e->getMessage());
-    return;
+    } catch (\PDOException $e) {
+        error_log("\PDO::Exception: " . $e->getMessage());
+        echo ("error message: <br />");
+        echo ($e->getMessage());
+        return;
     }
     error_log("UPDATE: affected lins = $num");
-}else{
-    try{
+} else {
+    try {
         $id = insertKyudo($pdo, $datetime, $player_name, $hit_record);
-    }catch(\PDOException $e){
-        echo($e->getMessage());
-        error_log( "\PDO::Exception: " . $e->getMessage() );
+    } catch (\PDOException $e) {
+        echo ($e->getMessage());
+        error_log("\PDO::Exception: " . $e->getMessage());
         return;
-}
+    }
     error_log("INSERT: new id = $id");
 }
 
 
 ?>
 <center>
-<table borderwith='1'>
-    <tr>
-    <td>[<a href="/kyudo/?mode=list">All</a>]</td>
-    <td>[<a href="/kyudo/?mode=edit&id=<?php {echo $id;}?>">Re-edit</a>]</td>
-    </tr>
-</table>
+    <table borderwith='1'>
+        <tr>
+            <td>[<a href="/kyudo/?mode=list">All</a>]</td>
+            <td>[<a href="/kyudo/?mode=edit&id=<?php {
+                                                    echo $id;
+                                                } ?>">Re-edit</a>]</td>
+        </tr>
+    </table>
 </center>
