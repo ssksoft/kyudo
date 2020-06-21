@@ -137,3 +137,12 @@ function allKyudo($pdo, $days = "")
     }
     return $kyudos;
 }
+
+function delete_all_record($pdo)
+{
+    // Prepare and execute Delete statement
+    $stmt = $pdo->query(
+        'DELETE'
+            . ' FROM kyudo_tbl'
+    );
+}

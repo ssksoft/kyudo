@@ -63,7 +63,7 @@ $now = strftime('%F %T', time());
           break;
         case 'delete_all':
           // Save
-          include "delete_all.php";
+          include "delete_all_record.php";
           break;
         default:
           // All
