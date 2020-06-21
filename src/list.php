@@ -58,7 +58,6 @@ try {
                         echo htmlspecialchars($record_str);
                         ?>
                     </td>
-                    <!-- <td class="dash-line"><?php echo htmlspecialchars($kyudo['hit_record']); ?></td> -->
                     <td class="dash-line">
                         <a href="/kyudo/?mode=edit&id=
                             <?php

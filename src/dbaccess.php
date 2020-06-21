@@ -146,3 +146,14 @@ function delete_all_record($pdo)
             . ' FROM kyudo_tbl'
     );
 }
+
+function delete_one_record($pdo, $id)
+{
+    // Prepare and execute Delete statement
+    $condition = " WHERE id = $id";
+    $stmt = $pdo->query(
+        'DELETE'
+            . ' FROM kyudo_tbl'
+            . $condition
+    );
+}
