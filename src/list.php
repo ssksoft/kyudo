@@ -58,11 +58,11 @@ try {
                         echo htmlspecialchars($record_str);
                         ?>
                     </td>
-                    <!-- <td class="dash-line"><?php echo htmlspecialchars($kyudo['hit_record']); ?></td>
+                    <!-- <td class="dash-line"><?php echo htmlspecialchars($kyudo['hit_record']); ?></td> -->
                     <td class="dash-line">
                         <a href="/kyudo/?mode=edit&id=
                             <?php
-                            printf("%d", (int) $kyudo['id']); ?>">Edit </a> </td> -->
+                            printf("%d", (int) $kyudo['id']); ?>">Edit </a> </td>
                 </tr>
             <?php endforeach; ?>
             <tr>

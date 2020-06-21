@@ -31,6 +31,7 @@ $now = strftime('%F %T', time());
   <div class="left-column">
     <a href="/kyudo/">トップ</a>
     <a href="/kyudo/?mode=edit">新規記録</a>
+    <a href="/kyudo/?mode=delete_all">全記録の削除</a>
   </div>
   <div class="right-column"><?php echo $now; ?></div>
   <div>
@@ -59,6 +60,10 @@ $now = strftime('%F %T', time());
         case 'save':
           // Save
           include "save.php";
+          break;
+        case 'delete_all':
+          // Save
+          include "delete_all.php";
           break;
         default:
           // All
