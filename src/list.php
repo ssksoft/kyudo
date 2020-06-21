@@ -62,7 +62,15 @@ try {
                     <td class="dash-line">
                         <a href="/kyudo/?mode=edit&id=
                             <?php
-                            printf("%d", (int) $kyudo['id']); ?>">Edit </a> </td>
+                            printf("%d", (int) $kyudo['id']); ?>">編集
+                        </a>
+                    </td>
+                    <td class="delete_one">
+                        <a href="/kyudo/?mode=delete&id=
+                            <?php
+                            printf("%d", (int) $kyudo['id']); ?>">削除
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             <tr>
