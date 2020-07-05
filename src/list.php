@@ -22,11 +22,13 @@ try {
     <table class="hit_table" border="1">
         <thead>
             <tr>
-                <thwidth="20"class="start-line">ID</th>
-                    <thwidth="80"class="start-line">選手名</th>
-                        <thclass="start-line">記録</th>
-                            <thwidth="40"class="start-line">**</th>
+                <th>ID</th>
+                <th>選手名</th>
+                <th>記録</th>
+                <th>編集</th>
+                <th>削除</th>
             </tr>
+        </thead>
         </thead>
         <tbody>
             <?php foreach ($kyudos as $kyudo) : ?>
