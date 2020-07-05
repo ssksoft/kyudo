@@ -17,19 +17,9 @@ try {
 
 //All
 ?>
+<link rel="stylesheet" href="table.css">
 <center>
-    <form action="/kyufo/?mode=list" method="post">
-        <fontsize="5">All</font>
-            <inputtype="text" size=4 maxlength=4 name="FORDAYS" value="
-            <?php
-            echo $days;
-            ?>
-            ">
-                days(0=All record)
-    </form>
-    <?php echo ("Viewfor $days days") ?>
-
-    <table class="table-bordered" border="1">
+    <table class="hit_table" border="1">
         <thead>
             <tr>
                 <thwidth="20"class="start-line">ID</th>

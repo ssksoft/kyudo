@@ -1,0 +1,12 @@
+table.hit_table {
+    border-collapse: collapse;
+    border: 2px solid green; /* 外枠を太く */
+ }
+ table.hit_table td,
+ table.hit_table th {
+    border: 1px solid green;  /* 内側の線 */
+    padding: 0.25em;  /* セル内の余白 */
+ }
+ table.hit_table thead th {
+    border-bottom: 3px double green; /* ヘッダ行の下線 */
+ }
