@@ -29,7 +29,7 @@ try {
     </form>
     <?php echo ("Viewfor $days days") ?>
 
-    <table class="table-bordered">
+    <table class="table-bordered" border="1">
         <thead>
             <tr>
                 <thwidth="20"class="start-line">ID</th>
