@@ -46,28 +46,17 @@ try {
                     <?php
                     $record_manager = new RecordManager();
                     $record_str = $record_manager->get_record_as_str($kyudo['hit_record']);
-                    ?>
-                    <td class="dash-line">
-                        <?php
-                        echo mb_substr($record_str, 0, 1);
-                        ?>
-                    </td>
-                    <td class="dash-line">
-                        <?php
-                        echo mb_substr($record_str, 1, 1);
-                        ?>
-                    </td>
-                    <td class="dash-line">
-                        <?php
-                        echo mb_substr($record_str, 2, 1);
-                        ?>
-                    </td>
-                    <td class="dash-line">
-                        <?php
-                        echo mb_substr($record_str, 3, 1);
-                        ?>
-                    </td>
 
+                    for ($i = 0; $i < mb_strlen($record_str); $i++) {
+                    ?>
+                        <td class="dash-line">
+                            <?php
+                            echo mb_substr($record_str, $i, 1);
+                            ?>
+                        </td>
+                    <?php
+                    }
+                    ?>
                     <td class="dash-line">
                         <a href="/kyudo/?mode=edit&id=
                             <?php
