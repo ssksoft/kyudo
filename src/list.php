@@ -24,7 +24,7 @@ try {
             <tr>
                 <th>ID</th>
                 <th>選手名</th>
-                <th>記録</th>
+                <th colspan='4'>記録</th>
                 <th>編集</th>
                 <th>削除</th>
             </tr>
@@ -43,13 +43,31 @@ try {
                         echo htmlspecialchars($kyudo['player_name']);
                         ?>
                     </td>
+                    <?php
+                    $record_manager = new RecordManager();
+                    $record_str = $record_manager->get_record_as_str($kyudo['hit_record']);
+                    ?>
                     <td class="dash-line">
                         <?php
-                        $record_manager = new RecordManager();
-                        $record_str = $record_manager->get_record_as_str($kyudo['hit_record']);
-                        echo htmlspecialchars($record_str);
+                        echo mb_substr($record_str, 0, 1);
                         ?>
                     </td>
+                    <td class="dash-line">
+                        <?php
+                        echo mb_substr($record_str, 1, 1);
+                        ?>
+                    </td>
+                    <td class="dash-line">
+                        <?php
+                        echo mb_substr($record_str, 2, 1);
+                        ?>
+                    </td>
+                    <td class="dash-line">
+                        <?php
+                        echo mb_substr($record_str, 3, 1);
+                        ?>
+                    </td>
+
                     <td class="dash-line">
                         <a href="/kyudo/?mode=edit&id=
                             <?php
