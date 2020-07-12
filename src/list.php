@@ -48,9 +48,6 @@ try {
                     <?php
                     $record_manager = new RecordManager();
                     $record_str = $record_manager->get_record_as_str($kyudo['hit_record']);
-                    echo mb_strlen($record_str);
-                    echo "test";
-                    echo $record_str;
 
                     for ($i = 0; $i < mb_strlen($record_str); $i++) {
                     ?>
