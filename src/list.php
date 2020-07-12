@@ -24,7 +24,10 @@ try {
             <tr>
                 <th>ID</th>
                 <th>選手名</th>
-                <th colspan='4'>記録</th>
+                <th>①</th>
+                <th>②</th>
+                <th>③</th>
+                <th>④</th>
                 <th>編集</th>
                 <th>削除</th>
             </tr>
