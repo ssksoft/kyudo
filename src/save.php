@@ -46,7 +46,7 @@ $hit_record = 0;
 for ($i = 0, $len = count($hit_record_array); $i < $len; ++$i) {
     switch ($hit_record_array[$i]) {
         case '〇':
-            $hit_record = $hit_record + 2 ** $i;
+            $hit_record = $hit_record + 2 ** ($len - 1 - $i);
             break;
         case '×':
             $hit_record = $hit_record;
