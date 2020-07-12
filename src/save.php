@@ -17,7 +17,11 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
 <table borderwith='1'>
     <tr>
         <th align="left">記録日</th>
-        <td>$datetime</td>
+        <td>
+            <?php
+            echo $datetime;
+            ?>
+        </td>
     </tr>
     <tr>
         <th colspan="2" align="left">的中</th>
@@ -49,7 +53,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                     <td>選手名</td>
                     <td>
                         <?php
-                        $player_name
+                        echo $player_name;
                         ?>
                     </td>
                 </tr>
@@ -63,7 +67,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
             for ($i = 0, $len = count($hit_record_array); $i
                 < $len; ++$i) {
                 switch ($hit_record_array[$i]) {
-                    case '〇':
+                    case '○':
                         $hit_record = $hit_record + 2 ** ($len - 1 - $i);
                         break;
                     case '×':
@@ -74,6 +78,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                         break;
                 }
             }
+
             if (isset($id)) {
                 try {
                     $num = updateKyudo($pdo, $id, $datetime, $player_name, $hit_record);

@@ -157,3 +157,31 @@ function delete_one_record($pdo, $id)
             . $condition
     );
 }
+
+function get_record($pdo, $id)
+{
+    // Prepare SELECT statement
+    // Condition by the number of days
+    ini_set('display_errors', 1);
+    ini_set('error_reporting', E_ALL);
+    $condition = "id == $id";
+
+    // Execute SELECT statement
+    $stmt = $pdo->query(
+        'SELECT *'
+            . ' FROM kyudo_tbl'
+            . ' WHERE ' . $condition
+    );
+
+    //Get SELECT result
+    $record = array();
+    while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        $record[] = array(
+            'id' => $row['id'],
+            'datetime' => $row['datetime'],
+            'player_name' => $row['player_name'],
+            'hit_record' => $row['hit_record']
+        );
+    }
+    return $record;
+}
