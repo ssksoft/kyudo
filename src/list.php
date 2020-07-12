@@ -32,7 +32,6 @@ try {
                 <th>削除</th>
             </tr>
         </thead>
-        </thead>
         <tbody>
             <?php foreach ($kyudos as $kyudo) : ?>
                 <tr>
