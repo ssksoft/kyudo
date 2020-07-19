@@ -28,6 +28,7 @@ if (isset($_GET['id'])) {
 }
 $record_manager = new RecordManager();
 $record_str = $record_manager->get_record_as_str($hit_record);
+echo $record_str;
 // Form view as follows:
 ?>
 <center>
@@ -48,6 +49,13 @@ $record_str = $record_manager->get_record_as_str($hit_record);
                         <td> <select name="hit_record4">
                                 <option value="○">○</option>
                                 <option value="×">×</option>
+                                <option value=<?php
+                                                echo mb_substr($record_str, 3, 1);
+                                                ?> selected>
+                                    <?php
+                                    echo mb_substr($record_str, 3, 1);
+                                    ?>
+                                </option>
                         </td>
                     </tr>
                     <tr>
@@ -55,6 +63,13 @@ $record_str = $record_manager->get_record_as_str($hit_record);
                         <td> <select name="hit_record3">
                                 <option value="○">○</option>
                                 <option value="×">×</option>
+                                <option value=<?php
+                                                echo mb_substr($record_str, 2, 1);
+                                                ?> selected>
+                                    <?php
+                                    echo mb_substr($record_str, 2, 1);
+                                    ?>
+                                </option>
                         </td>
                     </tr>
                     <tr>
@@ -62,6 +77,13 @@ $record_str = $record_manager->get_record_as_str($hit_record);
                         <td> <select name="hit_record2">
                                 <option value="○">○</option>
                                 <option value="×">×</option>
+                                <option value=<?php
+                                                echo mb_substr($record_str, 1, 1);
+                                                ?> selected>
+                                    <?php
+                                    echo mb_substr($record_str, 1, 1);
+                                    ?>
+                                </option>
                         </td>
                     <tr>
                         <td>1本目</td>
@@ -75,7 +97,6 @@ $record_str = $record_manager->get_record_as_str($hit_record);
                                     echo mb_substr($record_str, 0, 1);
                                     ?>
                                 </option>
-
                         </td>
                     </tr>
                     <tr>
