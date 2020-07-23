@@ -131,8 +131,8 @@ function allKyudo($pdo, $days = "")
     $kyudos[] = array(
       'id' => $row['id'],
       'datetime' => $row['datetime'],
-      'player_name' => $row['player_name'],
-      'hit_record' => $row['hit_record']
+      'hit_record' => $row['hit_record'],
+      'player_id' => $row['player_id']
     );
   }
   return $kyudos;
@@ -205,4 +205,28 @@ function insert_player($pdo, $player_name = '')
 
   // Return numbered ID
   return $pdo->lastInsertId('player_tbl_player_id_seq');
+}
+
+
+function get_player($pdo, $player_id)
+{
+  $condition = "player_id = $player_id";
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM player_tbl'
+      . ' WHERE ' . $condition
+  );
+
+  //Get SELECT result
+  $player = array();
+  $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+  $player = array(
+    'player_id' => $row['player_id'],
+    'player_name' => $row['player_name'],
+    'team_name' => $row['team_name'],
+    'dan' => $row['dan'],
+    'rank' => $row['rank']
+  );
+  return $player;
 }

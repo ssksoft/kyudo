@@ -15,13 +15,22 @@ try {
   echo ("...UnderMaintenance");
 }
 
+// try {
+//   echo $player_id;
+//   $player = get_player($pdo, $player_id);
+// } catch (\PDOException $e) {
+//   error_log("\PDO::Exception:" . $e->getMessage());
+//   echo ($e->getMessage());
+//   echo ("...UnderMaintenance");
+// }
+
 //All
 ?>
 <link rel="stylesheet" href="table.css">
 <table class="hit_table" border="1">
   <thead>
     <tr>
-      <th>ID</th>
+      <th>記録ID</th>
       <th>選手名</th>
       <th>①</th>
       <th>②</th>
@@ -41,7 +50,8 @@ try {
         </td>
         <td class="dash-line">
           <?php
-          echo htmlspecialchars($kyudo['player_name']);
+          $player = get_player($pdo, $kyudo['player_id']);
+          echo htmlspecialchars($player['player_name']);
           ?>
         </td>
         <?php
