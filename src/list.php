@@ -6,7 +6,7 @@ if (isset($_POST['FORDAYS']))
 else
   $days = 30; //30daysasdefault
 
-//GettheTodo
+// マスターテーブルからデータ取得
 try {
   $kyudos = allKyudo($pdo, $days);
 } catch (\PDOException $e) {
@@ -14,15 +14,6 @@ try {
   echo ($e->getMessage());
   echo ("...UnderMaintenance");
 }
-
-// try {
-//   echo $player_id;
-//   $player = get_player($pdo, $player_id);
-// } catch (\PDOException $e) {
-//   error_log("\PDO::Exception:" . $e->getMessage());
-//   echo ($e->getMessage());
-//   echo ("...UnderMaintenance");
-// }
 
 //All
 ?>
@@ -70,21 +61,21 @@ try {
         ?>
         <td class="dash-line">
           <a href="/kyudo/?mode=edit&id=
-<?php
-      printf("%d", (int) $kyudo['id']); ?>">編集
+            <?php
+            printf("%d", (int) $kyudo['id']);
+            ?>">
+            編集
           </a>
         </td>
         <td class="delete_one">
           <a href="/kyudo/?mode=delete&id=
-<?php
-      printf("%d", (int) $kyudo['id']); ?>">削除
+            <?php
+            printf("%d", (int) $kyudo['id']);
+            ?>">
+            削除
           </a>
         </td>
       </tr>
     <?php endforeach; ?>
-    <tr>
-      <td colspan="5" class="last-line">
-      </td>
-    </tr>
   </tbody>
 </table>
