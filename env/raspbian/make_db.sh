@@ -23,7 +23,6 @@ rank text);
 CREATE TABLE kyudo_tbl(\
 id  serial  NOT NULL  PRIMARY KEY,\
 datetime  timestamp NOT NULL,\
-player_name text,\
 hit_record  text,\
 player_id serial NOT NULL REFERENCES player_tbl (player_id)\
 );

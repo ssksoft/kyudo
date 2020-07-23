@@ -11,7 +11,7 @@ if (!empty($_POST['id'])) {
 
 // View for confirmation
 $datetime = htmlspecialchars($_POST['datetime']);
-$player_name = htmlspecialchars($_POST['player_name']);
+$player_id = htmlspecialchars($_POST['player_id']);
 $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_record3'], $_POST['hit_record4']];
 ?>
 <table borderwith='1'>
@@ -50,10 +50,10 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                 }
                 ?>
                 <tr>
-                    <td>選手名</td>
+                    <td>選手ID</td>
                     <td>
                         <?php
-                        echo $player_name;
+                        echo $player_id;
                         ?>
                     </td>
                 </tr>
@@ -61,7 +61,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
 
             <?php
             $datetime = ($_POST['datetime']);
-            $player_name = ($_POST['player_name']);
+            $player_id = ($_POST['player_id']);
             $hit_record = 0;
 
             for ($i = 0, $len = count($hit_record_array); $i
@@ -81,7 +81,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
 
             if (isset($id)) {
                 try {
-                    $num = updateKyudo($pdo, $id, $datetime, $player_name, $hit_record);
+                    $num = updateKyudo($pdo, $id, $datetime, $player_id, $hit_record);
                 } catch (\PDOException $e) {
                     error_log("\PDO::Exception: " . $e->getMessage());
                     echo (" error message: <br />");
@@ -91,7 +91,7 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                 error_log("UPDATE: affected lins = $num");
             } else {
                 try {
-                    $id = insertKyudo($pdo, $datetime, $player_name, $hit_record);
+                    $id = insertKyudo($pdo, $datetime, $player_id, $hit_record);
                 } catch (\PDOException $e) {
                     echo ($e->getMessage());
                     error_log("\PDO::Exception: " . $e->getMessage());

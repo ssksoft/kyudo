@@ -18,12 +18,12 @@ if (isset($_GET['id'])) {
   echo ("no exception");
   $title = "Edit($id)";
   $datetime = htmlspecialchars($record['datetime']);
-  $player_name = htmlspecialchars($record['player_name']);
+  $player_id = htmlspecialchars($record['player_id']);
   $hit_record = htmlspecialchars($record['hit_record']);
 } else {
   $title = "行射記録";
   $datetime = $now; // Default value is current time as template
-  $player_name = '';
+  $player_id = '';
   $hit_record = '';
 }
 $record_manager = new RecordManager();
@@ -100,11 +100,11 @@ echo $record_str;
             </td>
           </tr>
           <tr>
-            <td>選手名</td>
+            <td>選手ID</td>
             <td>
-              <input type="text" name="player_name" value=<?php
-                                                          echo $player_name;
-                                                          ?>>
+              <input type="text" name="player_id" value=<?php
+                                                        echo $player_id;
+                                                        ?>>
             </td>
           </tr>
         </table>
