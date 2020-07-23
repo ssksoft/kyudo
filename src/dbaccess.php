@@ -49,6 +49,27 @@ function insertKyudo($pdo, $datetime, $player_name = '', $hit_record = '')
     return $pdo->lastInsertId('kyudo_tbl_id_seq');
 }
 
+function insert_player($pdo, $player_name = '')
+{
+    ini_set('display_errors', 1);
+    ini_set('error_reporting', E_ALL);
+    // Prepare INSERT statement
+    $sql = 'INSERT INTO player_tbl'
+        . '(player_name)'
+        . ' VALUES'
+        . ' (:player_name)';
+    $stmt = $pdo->prepare($sql);
+
+    // Pass value to statement
+    $stmt->bindValue(':player_name', pg_escape_string($player_name));
+
+    // Execute statement
+    $stmt->execute();
+
+    // Return numbered ID
+    return $pdo->lastInsertId('player_tbl_player_id_seq');
+}
+
 function updateKyudo($pdo, $id, $datetime, $player_name, $hit_record)
 {
     //Prepare UPDATE statement
