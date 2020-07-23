@@ -30,6 +30,7 @@ $now = strftime('%F %T', time());
   </font>
   <div class="left-column">
     <a href="/kyudo/">トップ</a>
+    <a href="/kyudo/?mode=edit_player">選手登録</a>
     <a href="/kyudo/?mode=edit">新規記録</a>
     <a href="/kyudo/?mode=delete">全記録の削除</a>
   </div>
@@ -53,6 +54,12 @@ $now = strftime('%F %T', time());
       }
 
       switch ($mode) {
+        case 'edit_player':
+          include "edit_player.php";
+          break;
+        case 'register_player':
+          include "register_player.php";
+          break;
         case 'edit':
           // Edit || Create
           include "edit.php";
@@ -62,7 +69,6 @@ $now = strftime('%F %T', time());
           include "save.php";
           break;
         case 'delete':
-          // Save
           include "delete.php";
           break;
         default:
