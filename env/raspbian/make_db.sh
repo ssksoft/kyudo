@@ -12,11 +12,20 @@ echo "ok"
 echo "Login as kyudo"
 echo "Creating TABLE..."
 psql -h 127.0.0.1 -U kyudo kyudodb
+
+CREATE TABLE player_tbl(\
+player_id serial NOT NULL PRIMARY KEY UNIQUE,\
+player_name text,
+team_name text,
+dan text,
+rank text);
+
 CREATE TABLE kyudo_tbl(\
 id  serial  NOT NULL  PRIMARY KEY,\
 datetime  timestamp NOT NULL,\
 player_name text,\
-hit_record  text\
+hit_record  text,\
+player_id serial NOT NULL REFERENCES player_tbl (player_id)\
 );
 EOF
 echo "Finish"
