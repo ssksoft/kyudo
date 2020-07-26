@@ -34,6 +34,7 @@ $now = strftime('%F %T', time());
     <a href="/kyudo/?mode=player_list">選手一覧</a>
     <a href="/kyudo/?mode=edit">新規記録</a>
     <a href="/kyudo/?mode=delete">全記録の削除</a>
+    <a href="/kyudo/?mode=sandbox">sandbox</a>
   </div>
   <div class="right-column"><?php echo $now; ?></div>
   <div>
@@ -74,6 +75,9 @@ $now = strftime('%F %T', time());
           break;
         case 'delete':
           include "delete.php";
+          break;
+        case 'sandbox':
+          include "sandbox/sandbox.php";
           break;
         default:
           // All
