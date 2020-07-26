@@ -61,7 +61,7 @@ $now = strftime('%F %T', time());
         case 'register_player':
           include "register_player.php";
           break;
-        case 'playerlist':
+        case 'player_list':
           include "player_list.php";
           break;
         case 'edit':

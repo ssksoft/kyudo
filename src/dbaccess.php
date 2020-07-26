@@ -230,3 +230,26 @@ function get_player($pdo, $player_id)
   );
   return $player;
 }
+
+function get_all_players($pdo)
+{
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM player_tbl'
+      . ' ORDER BY player_id'
+  );
+
+  //Get SELECT result
+  $players = array();
+  while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+    $players[] = array(
+      'player_id' => $row['player_id'],
+      'player_name' => $row['player_name'],
+      'team_name' => $row['team_name'],
+      'dan' => $row['dan'],
+      'rank' => $row['rank']
+    );
+  }
+  return $players;
+}

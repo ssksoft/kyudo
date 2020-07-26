@@ -1,14 +1,8 @@
 <?php
-require 'record_manager.php';
 
-if (isset($_POST['FORDAYS']))
-  $days = (int) $_POST['FORDAYS'];
-else
-  $days = 30; //30daysasdefault
-
-// マスターテーブルからデータ取得
+// 選手テーブルからデータ取得
 try {
-  $kyudos = allKyudo($pdo, $days);
+  $players = get_all_players($pdo);
 } catch (\PDOException $e) {
   error_log("\PDO::Exception:" . $e->getMessage());
   echo ($e->getMessage());
@@ -21,59 +15,40 @@ try {
 <table class="hit_table" border="1">
   <thead>
     <tr>
-      <th>記録ID</th>
+      <th>選手ID</th>
       <th>選手名</th>
-      <th>①</th>
-      <th>②</th>
-      <th>③</th>
-      <th>④</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th>団体名</th>
+      <th>段位</th>
+      <th>順位</th>
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($kyudos as $kyudo) : ?>
+    <?php foreach ($players as $player) : ?>
       <tr>
         <td class="dash-line">
           <?php
-          echo htmlspecialchars($kyudo['id']);
+          echo htmlspecialchars($player['player_id']);
           ?>
         </td>
         <td class="dash-line">
           <?php
-          $player = get_player($pdo, $kyudo['player_id']);
           echo htmlspecialchars($player['player_name']);
           ?>
         </td>
-        <?php
-        $record_manager = new RecordManager();
-        $record_str = $record_manager->get_record_as_str($kyudo['hit_record']);
-
-        for ($i = 0; $i < mb_strlen($record_str); $i++) {
-        ?>
-          <td class="dash-line">
-            <?php
-            echo mb_substr($record_str, $i, 1);
-            ?>
-          </td>
-        <?php
-        }
-        ?>
-        <td class="dash-line">
-          <a href="/kyudo/?mode=edit&id=
-            <?php
-            printf("%d", (int) $kyudo['id']);
-            ?>">
-            編集
-          </a>
+        <td>
+          <?php
+          echo htmlspecialchars($player['team_name']);
+          ?>
         </td>
-        <td class="delete_one">
-          <a href="/kyudo/?mode=delete&id=
-            <?php
-            printf("%d", (int) $kyudo['id']);
-            ?>">
-            削除
-          </a>
+        <td>
+          <?php
+          echo htmlspecialchars($player['dan']);
+          ?>
+        </td>
+        <td>
+          <?php
+          echo htmlspecialchars($player['rank']);
+          ?>
         </td>
       </tr>
     <?php endforeach; ?>
