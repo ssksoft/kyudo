@@ -109,16 +109,6 @@ $record_str = $record_manager->get_record_as_str($hit_record);
           </tr>
           <tr>
             <td>
-              選手ID
-            </td>
-            <td>
-              <input type="text" name="player_id" value=<?php
-                                                        echo $player_id;
-                                                        ?>>
-            </td>
-          </tr>
-          <tr>
-            <td>
               選手名
             </td>
             <td>
@@ -134,10 +124,19 @@ $record_str = $record_manager->get_record_as_str($hit_record);
           <input type="submit" name="SaveOpt" value="Save" />
         </center>
       </form>
-      <form action="/kyudo/?mode=edit" method="post">
-        <input type="text" name="player_id">
-        <input type="submit" value="選手名を表示する">
-      </form>
+      <table>
+        <tr>
+          <td>
+            選手ID
+          </td>
+          <td>
+            <form action="/kyudo/?mode=edit" method="post">
+              <input type="text" name="player_id">
+              <input type="submit" value="選手名を表示する">
+            </form>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
