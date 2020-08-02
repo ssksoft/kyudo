@@ -21,14 +21,22 @@ if (isset($_GET['id'])) {
   $player_id = htmlspecialchars($record['player_id']);
   $hit_record = htmlspecialchars($record['hit_record']);
 } else {
+
   $title = "行射記録";
   $datetime = $now; // Default value is current time as template
-  $player_id = '';
   $hit_record = '';
+  if (isset($_POST['player_id'])) {
+    $player_id = intval($_POST['player_id']);
+    $player = get_player($pdo, $player_id);
+    $player_name = $player['player_name'];
+  } else {
+    $player_id = '';
+    $player_name = '';
+  }
 }
 $record_manager = new RecordManager();
 $record_str = $record_manager->get_record_as_str($hit_record);
-echo $record_str;
+
 // Form view as follows:
 ?>
 <center>
@@ -100,11 +108,24 @@ echo $record_str;
             </td>
           </tr>
           <tr>
-            <td>選手ID</td>
+            <td>
+              選手ID
+            </td>
             <td>
               <input type="text" name="player_id" value=<?php
                                                         echo $player_id;
                                                         ?>>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              選手名
+            </td>
+            <td>
+              <?php
+              echo $player_name;
+              ?>
+              </a>
             </td>
           </tr>
         </table>
@@ -112,6 +133,10 @@ echo $record_str;
           <input type="submit" name="SaveOpt" value="Cancel" />
           <input type="submit" name="SaveOpt" value="Save" />
         </center>
+      </form>
+      <form action="/kyudo/?mode=edit" method="post">
+        <input type="text" name="player_id">
+        <input type="submit" value="選手名を表示する">
       </form>
     </td>
   </tr>
