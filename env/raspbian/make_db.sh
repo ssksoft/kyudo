@@ -26,5 +26,11 @@ datetime  timestamp NOT NULL,\
 hit_record  text,\
 player_id serial NOT NULL REFERENCES player_tbl (player_id)\
 );
+
+CREATE TABLE competition_tbl(\
+competition_id serial NOT NULL PRIMARY KEY UNIQUE,\
+competition_name text,
+competition_type text);
+
 EOF
 echo "Finish"
