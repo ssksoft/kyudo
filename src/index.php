@@ -25,11 +25,12 @@ $now = strftime('%F %T', time());
 // Body header as follows
 ?>
 <div class="container">
-  <h1>弓道競技記録システム</h1>
+  <h1>ユミシス（弓道競技記録システム）</h1>
   <font size="3">
   </font>
   <div class="left-column">
     <a href="/kyudo/">トップ</a>
+    <a href="/kyudo/?mode=select_competition">大会を選択する</a>
     <a href="/kyudo/?mode=edit_player">選手登録</a>
     <a href="/kyudo/?mode=player_list">選手一覧</a>
     <a href="/kyudo/?mode=edit">新規記録</a>
@@ -56,6 +57,8 @@ $now = strftime('%F %T', time());
       }
 
       switch ($mode) {
+        case 'select_competition':
+          include "competition.php";
         case 'edit_player':
           include "edit_player.php";
           break;
@@ -81,7 +84,7 @@ $now = strftime('%F %T', time());
           break;
         default:
           // All
-          include "list.php";
+          include "index.php";
           break;
       }
 

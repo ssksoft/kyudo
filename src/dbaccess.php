@@ -253,3 +253,24 @@ function get_all_players($pdo)
   }
   return $players;
 }
+
+function get_all_competition($pdo)
+{
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM competition_tbl'
+      . ' ORDER BY competition_id'
+  );
+
+  //Get SELECT result
+  $competitions = array();
+  while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+    $competitions[] = array(
+      'competition_id' => $row['competition_id'],
+      'competition_name' => $row['competition_name'],
+      'type' => $row['type']
+    );
+  }
+  return $competitions;
+}
