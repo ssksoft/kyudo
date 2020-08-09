@@ -274,3 +274,79 @@ function get_all_competition($pdo)
   }
   return $competitions;
 }
+
+
+function get_competition($pdo, $competition_id)
+{
+  $condition = "competition_id = $competition_id";
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM competition_tbl'
+      . ' WHERE ' . $condition
+  );
+
+  //Get SELECT result
+  $competition = array();
+  $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+  $competition = array(
+    'competition_id' => $row['competition_id'],
+    'competition_name' => $row['competition_name'],
+    'competition_type' => $row['competition_type']
+  );
+  return $competition;
+}
+
+function insert_competition(
+  $pdo,
+  $competition_name = '',
+  $competition_type = ''
+) {
+  echo ("hello");
+  ini_set('display_errors', 1);
+  ini_set('error_reporting', E_ALL);
+  // Prepare INSERT statement
+  $sql = 'INSERT INTO competition_tbl'
+    . ' (competition_name,competition_type)'
+    . ' VALUES'
+    . ' (:competition_name, :competition_type)';
+  $stmt = $pdo->prepare($sql);
+
+  // Pass value to statement
+  $stmt->bindValue(':competition_name', pg_escape_string($competition_name));
+  $stmt->bindValue(':competition_type', pg_escape_string($competition_type));
+
+  // Execute statement
+  $stmt->execute();
+
+  // Return numbered ID
+  // return $pdo->lastInsertId('competition_tbl_competition_id_seq');
+  return 0;
+}
+
+function update_competition(
+  $pdo,
+  $competition_id,
+  $competition_name,
+  $competition_type
+) {
+  //Prepare UPDATE statement
+  $sql = 'UPDATE competition_tbl'
+    . ' SET competition_id = :competition_id,'
+    . ' competition_name = :competition_name,'
+    . ' competition_type = :competition_type,'
+    . ' WHERE competition_id = :competition_id';
+  $stmt = $pdo->prepare($sql);
+
+
+  // Pass value to statement
+  $stmt->bindValue(':competition_id', pg_escape_string($competition_id));
+  $stmt->bindValue(':competition_name', pg_escape_string($competition_name));
+  $stmt->bindValue(':competition_type', pg_escape_string($competition_type));
+
+  // Execute UPDATE statement
+  $stmt->execute();
+
+  // Return updated the number of rows
+  return $stmt->rowCount();
+}

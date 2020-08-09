@@ -30,7 +30,7 @@ $now = strftime('%F %T', time());
   </font>
   <div class="left-column">
     <a href="/kyudo/">トップ</a>
-    <a href="/kyudo/?mode=select_competition">大会を選択する</a>
+    <a href="/kyudo/?mode=competition_list">大会を選択する</a>
     <a href="/kyudo/?mode=edit_player">選手登録</a>
     <a href="/kyudo/?mode=player_list">選手一覧</a>
     <a href="/kyudo/?mode=edit">新規記録</a>
@@ -55,10 +55,23 @@ $now = strftime('%F %T', time());
         echo "<center> canceled </center>";
         $mode = "list";
       }
+      if ($mode == "save" && $_POST['save_competition'] != "Save") {
+        // Change list when not save
+        echo "<center> canceled </center>";
+        $mode = "competition_list";
+      }
 
       switch ($mode) {
-        case 'select_competition':
-          include "competition.php";
+        case 'competition_list':
+          include "competition_list.php";
+          break;
+        case 'edit_competition':
+          include "edit_competition.php";
+          break;
+        case 'save_competition':
+          echo "hello";
+          include "save_competition.php";
+          break;
         case 'edit_player':
           include "edit_player.php";
           break;

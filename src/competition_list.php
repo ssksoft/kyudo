@@ -1,6 +1,4 @@
 <?php
-require 'record_manager.php';
-
 // テーブルからデータ取得
 try {
   $competitions = get_all_competition($pdo);
@@ -36,7 +34,7 @@ try {
         </td>
         <td>
           <?php
-          echo htmlspecialchars($competition['name']);
+          echo htmlspecialchars($competition['competition_name']);
           ?>
         </td>
         <td>
@@ -66,7 +64,6 @@ switch ($mode) {
     include "edit_player.php";
     break;
   default:
-    include "competition.php";
     break;
 }
 
