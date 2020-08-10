@@ -320,8 +320,7 @@ function insert_competition(
   $stmt->execute();
 
   // Return numbered ID
-  // return $pdo->lastInsertId('competition_tbl_competition_id_seq');
-  return 0;
+  return $pdo->lastInsertId('competition_tbl_competition_id_seq');
 }
 
 function update_competition(

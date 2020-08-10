@@ -96,8 +96,6 @@ $now = strftime('%F %T', time());
           include "sandbox/sandbox.php";
           break;
         default:
-          // All
-          include "index.php";
           break;
       }
 
