@@ -269,7 +269,7 @@ function get_all_competition($pdo)
     $competitions[] = array(
       'competition_id' => $row['competition_id'],
       'competition_name' => $row['competition_name'],
-      'type' => $row['type']
+      'competition_type' => $row['competition_type']
     );
   }
   return $competitions;
