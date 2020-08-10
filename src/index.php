@@ -69,8 +69,10 @@ $now = strftime('%F %T', time());
           include "edit_competition.php";
           break;
         case 'save_competition':
-          echo "hello";
           include "save_competition.php";
+          break;
+        case 'delete_competition':
+          include "delete_competition.php";
           break;
         case 'edit_player':
           include "edit_player.php";

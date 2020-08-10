@@ -349,3 +349,24 @@ function update_competition(
   // Return updated the number of rows
   return $stmt->rowCount();
 }
+
+function delete_one_competition($pdo, $competition_id)
+{
+  // Prepare and execute Delete statement
+  $condition = " WHERE competition_id = $competition_id";
+  $stmt = $pdo->query(
+    'DELETE'
+      . ' FROM competition_tbl'
+      . $condition
+  );
+  // $stmt->execute();
+}
+
+function delete_all_competition($pdo)
+{
+  // Prepare and execute Delete statement
+  $stmt = $pdo->query(
+    'DELETE'
+      . ' FROM competition_tbl'
+  );
+}
