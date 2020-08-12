@@ -130,7 +130,7 @@ $record_str = $record_manager->get_record_as_str($hit_record);
             選手ID
           </td>
           <td>
-            <form action="/kyudo/?mode=edit" method="post">
+            <form action="/kyudo/?mode=edit_hit_record" method="post">
               <input type="text" name="player_id">
               <input type="submit" value="選手名を表示する">
             </form>

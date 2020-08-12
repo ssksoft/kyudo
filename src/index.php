@@ -33,8 +33,6 @@ $now = strftime('%F %T', time());
     <a href="/kyudo/?mode=competition_list">大会を選択する</a>
     <a href="/kyudo/?mode=edit_player">選手登録</a>
     <a href="/kyudo/?mode=player_list">選手一覧</a>
-    <a href="/kyudo/?mode=edit">新規記録</a>
-    <a href="/kyudo/?mode=delete">全記録の削除</a>
     <a href="/kyudo/?mode=sandbox">sandbox</a>
   </div>
   <div class="right-column"><?php echo $now; ?></div>
@@ -100,9 +98,9 @@ $now = strftime('%F %T', time());
         case 'player_list':
           include "player_list.php";
           break;
-        case 'edit':
+        case 'edit_hit_record':
           // Edit || Create
-          include "edit.php";
+          include "edit_hit_record.php";
           break;
         case 'save':
           // Save

@@ -35,9 +35,13 @@ try {
           ?>
         </td>
         <td>
-          <?php
-          echo htmlspecialchars($match['match_name']);
-          ?>
+          <a href="/kyudo/?mode=edit_hit_record&match_id=
+            <?php
+            printf("%d", (int) $match['match_id']);
+            ?>">
+            <?php
+            echo htmlspecialchars($match['match_name']);
+            ?>
         </td>
         <td>
           <a href="/kyudo/?mode=edit_match&match_id=
