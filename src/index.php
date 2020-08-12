@@ -60,6 +60,11 @@ $now = strftime('%F %T', time());
         echo "<center> canceled </center>";
         $mode = "competition_list";
       }
+      if ($mode == "save" && $_POST['save_competition'] != "Save") {
+        // Change list when not save
+        echo "<center> canceled </center>";
+        $mode = "competition_list";
+      }
 
       switch ($mode) {
         case 'competition_list':
@@ -73,6 +78,15 @@ $now = strftime('%F %T', time());
           break;
         case 'delete_competition':
           include "delete_competition.php";
+          break;
+        case 'match_list':
+          include "match_list.php";
+          break;
+        case 'edit_match':
+          include "edit_match.php";
+          break;
+        case 'save_match':
+          include "save_match.php";
           break;
         case 'edit_player':
           include "edit_player.php";

@@ -32,10 +32,13 @@ try {
           echo htmlspecialchars($competition['competition_id']);
           ?>
         </td>
-        <td>
-          <?php
-          echo htmlspecialchars($competition['competition_name']);
-          ?>
+        <td><a href="/kyudo/?mode=match_list&competition_id=
+            <?php
+            printf("%d", (int) $competition['competition_id']);
+            ?>">
+            <?php
+            echo htmlspecialchars($competition['competition_name']);
+            ?>
         </td>
         <td>
           <a href="/kyudo/?mode=edit_competition&competition_id=

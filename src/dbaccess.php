@@ -370,3 +370,104 @@ function delete_all_competition($pdo)
       . ' FROM competition_tbl'
   );
 }
+
+function get_all_match($pdo)
+{
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM match_tbl'
+      . ' ORDER BY match_id'
+  );
+
+  //Get SELECT result
+  $matches = array();
+  while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+    $matches[] = array(
+      'match_id' => $row['match_id'],
+      'match_name' => $row['match_name'],
+    );
+  }
+  return $matches;
+}
+
+function get_match($pdo, $match_id)
+{
+  $condition = "match_id = $match_id";
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM match_tbl'
+      . ' WHERE ' . $condition
+  );
+
+  //Get SELECT result
+  $match = array();
+  $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+  $match = array(
+    'match_id' => $row['match_id'],
+    'match_name' => $row['match_name']
+  );
+  return $match;
+}
+
+
+function insert_match(
+  $pdo,
+  $match_name = ''
+) {
+  ini_set('display_errors', 1);
+  ini_set('error_reporting', E_ALL);
+  // Prepare INSERT statement
+  $sql = 'INSERT INTO match_tbl'
+    . ' (match_name)'
+    . ' VALUES'
+    . ' (:match_name)';
+  $stmt = $pdo->prepare($sql);
+
+  // Pass value to statement
+  $stmt->bindValue(':match_name', pg_escape_string($match_name));
+
+
+  // Execute statement
+  $stmt->execute();
+
+  // Return numbered ID
+  return $pdo->lastInsertId('match_tbl_match_id_seq');
+}
+
+function update_match(
+  $pdo,
+  $match_id,
+  $match_name
+) {
+  //Prepare UPDATE statement
+  $sql = 'UPDATE match_tbl'
+    . ' SET match_id = :match_id,'
+    . ' match_name = :match_name,'
+    . ' WHERE match_id = :match_id';
+  $stmt = $pdo->prepare($sql);
+
+
+  // Pass value to statement
+  $stmt->bindValue(':match_id', pg_escape_string($match_id));
+  $stmt->bindValue(':match_name', pg_escape_string($match_name));
+
+  // Execute UPDATE statement
+  $stmt->execute();
+
+  // Return updated the number of rows
+  return $stmt->rowCount();
+}
+
+function delete_one_match($pdo, $match_id)
+{
+  // Prepare and execute Delete statement
+  $condition = " WHERE match_id = $match_id";
+  $stmt = $pdo->query(
+    'DELETE'
+      . ' FROM match_tbl'
+      . $condition
+  );
+  // $stmt->execute();
+}

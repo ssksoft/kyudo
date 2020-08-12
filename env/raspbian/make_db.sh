@@ -27,6 +27,10 @@ hit_record  text,\
 player_id serial NOT NULL REFERENCES player_tbl (player_id)\
 );
 
+CREATE TABLE match_tbl(\
+match_id serial NOT NULL PRIMARY KEY UNIQUE,\
+match_name text);
+
 CREATE TABLE competition_tbl(\
 competition_id serial NOT NULL PRIMARY KEY UNIQUE,\
 competition_name text,
