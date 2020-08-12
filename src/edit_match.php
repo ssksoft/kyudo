@@ -15,7 +15,6 @@ if (isset($_GET['match_id'])) {
   }
   $title = "Edit($match_id)";
   $match_name = htmlspecialchars($match['match_name']);
-  $match_type = htmlspecialchars($match['match_type']);
 } else {
   $title = "新しい大会を追加";
   if (isset($_POST['match_id'])) {

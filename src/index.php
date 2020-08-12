@@ -88,6 +88,9 @@ $now = strftime('%F %T', time());
         case 'save_match':
           include "save_match.php";
           break;
+        case 'delete_match':
+          include "delete_match.php";
+          break;
         case 'edit_player':
           include "edit_player.php";
           break;

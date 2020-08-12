@@ -471,3 +471,13 @@ function delete_one_match($pdo, $match_id)
   );
   // $stmt->execute();
 }
+
+
+function delete_all_match($pdo)
+{
+  // Prepare and execute Delete statement
+  $stmt = $pdo->query(
+    'DELETE'
+      . ' FROM match_tbl'
+  );
+}

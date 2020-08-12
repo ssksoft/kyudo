@@ -57,7 +57,7 @@ if (isset($match_id)) {
 <center>
   <table borderwith='1'>
     <tr>
-      <td>[<a href="/kyudo/?mode=match_list">大会一覧</a>]</td>
+      <td>[<a href="/kyudo/?mode=match_list">試合一覧</a>]</td>
       <td>[<a href="/kyudo/?mode=edit_match&match_id=
             <?php {
               echo $match_id;

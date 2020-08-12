@@ -42,7 +42,7 @@ try {
         <td>
           <a href="/kyudo/?mode=edit_match&match_id=
             <?php
-            printf("%d", (int) $kyudo['match_id']);
+            printf("%d", (int) $match['match_id']);
             ?>">
             編集
           </a>
@@ -50,7 +50,7 @@ try {
         <td>
           <a href="/kyudo/?mode=delete_match&match_id=
             <?php
-            printf("%d", (int) $kyudo['match_id']);
+            printf("%d", (int) $match['match_id']);
             ?>">
             削除
           </a>
