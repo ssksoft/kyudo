@@ -443,8 +443,8 @@ function update_match(
 ) {
   //Prepare UPDATE statement
   $sql = 'UPDATE match_tbl'
-    . ' SET match_id = :match_id,'
-    . ' match_name = :match_name,'
+    . ' SET '
+    . ' match_name = :match_name'
     . ' WHERE match_id = :match_id';
   $stmt = $pdo->prepare($sql);
 
