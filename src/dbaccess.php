@@ -331,15 +331,15 @@ function update_competition(
 ) {
   //Prepare UPDATE statement
   $sql = 'UPDATE competition_tbl'
-    . ' SET competition_id = :competition_id,'
+    . ' SET '
     . ' competition_name = :competition_name,'
-    . ' competition_type = :competition_type,'
+    . ' competition_type = :competition_type'
     . ' WHERE competition_id = :competition_id';
   $stmt = $pdo->prepare($sql);
 
 
   // Pass value to statement
-  $stmt->bindValue(':competition_id', pg_escape_string($competition_id));
+  $stmt->bindValue(':competition_id', (int) $competition_id);
   $stmt->bindValue(':competition_name', pg_escape_string($competition_name));
   $stmt->bindValue(':competition_type', pg_escape_string($competition_type));
 
