@@ -1,4 +1,4 @@
-@startuml
+@startuml er_diagram
 
 ' hide the spot
 hide circle
@@ -6,28 +6,44 @@ hide circle
 ' avoid problems with angled crows feet
 skinparam linetype ortho
 
-entity "Entity01" as e01 {
-  *e1_id : number <<generated>>
+entity "大会テーブル" as competition_tbl {
+  *competition_id : serial NOT NULL PRIMARY KEY UNIQUE
   --
-  *name : text
-  description : text
+  competition_name : text
+  competition_type : text
 }
 
-entity "Entity02" as e02 {
-  *e2_id : number <<generated>>
+entity "試合テーブル" as match_tbl {
+  *match_id : serial NOT NULL PRIMARY KEY UNIQUE
   --
-  *e1_id : number <<FK>>
-  other_details : text
+  *competition_id : <<FK>>
+  match_name : text
 }
 
-entity "Entity03" as e03 {
-  *e3_id : number <<generated>>
+entity "的中記録テーブル" as hit_record_tbl {
+  *record_id : serial NOT NULL PRIMARY KEY UNIQUE
   --
-  e1_id : number <<FK>>
-  other_details : text
+  *competition_id : <<FK>>
+  *match_id : <<FK>>
+
+  hit_record : text
+  player_id : text <<FK>>
 }
 
-e01 ||..o{ e02
-e01 |o..o{ e03
+entity "選手テーブル" as player_tbl {
+  *player_id : serial NOT NULL PRIMARY KEY UNIQUE
+  --
+  *competition_id : <<FK>>
+  player_name : text
+  team_name : text
+  dan : text
+  rank : text
+}
+
+competition_tbl ---o{ match_tbl
+match_tbl ---o{ hit_record_tbl
+player_tbl ---o{ hit_record_tbl
+competition_tbl ---o{ hit_record_tbl
+competition_tbl ---o{ player_tbl
 
 @enduml
