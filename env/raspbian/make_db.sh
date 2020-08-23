@@ -15,25 +15,30 @@ psql -h 127.0.0.1 -U kyudo kyudodb
 
 CREATE TABLE player_tbl(\
 player_id serial NOT NULL PRIMARY KEY UNIQUE,\
-player_name text,
-team_name text,
-dan text,
-rank text);
+competition_id serial NOT NULL REFERENCES competition_tbl (competition_id),\
+player_name text,\
+team_name text,\
+dan text,\
+rank text\
+);
 
 CREATE TABLE kyudo_tbl(\
-id  serial  NOT NULL  PRIMARY KEY,\
-datetime  timestamp NOT NULL,\
+record_id  serial  NOT NULL  PRIMARY KEY,\
+competition_id serial NOT NULL REFERENCES competition_tbl(competition_id),\
+match_id serial NOT NULL REFERENCES match_tbl(match_id),\
+player_id serial NOT NULL REFERENCES player_tbl (player_id),\
 hit_record  text,\
-player_id serial NOT NULL REFERENCES player_tbl (player_id)\
 );
 
 CREATE TABLE match_tbl(\
 match_id serial NOT NULL PRIMARY KEY UNIQUE,\
-match_name text);
+match_name text,\
+competition_id serial NOT NULL REFERENCES competition_tbl (competition_id)\
+);
 
 CREATE TABLE competition_tbl(\
 competition_id serial NOT NULL PRIMARY KEY UNIQUE,\
-competition_name text,
+competition_name text,\
 competition_type text);
 
 EOF
