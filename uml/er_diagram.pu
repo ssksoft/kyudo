@@ -25,9 +25,8 @@ entity "的中記録テーブル" as hit_record_tbl {
   --
   *competition_id : <<FK>>
   *match_id : <<FK>>
-
+  *player_id : text <<FK>>
   hit_record : text
-  player_id : text <<FK>>
 }
 
 entity "選手テーブル" as player_tbl {
