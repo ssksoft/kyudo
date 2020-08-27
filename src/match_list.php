@@ -8,7 +8,7 @@ if (isset($_GET['competition_id'])) {
 
 // テーブルからデータ取得
 try {
-  $matches = get_all_match($pdo);
+  $matches = get_all_match($pdo, $competition_id);
 } catch (\PDOException $e) {
   error_log("\PDO::Exception:" . $e->getMessage());
   echo ($e->getMessage());

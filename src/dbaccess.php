@@ -371,13 +371,15 @@ function delete_all_competition($pdo)
   );
 }
 
-function get_all_match($pdo)
+function get_all_match($pdo, $competition_id)
 {
+  $condition = " WHERE competition_id = $competition_id";
   // Execute SELECT statement
   $stmt = $pdo->query(
     'SELECT *'
       . ' FROM match_tbl'
       . ' ORDER BY match_id'
+      . $condition
   );
 
   //Get SELECT result
