@@ -1,5 +1,11 @@
 <?php
 
+// 大会IDを取得
+if (isset($_GET['competition_id'])) {
+  $competition_id = intval($_GET['competition_id']);
+} else {
+}
+
 // テーブルからデータ取得
 try {
   $matches = get_all_match($pdo);
