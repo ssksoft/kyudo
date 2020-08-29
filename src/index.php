@@ -53,16 +53,7 @@ $now = strftime('%F %T', time());
         echo "<center> canceled </center>";
         $mode = "list";
       }
-      if ($mode == "save" && $_POST['save_competition'] != "Save") {
-        // Change list when not save
-        echo "<center> canceled </center>";
-        $mode = "competition_list";
-      }
-      if ($mode == "save" && $_POST['save_competition'] != "Save") {
-        // Change list when not save
-        echo "<center> canceled </center>";
-        $mode = "competition_list";
-      }
+
 
       switch ($mode) {
         case 'competition_list':

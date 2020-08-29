@@ -8,8 +8,6 @@ if (isset($_GET['competition_id'])) {
 } else {
 }
 
-echo $competition_id;
-
 
 if (isset($_GET['match_id'])) {
   $match_id = intval($_GET['match_id']);
@@ -24,14 +22,9 @@ if (isset($_GET['match_id'])) {
   $title = "Edit($match_id)";
   $match_name = htmlspecialchars($match['match_name']);
 } else {
-  $title = "新しい大会を追加";
-  if (isset($_POST['match_id'])) {
-    $match_name = $match['match_name'];
-    $match_type = $match['match_type'];
-  } else {
-    $match_name = '';
-    $match_type = '';
-  }
+  $title = "新しい試合を追加";
+  $match_name = '';
+  $match_type = '';
 }
 
 // Form view as follows:
@@ -44,6 +37,7 @@ if (isset($_GET['match_id'])) {
   <tr>
     <td>
       <form action="/kyudo/?mode=save_match" method="post">
+        <input type="hidden" name="competition_id" value=<?php echo $competition_id; ?> />
         <input type="hidden" name="match_id" value="<?php echo $match_id; ?>" />
         <br />
         <table>
@@ -52,7 +46,7 @@ if (isset($_GET['match_id'])) {
               試合名
             </td>
             <td>
-              <input type="text" name="match_name" value=<?php
+              <input type=" text" name="match_name" value=<?php
                                                           echo $match_name;
                                                           ?>>
             </td>

@@ -302,7 +302,6 @@ function insert_competition(
   $competition_name = '',
   $competition_type = ''
 ) {
-  echo ("hello");
   ini_set('display_errors', 1);
   ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
@@ -422,19 +421,22 @@ function get_match($pdo, $match_id)
 
 function insert_match(
   $pdo,
+  $competition_id,
   $match_name = ''
 ) {
+  echo $competition_id;
   ini_set('display_errors', 1);
   ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
   $sql = 'INSERT INTO match_tbl'
-    . ' (match_name)'
+    . ' (match_name,competition_id)'
     . ' VALUES'
-    . ' (:match_name)';
+    . ' (:match_name, :competition_id)';
   $stmt = $pdo->prepare($sql);
 
   // Pass value to statement
   $stmt->bindValue(':match_name', pg_escape_string($match_name));
+  $stmt->bindValue(':competition_id', (int) $competition_id);
 
 
   // Execute statement

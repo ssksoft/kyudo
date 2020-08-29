@@ -1,16 +1,18 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
-$match_id = NULL;
-if (!empty($_POST['match_id'])) {
-  $match_id = intval($_POST['match_id']);
+$match_id = $_POST['match_id'];
+if ($match_id != "") {
   $task = "Refresh";
 } else {
   $task = "Save";
 }
+echo $match_id;
 
 // View for confirmation
 $match_name = htmlspecialchars($_POST['match_name']);
+
+$competition_id = $_POST['competition_id'];
 
 ?>
 
@@ -25,14 +27,25 @@ $match_name = htmlspecialchars($_POST['match_name']);
       ?>
     </td>
   </tr>
+  <tr>
+    <td>
+      大会ID
+    </td>
+    <td>
+      <?php
+      echo $competition_id;
+      ?>
+    </td>
+  </tr>
 </table>
 
 <?php
-$match_name = ($_POST['match_name']);
 
+$competition_id = ($_POST['competition_id']);
 
-if (isset($match_id)) {
+if ($match_id != "") {
   try {
+    echo "hello update";
     $num = update_match($pdo, $match_id, $match_name);
   } catch (\PDOException $e) {
     error_log("\PDO::Exception: " . $e->getMessage());
@@ -43,7 +56,9 @@ if (isset($match_id)) {
   error_log("UPDATE: affected lins = $num");
 } else {
   try {
-    $last_match_id = insert_match($pdo, $match_name);
+    echo "hello insert";
+    echo $competition_id;
+    $last_match_id = insert_match($pdo, $competition_id, $match_name);
   } catch (\PDOException $e) {
     echo ($e->getMessage());
     error_log("\PDO::Exception: " . $e->getMessage());
