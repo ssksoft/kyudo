@@ -14,6 +14,7 @@ try {
 <div class="left-column">
   <a href="/kyudo/?mode=edit_competition">新しい大会を追加</a>
 </div>
+
 <link rel="stylesheet" href="table.css">
 <table class="competition_table" border="1">
   <thead>

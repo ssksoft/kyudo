@@ -6,6 +6,8 @@ if (isset($_GET['competition_id'])) {
 } else {
 }
 
+echo $competition_id;
+
 // テーブルからデータ取得
 try {
   $matches = get_all_match($pdo, $competition_id);
@@ -19,10 +21,16 @@ try {
 ?>
 
 <div class="left-column">
-  <a href="/kyudo/?mode=edit_match">新しい試合を追加</a>
+  <a href="/kyudo/?mode=edit_match&competition_id= <?php
+                                                    echo $competition_id;
+                                                    ?>">
+    新しい試合を追加</a>
 </div>
 
-<link rel="stylesheet" href="table.css">
+
+
+
+<link rel=" stylesheet" href="table.css">
 <table class="match_table" border="1">
   <thead>
     <tr>

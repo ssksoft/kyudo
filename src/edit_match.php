@@ -3,6 +3,14 @@ ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 $match_id = NULL;
 
+if (isset($_GET['competition_id'])) {
+  $competition_id = intval($_GET['competition_id']);
+} else {
+}
+
+echo $competition_id;
+
+
 if (isset($_GET['match_id'])) {
   $match_id = intval($_GET['match_id']);
   // Get Result of selected id

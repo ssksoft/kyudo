@@ -373,13 +373,18 @@ function delete_all_competition($pdo)
 
 function get_all_match($pdo, $competition_id)
 {
-  $condition = " WHERE competition_id = $competition_id";
+  if ($competition_id) {
+    $condition = " WHERE competition_id = $competition_id";
+  } else {
+    $condition = "";
+  }
   // Execute SELECT statement
   $stmt = $pdo->query(
     'SELECT *'
       . ' FROM match_tbl'
-      . ' ORDER BY match_id'
       . $condition
+      . ' ORDER BY match_id'
+
   );
 
   //Get SELECT result
@@ -388,6 +393,7 @@ function get_all_match($pdo, $competition_id)
     $matches[] = array(
       'match_id' => $row['match_id'],
       'match_name' => $row['match_name'],
+      'competition_id' => $row['competition_id']
     );
   }
   return $matches;
