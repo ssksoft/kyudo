@@ -7,7 +7,6 @@ if ($match_id != "") {
 } else {
   $task = "Save";
 }
-echo $match_id;
 
 // View for confirmation
 $match_name = htmlspecialchars($_POST['match_name']);
@@ -27,16 +26,6 @@ $competition_id = $_POST['competition_id'];
       ?>
     </td>
   </tr>
-  <tr>
-    <td>
-      大会ID
-    </td>
-    <td>
-      <?php
-      echo $competition_id;
-      ?>
-    </td>
-  </tr>
 </table>
 
 <?php
@@ -45,7 +34,6 @@ $competition_id = ($_POST['competition_id']);
 
 if ($match_id != "") {
   try {
-    echo "hello update";
     $num = update_match($pdo, $match_id, $match_name);
   } catch (\PDOException $e) {
     error_log("\PDO::Exception: " . $e->getMessage());
@@ -56,8 +44,6 @@ if ($match_id != "") {
   error_log("UPDATE: affected lins = $num");
 } else {
   try {
-    echo "hello insert";
-    echo $competition_id;
     $last_match_id = insert_match($pdo, $competition_id, $match_name);
   } catch (\PDOException $e) {
     echo ($e->getMessage());
