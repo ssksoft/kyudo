@@ -11,7 +11,7 @@ if (!empty($_POST['record_id'])) {
 
 // View for confirmation
 $player_id = htmlspecialchars($_POST['player_id']);
-$hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_record3'], $_POST['hit_record4']];
+$hit_record_array = $_POST['hit_record'];
 
 $player = get_player($pdo, $player_id);
 
@@ -36,7 +36,7 @@ $player = get_player($pdo, $player_id);
                         </td>
                         <td>
                             <?php
-                            echo $hit_record_array[$len - 1 - $i]
+                            echo $hit_record_array[$i]
                             ?>
                         </td>
                     </tr>
