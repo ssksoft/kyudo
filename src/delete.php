@@ -11,7 +11,6 @@ if (isset($_GET['id'])) {
 
 
 if (isset($id)) {
-    echo ("ID指定");
     $delete_msg = "ID" . strval($id) . "の記録を削除しました。";
     try {
         delete_one_record($pdo, $id);

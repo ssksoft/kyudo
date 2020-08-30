@@ -11,7 +11,6 @@ if (isset($_GET['competition_id'])) {
 
 
 if (isset($competition_id)) {
-    echo ("大会ID指定");
     $delete_msg = "大会ID" . strval($competition_id) . "の記録を削除しました。";
     try {
         delete_one_competition($pdo, $competition_id);

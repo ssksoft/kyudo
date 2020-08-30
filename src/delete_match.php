@@ -11,7 +11,6 @@ if (isset($_GET['match_id'])) {
 
 
 if (isset($match_id)) {
-    echo ("試合ID指定");
     $delete_msg = "試合ID" . strval($match_id) . "の記録を削除しました。";
     try {
         delete_one_match($pdo, $match_id);

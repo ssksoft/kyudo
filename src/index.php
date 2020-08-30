@@ -35,7 +35,6 @@ $now = strftime('%F %T', time());
     <a href="/kyudo/?mode=player_list">選手一覧</a>
     <a href="/kyudo/?mode=sandbox">sandbox</a>
   </div>
-  <div class="right-column"><?php echo $now; ?></div>
   <div>
     <blockquote>
       <hr size="1">
@@ -109,11 +108,14 @@ $now = strftime('%F %T', time());
 
       // Futter
       ?>
-
     </blockquote>
   </div>
 </div>
-<?php end: ?>
+
+<?php
+end:
+?>
+
 <div class="right-column">
   <img src="/icons/layout.gif"><a href="/kyudo/index.php">トップ</a>
 </div>
