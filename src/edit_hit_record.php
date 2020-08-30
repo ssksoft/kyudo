@@ -37,15 +37,47 @@ if (isset($_GET['id'])) {
 $record_manager = new RecordManager();
 $record_str = $record_manager->get_record_as_str($hit_record);
 
-echo ($_GET['competition_id']);
+$competition_id = $_GET['competition_id'];
+$competition = get_competition($pdo, $competition_id);
 
-// Form view as follows:
+$match_id = $_GET['match_id'];
+$match = get_match($pdo, $match_id);
+
 ?>
 
-<center>
+<a href="/kyudo/?mode=competition_list">
+  大会一覧
+</a>
+<nobr>></nobr>
+<a href="/kyudo/?mode=match_list&competition_id=
+<?php
+echo $competition['competition_id'];
+?>
+">
+  <?php
+  echo $competition['competition_name'];
+  ?>
+</a>
+<nobr>></nobr>
+<a href="/kyudo/?mode=edit_hit_record&match_id=
+<?php
+echo $match['match_id'];
+?>&competition_id=
+<?php
+echo $competition['competition_id'];
+?>
+">
+  <?php
+  echo $match['match_name'];
+  ?>
+</a>
+
+<br />
+
+<left>
   <font size="5"><?php echo $title; ?></font><br>
   </font>
-</center>
+</left>
 <table>
   <tr>
     <td>
