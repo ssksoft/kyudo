@@ -165,7 +165,15 @@ echo $competition['competition_id'];
             選手ID
           </td>
           <td>
-            <form action="/kyudo/?mode=edit_hit_record" method="post">
+            <form action="/kyudo/?mode=edit_hit_record&match_id=
+              <?php
+              echo $match['match_id'];
+              ?>
+              &competition_id=
+              <?php
+              echo $competition['competition_id'];
+              ?>
+              " method="post">
               <input type="text" name="player_id" value="<?php
                                                           echo $player_id;
                                                           ?>">
