@@ -39,6 +39,7 @@ $record_str = $record_manager->get_record_as_str($hit_record);
 
 // Form view as follows:
 ?>
+
 <center>
   <font size="5"><?php echo $title; ?></font><br>
   </font>
