@@ -4,19 +4,19 @@ ini_set('error_reporting', E_ALL);
 require 'record_manager.php';
 $id = NULL;
 
-if (isset($_GET['id'])) {
+if (isset($_GET['record_id'])) {
   echo ($_GET['mode']);
-  $id = intval($_GET['id']);
+  $record_id = intval($_GET['record_id']);
   // Get Result of selected id
   try {
-    $record = getRecordById($pdo, $id);
+    $record = getRecordById($pdo, $record_id);
   } catch (\PDOException $e) {
     echo ($e->getMessage());
     error_log("\PDO::Exception: " . $e->getMessage());
     return;
   }
   echo ("no exception");
-  $title = "Edit($id)";
+  $title = "Edit($record_id)";
   $datetime = htmlspecialchars($record['datetime']);
   $player_id = htmlspecialchars($record['player_id']);
   $hit_record = htmlspecialchars($record['hit_record']);
@@ -82,7 +82,8 @@ echo $competition['competition_id'];
   <tr>
     <td>
       <form action="/kyudo/?mode=save&competition_id=" method="post">
-        <input type="hidden" name="id" value="<?php echo $id; ?>" />
+        <input type="hidden" name="record_id" value="<?php echo $record_id; ?>" />
+        <input type="hidden" name="player_id" value="<?php echo $player_id; ?>" />
         <font size=-1><tt><b>日時</b></tt></font><br />
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />

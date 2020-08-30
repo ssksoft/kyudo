@@ -26,19 +26,18 @@ function connect($params)
   return $pdo;
 }
 
-function insertKyudo($pdo, $datetime, $player_id = '', $hit_record = '')
+function insert_hit_record($pdo, $player_id = '', $hit_record = '')
 {
   ini_set('display_errors', 1);
   ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
   $sql = 'INSERT INTO kyudo_tbl'
-    . '(datetime, player_id, hit_record)'
+    . '(player_id, hit_record)'
     . ' VALUES'
-    . ' (:datetime, :player_id, :hit_record)';
+    . ' (:player_id, :hit_record)';
   $stmt = $pdo->prepare($sql);
 
   // Pass value to statement
-  $stmt->bindValue(':datetime', strftime("%F %T", strtotime($datetime)));
   $stmt->bindValue(':player_id', pg_escape_string($player_id));
   $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
 
@@ -49,22 +48,20 @@ function insertKyudo($pdo, $datetime, $player_id = '', $hit_record = '')
   return $pdo->lastInsertId('kyudo_tbl_id_seq');
 }
 
-function updateKyudo($pdo, $id, $datetime, $player_id, $hit_record)
+function update_hit_record($pdo, $record_id, $player_id, $hit_record)
 {
   //Prepare UPDATE statement
   $sql = 'UPDATE kyudo_tbl'
-    . ' SET datetime = :datetime'
-    . ', player_id = :player_id'
+    . ' SET player_id = :player_id'
     . ' , hit_record = :hit_record'
-    . ' WHERE id = :id';
+    . ' WHERE record_id = :record_id';
   $stmt = $pdo->prepare($sql);
 
 
   // Pass value to statement
-  $stmt->bindValue(':datetime', strftime("%F %T", strtotime($datetime)));
   $stmt->bindValue(':player_id', pg_escape_string($player_id));
   $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
-  $stmt->bindValue(':id', (int) $id);
+  $stmt->bindValue(':record_id', (int) $record_id);
 
   // Execute UPDATE statement
   $stmt->execute();

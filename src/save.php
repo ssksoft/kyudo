@@ -1,31 +1,24 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
-$id = NULL;
+$record_id = NULL;
 if (!empty($_POST['record_id'])) {
-    $id = intval($_POST['record_id']);
+    $record_id = intval($_POST['record_id']);
     $task = "Refresh";
 } else {
     $task = "Save";
 }
 
-echo $_POST['player_id'];
-
 // View for confirmation
 $player_id = htmlspecialchars($_POST['player_id']);
 $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_record3'], $_POST['hit_record4']];
+
+$player = get_player($pdo, $player_id);
+
 ?>
 <table borderwith='1'>
     <tr>
-        <th align="left">記録日</th>
-        <td>
-            <?php
-            echo $datetime;
-            ?>
-        </td>
-    </tr>
-    <tr>
-        <th colspan="2" align="left">的中</th>
+        <th colspan="2" align="left">行射記録</th>
     </tr>
     <tr>
         <td></td>
@@ -58,6 +51,14 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                         ?>
                     </td>
                 </tr>
+                <tr>
+                    <td>選手名</td>
+                    <td>
+                        <?php
+                        echo $player['player_name'];
+                        ?>
+                    </td>
+                </tr>
             </table>
 
             <?php
@@ -79,9 +80,9 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                 }
             }
 
-            if (isset($id)) {
+            if (isset($record_id)) {
                 try {
-                    $num = updateKyudo($pdo, $id, $datetime, $player_id, $hit_record);
+                    $num = update_hit_record($pdo, $record_id, $player_id, $hit_record);
                 } catch (\PDOException $e) {
                     error_log("\PDO::Exception: " . $e->getMessage());
                     echo (" error message: <br />");
@@ -91,13 +92,13 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
                 error_log("UPDATE: affected lins = $num");
             } else {
                 try {
-                    $id = insertKyudo($pdo, $datetime, $player_id, $hit_record);
+                    $record_id = insert_hit_record($pdo, $player_id, $hit_record);
                 } catch (\PDOException $e) {
                     echo ($e->getMessage());
                     error_log("\PDO::Exception: " . $e->getMessage());
                     return;
                 }
-                error_log("INSERT: new id = $id");
+                error_log("INSERT: new id = $record_id");
             }
 
 
