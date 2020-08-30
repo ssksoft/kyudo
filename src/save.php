@@ -2,15 +2,16 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 $id = NULL;
-if (!empty($_POST['id'])) {
-    $id = intval($_POST['id']);
+if (!empty($_POST['record_id'])) {
+    $id = intval($_POST['record_id']);
     $task = "Refresh";
 } else {
     $task = "Save";
 }
 
+echo $_POST['player_id'];
+
 // View for confirmation
-$datetime = htmlspecialchars($_POST['datetime']);
 $player_id = htmlspecialchars($_POST['player_id']);
 $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_record3'], $_POST['hit_record4']];
 ?>
@@ -60,7 +61,6 @@ $hit_record_array = [$_POST['hit_record1'], $_POST['hit_record2'], $_POST['hit_r
             </table>
 
             <?php
-            $datetime = ($_POST['datetime']);
             $player_id = ($_POST['player_id']);
             $hit_record = 0;
 

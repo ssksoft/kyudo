@@ -37,6 +37,8 @@ if (isset($_GET['id'])) {
 $record_manager = new RecordManager();
 $record_str = $record_manager->get_record_as_str($hit_record);
 
+echo ($_GET['competition_id']);
+
 // Form view as follows:
 ?>
 
@@ -47,7 +49,7 @@ $record_str = $record_manager->get_record_as_str($hit_record);
 <table>
   <tr>
     <td>
-      <form action="/kyudo/?mode=save" method="post">
+      <form action="/kyudo/?mode=save&competition_id=" method="post">
         <input type="hidden" name="id" value="<?php echo $id; ?>" />
         <font size=-1><tt><b>日時</b></tt></font><br />
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
@@ -132,7 +134,10 @@ $record_str = $record_manager->get_record_as_str($hit_record);
           </td>
           <td>
             <form action="/kyudo/?mode=edit_hit_record" method="post">
-              <input type="text" name="player_id">
+              <input type="text" name="player_id" value="<?php
+                                                          echo $player_id;
+                                                          ?>">
+
               <input type="submit" value="選手名を表示する">
             </form>
           </td>

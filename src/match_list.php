@@ -71,7 +71,12 @@ try {
           <a href="/kyudo/?mode=edit_hit_record&match_id=
             <?php
             printf("%d", (int) $match['match_id']);
-            ?>">
+            ?>
+            &competition_id=
+            <?php
+            printf("%d", (int) $competition_id);
+            ?>
+            ">
             <?php
             echo htmlspecialchars($match['match_name']);
             ?>
