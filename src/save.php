@@ -1,17 +1,12 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
-$record_id = NULL;
-if (!empty($_POST['record_id'])) {
-    $record_id = intval($_POST['record_id']);
-    $task = "Refresh";
-} else {
-    $task = "Save";
-}
 
 // View for confirmation
 $player_id = htmlspecialchars($_POST['player_id']);
 $hit_record_array = $_POST['hit_record'];
+$match_id = $_POST['match_id'];
+$competition_id = $_POST['competition_id'];
 
 $player = get_player($pdo, $player_id);
 
@@ -36,7 +31,7 @@ $player = get_player($pdo, $player_id);
                         </td>
                         <td>
                             <?php
-                            echo $hit_record_array[$i]
+                            echo $hit_record_array[$i][0]
                             ?>
                         </td>
                     </tr>
@@ -67,7 +62,7 @@ $player = get_player($pdo, $player_id);
 
             for ($i = 0, $len = count($hit_record_array); $i
                 < $len; ++$i) {
-                switch ($hit_record_array[$i]) {
+                switch ($hit_record_array[$i][0]) {
                     case '○':
                         $hit_record = $hit_record + 2 ** ($len - 1 - $i);
                         break;
@@ -79,6 +74,10 @@ $player = get_player($pdo, $player_id);
                         break;
                 }
             }
+
+            $record_id = NULL;
+            $record_id = get_record_id_from_matchid_playerid($pdo, $match_id, $player_id);
+
 
             if (isset($record_id)) {
                 try {
@@ -92,7 +91,7 @@ $player = get_player($pdo, $player_id);
                 error_log("UPDATE: affected lins = $num");
             } else {
                 try {
-                    $record_id = insert_hit_record($pdo, $player_id, $hit_record);
+                    $record_id = insert_hit_record($pdo, $player_id, $hit_record, $competition_id, $match_id);
                 } catch (\PDOException $e) {
                     echo ($e->getMessage());
                     error_log("\PDO::Exception: " . $e->getMessage());

@@ -81,16 +81,18 @@ echo $competition['competition_id'];
 <table>
   <tr>
     <td>
-      <form action="/kyudo/?mode=save&competition_id=" method="post">
+      <form action="/kyudo/?mode=save" method="post">
+        <input type="hidden" name="competition_id" value="<?php echo $competition_id; ?>" />
         <input type="hidden" name="record_id" value="<?php echo $record_id; ?>" />
         <input type="hidden" name="player_id" value="<?php echo $player_id; ?>" />
+        <input type="hidden" name="match_id" value="<?php echo $match_id; ?>" />
         <font size=-1><tt><b>日時</b></tt></font><br />
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />
         <table>
           <tr>
             <td>4本目</td>
-            <td> <select name="hit_record[]">
+            <td> <select name="hit_record[][]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -104,7 +106,7 @@ echo $competition['competition_id'];
           </tr>
           <tr>
             <td>3本目</td>
-            <td> <select name="hit_record[]">
+            <td> <select name="hit_record[][]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -118,7 +120,7 @@ echo $competition['competition_id'];
           </tr>
           <tr>
             <td>2本目</td>
-            <td> <select name="hit_record[]">
+            <td> <select name="hit_record[][]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -131,7 +133,7 @@ echo $competition['competition_id'];
             </td>
           <tr>
             <td>1本目</td>
-            <td> <select name="hit_record[]">
+            <td> <select name="hit_record[][]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php

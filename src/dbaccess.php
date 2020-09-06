@@ -26,20 +26,22 @@ function connect($params)
   return $pdo;
 }
 
-function insert_hit_record($pdo, $player_id = '', $hit_record = '')
+function insert_hit_record($pdo, $player_id = '', $hit_record = '', $competition_id, $match_id)
 {
   ini_set('display_errors', 1);
   ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
   $sql = 'INSERT INTO kyudo_tbl'
-    . '(player_id, hit_record)'
+    . '(player_id, hit_record, competition_id,match_id)'
     . ' VALUES'
-    . ' (:player_id, :hit_record)';
+    . ' (:player_id, :hit_record, :competition_id, :match_id)';
   $stmt = $pdo->prepare($sql);
 
   // Pass value to statement
   $stmt->bindValue(':player_id', pg_escape_string($player_id));
   $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
+  $stmt->bindValue(':competition_id', $competition_id);
+  $stmt->bindValue(':match_id', $match_id);
 
   // Execute statement
   $stmt->execute();
@@ -487,4 +489,22 @@ function delete_all_match($pdo)
     'DELETE'
       . ' FROM match_tbl'
   );
+}
+
+function get_record_id_from_matchid_playerid($pdo, $match_id, $player_id)
+{
+  // Prepare and execute Delete statement
+  $condition = " WHERE match_id = $match_id AND player_id = $player_id";
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM kyudo_tbl'
+      . $condition
+  );
+  $stmt->execute();
+
+  //Get SELECT result
+  $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+  $get_record_id = $row['record_id'];
+  echo $get_record_id;
+  return $get_record_id;
 }
