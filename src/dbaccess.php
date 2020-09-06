@@ -505,6 +505,5 @@ function get_record_id_from_matchid_playerid($pdo, $match_id, $player_id)
   //Get SELECT result
   $row = $stmt->fetch(\PDO::FETCH_ASSOC);
   $get_record_id = $row['record_id'];
-  echo $get_record_id;
   return $get_record_id;
 }

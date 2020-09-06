@@ -82,6 +82,7 @@ $player = get_player($pdo, $player_id);
             if (isset($record_id)) {
                 try {
                     $num = update_hit_record($pdo, $record_id, $player_id, $hit_record);
+                    echo "記録を更新しました";
                 } catch (\PDOException $e) {
                     error_log("\PDO::Exception: " . $e->getMessage());
                     echo (" error message: <br />");
@@ -92,6 +93,7 @@ $player = get_player($pdo, $player_id);
             } else {
                 try {
                     $record_id = insert_hit_record($pdo, $player_id, $hit_record, $competition_id, $match_id);
+                    echo "記録を追加しました";
                 } catch (\PDOException $e) {
                     echo ($e->getMessage());
                     error_log("\PDO::Exception: " . $e->getMessage());
