@@ -3,12 +3,17 @@ ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
 // View for confirmation
-$player_id = htmlspecialchars($_POST['player_id']);
+$player_id = $_POST['player_id'];
 $hit_record_array = $_POST['hit_record'];
 $match_id = $_POST['match_id'];
 $competition_id = $_POST['competition_id'];
+echo "player_id:";
+echo $player_id[0];
+echo $player_id[1];
 
-$player = get_player($pdo, $player_id);
+for ($i = 0; $i < 2; $i++) {
+    $player[$i] = get_player($pdo, $player_id[$i]);
+}
 
 ?>
 <table borderwith='1'>
@@ -31,7 +36,12 @@ $player = get_player($pdo, $player_id);
                         </td>
                         <td>
                             <?php
-                            echo $hit_record_array[$i][0]
+                            echo $hit_record_array[$i][0];
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo $hit_record_array[$i][0];
                             ?>
                         </td>
                     </tr>
@@ -42,7 +52,12 @@ $player = get_player($pdo, $player_id);
                     <td>選手ID</td>
                     <td>
                         <?php
-                        echo $player_id;
+                        echo $player_id[0];
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        echo $player_id[1];
                         ?>
                     </td>
                 </tr>
@@ -50,7 +65,12 @@ $player = get_player($pdo, $player_id);
                     <td>選手名</td>
                     <td>
                         <?php
-                        echo $player['player_name'];
+                        echo $player[0]['player_name'];
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        echo $player[1]['player_name'];
                         ?>
                     </td>
                 </tr>
@@ -76,12 +96,12 @@ $player = get_player($pdo, $player_id);
             }
 
             $record_id = NULL;
-            $record_id = get_record_id_from_matchid_playerid($pdo, $match_id, $player_id);
+            $record_id = get_record_id_from_matchid_playerid($pdo, $match_id, $player_id[0]);
 
 
             if (isset($record_id)) {
                 try {
-                    $num = update_hit_record($pdo, $record_id, $player_id, $hit_record);
+                    $num = update_hit_record($pdo, $record_id, $player_id[0], $hit_record);
                     echo "記録を更新しました";
                 } catch (\PDOException $e) {
                     error_log("\PDO::Exception: " . $e->getMessage());
@@ -92,7 +112,9 @@ $player = get_player($pdo, $player_id);
                 error_log("UPDATE: affected lins = $num");
             } else {
                 try {
-                    $record_id = insert_hit_record($pdo, $player_id, $hit_record, $competition_id, $match_id);
+                    echo "player_id";
+                    echo $player_id[0];
+                    $record_id = insert_hit_record($pdo, $player_id[0], $hit_record, $competition_id, $match_id);
                     echo "記録を追加しました";
                 } catch (\PDOException $e) {
                     echo ($e->getMessage());

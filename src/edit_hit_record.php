@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 require 'record_manager.php';
 $record_id = NULL;
+$player_id[] = array();
 
 if (isset($_GET['record_id'])) {
   echo ($_GET['mode']);
@@ -26,7 +27,7 @@ if (isset($_GET['record_id'])) {
   $datetime = $now; // Default value is current time as template
   $hit_record = '';
   $player_name[] = array();
-  $player_id[] = array();
+
 
   if (isset($_POST['player_id'])) {
     $player_id = $_POST['player_id'];
@@ -92,8 +93,10 @@ echo $competition['competition_id'];
       <form action="/kyudo/?mode=save" method="post">
         <input type="hidden" name="competition_id" value="<?php echo $competition_id; ?>" />
         <input type="hidden" name="record_id" value="<?php echo $record_id; ?>" />
-        <input type="hidden" name="player_id" value="<?php echo $player_id; ?>" />
+        <input type="hidden" name="player_id[]" value="<?php echo $player_id[0]; ?>" />
+        <input type="hidden" name="player_id[]" value="<?php echo $player_id[1]; ?>" />
         <input type="hidden" name="match_id" value="<?php echo $match_id; ?>" />
+
         <font size=-1><tt><b>日時</b></tt></font><br />
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />
