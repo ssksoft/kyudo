@@ -25,7 +25,7 @@ $now = strftime('%F %T', time());
 // Body header as follows
 ?>
 <div class="container">
-  <h1>ユミシス（弓道競技記録システム）</h1>
+  <h1>弓道競技記録システム</h1>
   <font size="3">
   </font>
   <div class="left-column">
