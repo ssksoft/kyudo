@@ -103,7 +103,7 @@ echo $competition['competition_id'];
         <table>
           <tr>
             <td>4本目</td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -114,7 +114,7 @@ echo $competition['competition_id'];
                   ?>
                 </option>
             </td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -128,7 +128,7 @@ echo $competition['competition_id'];
           </tr>
           <tr>
             <td>3本目</td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -139,7 +139,7 @@ echo $competition['competition_id'];
                   ?>
                 </option>
             </td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -153,7 +153,7 @@ echo $competition['competition_id'];
           </tr>
           <tr>
             <td>2本目</td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -164,7 +164,7 @@ echo $competition['competition_id'];
                   ?>
                 </option>
             </td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -177,7 +177,7 @@ echo $competition['competition_id'];
             </td>
           <tr>
             <td>1本目</td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php
@@ -188,7 +188,7 @@ echo $competition['competition_id'];
                   ?>
                 </option>
             </td>
-            <td> <select name="hit_record[][]">
+            <td> <select name="hit_record[]">
                 <option value="○">○</option>
                 <option value="×">×</option>
                 <option value=<?php

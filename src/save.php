@@ -15,6 +15,7 @@ for ($i = 0; $i < 2; $i++) {
     $player[$i] = get_player($pdo, $player_id[$i]);
 }
 
+
 ?>
 <table borderwith='1'>
     <tr>
@@ -25,7 +26,8 @@ for ($i = 0; $i < 2; $i++) {
         <td>
             <table>
                 <?php
-                for ($i = 0, $len = count($hit_record_array); $i < $len; ++$i) {
+
+                for ($i = 0, $len = (count($hit_record_array) / 2); $i < $len; $i++) {
                     $num = $len - $i;
                 ?>
                     <tr>
@@ -36,12 +38,12 @@ for ($i = 0; $i < 2; $i++) {
                         </td>
                         <td>
                             <?php
-                            echo $hit_record_array[$i][0];
+                            echo $hit_record_array[$i * 2];
                             ?>
                         </td>
                         <td>
                             <?php
-                            echo $hit_record_array[$i][0];
+                            echo $hit_record_array[$i * 2 + 1];
                             ?>
                         </td>
                     </tr>
