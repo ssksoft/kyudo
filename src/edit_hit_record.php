@@ -5,6 +5,8 @@ require 'record_manager.php';
 $record_id = NULL;
 $player_id[] = array();
 
+const NUM_PLAYER = 6;
+
 if (isset($_GET['record_id'])) {
   echo ($_GET['mode']);
   $record_id = intval($_GET['record_id']);
@@ -32,15 +34,15 @@ if (isset($_GET['record_id'])) {
   if (isset($_POST['player_id'])) {
     $player_id = $_POST['player_id'];
 
-    for ($i = 0; $i < 2; $i++) {
+    for ($i = 0; $i < NUM_PLAYER; $i++) {
       $player = get_player($pdo, $player_id[$i]);
       $player_name[$i] = $player['player_name'];
     }
   } else {
-    $player_id[0] = '';
-    $player_id[1] = '';
-    $player_name[0] = '';
-    $player_name[1] = '';
+    for ($person = 0; $person < NUM_PLAYER; $person++) {
+      $player_id[$person] = '';
+      $player_name[$person] = '';
+    }
   }
 }
 $record_manager = new RecordManager();
@@ -101,121 +103,51 @@ echo $competition['competition_id'];
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />
         <table>
-          <tr>
-            <td>4本目</td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 3, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 3, 1);
-                  ?>
-                </option>
-            </td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 3, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 3, 1);
-                  ?>
-                </option>
-            </td>
-          </tr>
-          <tr>
-            <td>3本目</td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 2, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 2, 1);
-                  ?>
-                </option>
-            </td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 3, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 3, 1);
-                  ?>
-                </option>
-            </td>
-          </tr>
-          <tr>
-            <td>2本目</td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 1, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 1, 1);
-                  ?>
-                </option>
-            </td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 3, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 3, 1);
-                  ?>
-                </option>
-            </td>
-          <tr>
-            <td>1本目</td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 0, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 0, 1);
-                  ?>
-                </option>
-            </td>
-            <td> <select name="hit_record[]">
-                <option value="○">○</option>
-                <option value="×">×</option>
-                <option value=<?php
-                              echo mb_substr($record_str, 3, 1);
-                              ?> selected>
-                  <?php
-                  echo mb_substr($record_str, 3, 1);
-                  ?>
-                </option>
-            </td>
-          </tr>
+          <?php
+          for ($current_shot = 3; $current_shot >= 0; $current_shot--) {
+          ?>
+            <tr>
+              <td>
+                <?php
+                echo $current_shot + 1
+                ?>
+                本目</td>
+              <?php
+              for ($person = 0; $person < NUM_PLAYER; $person++) {
+              ?>
+                <td> <select name="hit_record[]">
+                    <option value="○">○</option>
+                    <option value="×">×</option>
+                    <option value=<?php
+                                  echo mb_substr($record_str, $current_shot, 1);
+                                  ?> selected>
+                      <?php
+                      echo mb_substr($record_str, $current_shot, 1);
+                      ?>
+                    </option>
+                </td>
+              <?php
+              }
+              ?>
+            </tr>
+          <?php
+          }
+          ?>
           <tr>
             <td>
               選手名
             </td>
-            <td>
-              <?php
-              echo $player_name[0];
-              ?>
-              </a>
-            </td>
-            <td>
-              <?php
-              echo $player_name[1];
-              ?>
-              </a>
-            </td>
+            <?php
+            for ($person = 0; $person < NUM_PLAYER; $person++) {
+            ?>
+              <td>
+                <?php
+                echo $player_name[$person];
+                ?>
+              </td>
+            <?php
+            }
+            ?>
           </tr>
         </table>
         <center>
@@ -228,8 +160,8 @@ echo $competition['competition_id'];
           <td>
             選手ID
           </td>
-          <td>
-            <form action="/kyudo/?mode=edit_hit_record&match_id=
+
+          <form action="/kyudo/?mode=edit_hit_record&match_id=
               <?php
               echo $match['match_id'];
               ?>
@@ -238,19 +170,20 @@ echo $competition['competition_id'];
               echo $competition['competition_id'];
               ?>
               " method="post">
-          <td>
-            <input type="text" name="player_id[]" value="<?php
-                                                          echo $player_id[0];
-                                                          ?>">
-          </td>
-          <td>
-            <input type="text" name="player_id[]" value="<?php
-                                                          echo $player_id[1];
-                                                          ?>">
-          </td>
-          <td>
-            <input type="submit" value="選手名を表示する">
-          </td>
+            <?php
+            for ($person = 0; $person < NUM_PLAYER; $person++) {
+            ?>
+              <td>
+                <input type="text" name="player_id[]" value="<?php
+                                                              echo $player_id[$person];
+                                                              ?>">
+              </td>
+            <?php
+            }
+            ?>
+            <td>
+              <input type="submit" value="選手名を表示する">
+            </td>
           </form>
     </td>
   </tr>
