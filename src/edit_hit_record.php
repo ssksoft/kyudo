@@ -95,8 +95,14 @@ echo $competition['competition_id'];
       <form action="/kyudo/?mode=save" method="post">
         <input type="hidden" name="competition_id" value="<?php echo $competition_id; ?>" />
         <input type="hidden" name="record_id" value="<?php echo $record_id; ?>" />
-        <input type="hidden" name="player_id[]" value="<?php echo $player_id[0]; ?>" />
-        <input type="hidden" name="player_id[]" value="<?php echo $player_id[1]; ?>" />
+        <?php
+        for ($person = 0; $person < NUM_PLAYER; $person++) {
+        ?>
+          <input type="hidden" name="player_id[]" value="<?php echo $player_id[$person]; ?>" />
+        <?php
+        }
+        ?>
+
         <input type="hidden" name="match_id" value="<?php echo $match_id; ?>" />
 
         <font size=-1><tt><b>日時</b></tt></font><br />

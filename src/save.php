@@ -8,10 +8,12 @@ $hit_record_array = $_POST['hit_record'];
 $match_id = $_POST['match_id'];
 $competition_id = $_POST['competition_id'];
 
-for ($i = 0; $i < 2; $i++) {
+const NUM_SHOOT = 4;
+define("NUM_PLAYER", count($hit_record_array) / NUM_SHOOT);
+
+for ($i = 0; $i < NUM_PLAYER; $i++) {
     $player[$i] = get_player($pdo, $player_id[$i]);
 }
-
 
 ?>
 <table borderwith='1'>
@@ -23,55 +25,65 @@ for ($i = 0; $i < 2; $i++) {
         <td>
             <table>
                 <?php
-
-                for ($i = 0, $len = (count($hit_record_array) / 2); $i < $len; $i++) {
-                    $num = $len - $i;
+                for ($i = 0; $i < NUM_SHOOT; $i++) {
+                    $num_shoot = NUM_SHOOT - $i;
                 ?>
                     <tr>
                         <td>
                             <?php
-                            echo $num . "本目：";
+                            echo $num_shoot . "本目：";
                             ?>
                         </td>
-                        <td>
-                            <?php
-                            echo $hit_record_array[$i * 2];
-                            ?>
-                        </td>
-                        <td>
-                            <?php
-                            echo $hit_record_array[$i * 2 + 1];
-                            ?>
-                        </td>
+
+                        <?php
+                        for (
+                            $current_player = 0;
+                            $current_player < NUM_PLAYER;
+                            $current_player++
+                        ) {
+                        ?>
+                            <td>
+                                <?php
+                                echo
+                                    $hit_record_array[$i * NUM_PLAYER + $current_player];
+                                ?>
+                            </td>
+                        <?php
+                        }
+                        ?>
+
                     </tr>
                 <?php
                 }
                 ?>
                 <tr>
                     <td>選手ID</td>
-                    <td>
-                        <?php
-                        echo $player_id[0];
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        echo $player_id[1];
-                        ?>
-                    </td>
+                    <?php
+                    for ($person = 0; $person < NUM_PLAYER; $person++) {
+                    ?>
+                        <td>
+                            <?php
+                            echo $player_id[$person];
+                            ?>
+                        </td>
+                    <?php
+                    }
+                    ?>
                 </tr>
                 <tr>
                     <td>選手名</td>
-                    <td>
-                        <?php
-                        echo $player[0]['player_name'];
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        echo $player[1]['player_name'];
-                        ?>
-                    </td>
+                    <?php
+                    for ($person = 0; $person < NUM_PLAYER; $person++) {
+                    ?>
+                        <td>
+                            <?php
+                            echo $player[$person]['player_name'];
+                            ?>
+                        </td>
+                    <?php
+                    }
+                    ?>
+
                 </tr>
             </table>
 
@@ -81,10 +93,11 @@ for ($i = 0; $i < 2; $i++) {
             $current_hit_record[] = array();
             $hit_records[] = array();
 
-            for ($person = 0; $person < 2; $person++) {
+            for ($person = 0; $person < NUM_PLAYER; $person++) {
                 $hit_record = 0;
-                for ($i = 0; $i < 4; $i++) {
-                    $current_hit_record[$i] = $hit_record_array[$i * 2 + $person];
+
+                for ($i = 0; $i < NUM_SHOOT; $i++) {
+                    $current_hit_record[$i] = $hit_record_array[$i * NUM_PLAYER + $person];
                 }
                 // echo implode(',', $current_hit_record);
                 for ($i = 0, $len = count($current_hit_record); $i
@@ -106,19 +119,31 @@ for ($i = 0; $i < 2; $i++) {
 
             $record_id = NULL;
 
-            for ($current_player = 0; $current_person < 2; $current_person++) {
-                $record_id = get_record_id_from_matchid_playerid($pdo, $match_id, $player_id[$current_player]);
+            for (
+                $current_player = 0;
+                $current_player < NUM_PLAYER;
+                $current_player++
+            ) {
+                $record_id = get_record_id_from_matchid_playerid(
+                    $pdo,
+                    $match_id,
+                    $player_id[$current_player]
+                );
+
+                echo "現在のループ：";
+                echo $current_player;
+                echo "<br/>";
 
 
 
                 if (isset($record_id)) {
                     try {
-                        foreach ($hit_records as $person => $hit_record) {
-                            echo $player_id[$person];
-                            echo "の記録を更新します。";
-                            $num = update_hit_record($pdo, $record_id, $player_id[$person], $hit_record);
-                            echo "記録を更新しました";
+                        foreach ($hit_records as $hit_record) {
+                            $num = update_hit_record($pdo, $record_id, $player_id[$current_player], $hit_record);
                         }
+                        echo $player_id[$current_player];
+                        echo "の記録を更新しました。";
+                        echo "<br/>";
                     } catch (\PDOException $e) {
                         error_log("\PDO::Exception: " . $e->getMessage());
                         echo (" error message: <br />");
@@ -128,12 +153,18 @@ for ($i = 0; $i < 2; $i++) {
                     error_log("UPDATE: affected lins = $num");
                 } else {
                     try {
-                        foreach ($hit_records as $person => $hit_record) {
-                            echo "player_id";
-                            echo $player_id[$person];
-                            $record_id = insert_hit_record($pdo, $player_id[$person], $hit_record, $competition_id, $match_id);
-                            echo "記録を追加しました";
+                        foreach ($hit_records as $hit_record) {
+                            $record_id = insert_hit_record(
+                                $pdo,
+                                $player_id[$current_player],
+                                $hit_record,
+                                $competition_id,
+                                $match_id
+                            );
                         }
+                        echo $player_id[$current_player];
+                        echo "の記録を追加しました。";
+                        echo "<br/>";
                     } catch (\PDOException $e) {
                         echo ($e->getMessage());
                         error_log("\PDO::Exception: " . $e->getMessage());
