@@ -134,15 +134,19 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                 echo $current_player;
                 echo "<br/>";
 
-
+                echo "レコードID：";
+                echo $record_id;
+                echo "<br/>";
 
                 if (isset($record_id)) {
                     try {
-                        foreach ($hit_records as $hit_record) {
-                            $num = update_hit_record($pdo, $record_id, $player_id[$current_player], $hit_record);
-                        }
+                        $num = update_hit_record($pdo, $record_id, $player_id[$current_player], $hit_records[$current_player]);
                         echo $player_id[$current_player];
                         echo "の記録を更新しました。";
+                        echo "<br/>";
+                        echo "レコードID：";
+                        echo "$record_id";
+                        echo "<br/>";
                         echo "<br/>";
                     } catch (\PDOException $e) {
                         error_log("\PDO::Exception: " . $e->getMessage());
@@ -153,17 +157,19 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                     error_log("UPDATE: affected lins = $num");
                 } else {
                     try {
-                        foreach ($hit_records as $hit_record) {
-                            $record_id = insert_hit_record(
-                                $pdo,
-                                $player_id[$current_player],
-                                $hit_record,
-                                $competition_id,
-                                $match_id
-                            );
-                        }
+                        $record_id = insert_hit_record(
+                            $pdo,
+                            $player_id[$current_player],
+                            $hit_records[$current_player],
+                            $competition_id,
+                            $match_id
+                        );
                         echo $player_id[$current_player];
                         echo "の記録を追加しました。";
+                        echo "<br/>";
+                        echo "新規追加レコードID：";
+                        echo $record_id;
+                        echo "<br/>";
                         echo "<br/>";
                     } catch (\PDOException $e) {
                         echo ($e->getMessage());
