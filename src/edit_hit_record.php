@@ -29,6 +29,8 @@ if (isset($_GET['record_id'])) {
   $datetime = $now; // Default value is current time as template
   $hit_record = '';
   $player_name[] = array();
+  $team_name[] = array();
+
 
 
   if (isset($_POST['player_id'])) {
@@ -37,11 +39,13 @@ if (isset($_GET['record_id'])) {
     for ($i = 0; $i < NUM_PLAYER; $i++) {
       $player = get_player($pdo, $player_id[$i]);
       $player_name[$i] = $player['player_name'];
+      $team_name[$i] = $player['team_name'];
     }
   } else {
-    for ($person = 0; $person < NUM_PLAYER; $person++) {
-      $player_id[$person] = '';
-      $player_name[$person] = '';
+    for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+      $player_id[$current_person] = '';
+      $player_name[$current_person] = '';
+      $team_name[$current_person] = '';
     }
   }
 }
@@ -119,7 +123,7 @@ echo $competition['competition_id'];
                 ?>
                 本目</td>
               <?php
-              for ($person = 0; $person < NUM_PLAYER; $person++) {
+              for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
               ?>
                 <td> <select name="hit_record[]">
                     <option value="○">○</option>
@@ -141,14 +145,30 @@ echo $competition['competition_id'];
           ?>
           <tr>
             <td>
-              選手名
+              団体名
             </td>
             <?php
-            for ($person = 0; $person < NUM_PLAYER; $person++) {
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
             ?>
               <td>
                 <?php
-                echo $player_name[$person];
+                echo $team_name[$current_person];
+                ?>
+              </td>
+            <?php
+            }
+            ?>
+          </tr>
+          <tr>
+            <td>
+              選手名
+            </td>
+            <?php
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+            ?>
+              <td>
+                <?php
+                echo $player_name[$current_person];
                 ?>
               </td>
             <?php
@@ -177,12 +197,13 @@ echo $competition['competition_id'];
               ?>
               " method="post">
             <?php
-            for ($person = 0; $person < NUM_PLAYER; $person++) {
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
             ?>
               <td>
-                <input type="text" name="player_id[]" value="<?php
-                                                              echo $player_id[$person];
-                                                              ?>">
+                <input type="text" name="player_id[]" value="
+                <?php
+                echo $player_id[$current_person];
+                ?>">
               </td>
             <?php
             }
