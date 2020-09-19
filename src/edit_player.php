@@ -2,6 +2,8 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
+$competition_id = $_GET['competition_id'];
+
 $title = "選手登録";
 $player_name = '';
 $hit_record = '';
@@ -12,7 +14,11 @@ $hit_record = '';
   </font>
 </left>
 
-<form action="/kyudo/?mode=register_player" method="post">
+<form action="/kyudo/?mode=register_player&competition_id= 
+  <?php
+  echo $competition_id;
+  ?>
+  " method="post">
   <input type="text" name="player_name" value=<?php
                                               echo $player_name;
                                               ?>>

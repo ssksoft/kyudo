@@ -2,8 +2,11 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
-// View for confirmation
 $player_name = htmlspecialchars($_POST['player_name']);
+$competition_id = $_GET['competition_id'];
+
+
+// View for confirmation
 ?>
 <table borderwith='1'>
   <tr>
@@ -17,11 +20,9 @@ $player_name = htmlspecialchars($_POST['player_name']);
 </table>
 
 <?php
-$player_name = ($_POST['player_name']);
-
 
 try {
-  $id = insert_player($pdo, $player_name);
+  $id = insert_player($pdo, $player_name, $competition_id);
 } catch (\PDOException $e) {
   echo ($e->getMessage());
   error_log("\PDO::Exception: " . $e->getMessage());
@@ -32,7 +33,7 @@ error_log("INSERT: new id = $id");
 
 
 ?>
-<center>
+<left>
   <table borderwith='1'>
     <tr>
       <td>[<a href="/kyudo/?mode=list">All</a>]</td>
@@ -41,4 +42,4 @@ error_log("INSERT: new id = $id");
                                           } ?>">Re-edit</a>]</td>
     </tr>
   </table>
-</center>
+</left>

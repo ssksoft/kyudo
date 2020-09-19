@@ -185,19 +185,20 @@ function get_record($pdo, $id)
   return $record;
 }
 
-function insert_player($pdo, $player_name = '')
+function insert_player($pdo, $player_name = '', $competition_id)
 {
   ini_set('display_errors', 1);
   ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
   $sql = 'INSERT INTO player_tbl'
-    . '(player_name)'
+    . '(player_name, competition_id)'
     . ' VALUES'
-    . ' (:player_name)';
+    . ' (:player_name, :competition_id)';
   $stmt = $pdo->prepare($sql);
 
   // Pass value to statement
   $stmt->bindValue(':player_name', pg_escape_string($player_name));
+  $stmt->bindValue(':competition_id', $competition_id);
 
   // Execute statement
   $stmt->execute();
@@ -230,12 +231,14 @@ function get_player($pdo, $player_id)
   return $player;
 }
 
-function get_all_players($pdo)
+function get_all_players($pdo, $competition_id)
 {
+  $condition = "competition_id = $competition_id";
   // Execute SELECT statement
   $stmt = $pdo->query(
     'SELECT *'
       . ' FROM player_tbl'
+      . ' WHERE ' . $condition
       . ' ORDER BY player_id'
   );
 

@@ -31,8 +31,6 @@ $now = strftime('%F %T', time());
   <div class="left-column">
     <a href="/kyudo/">トップ</a>
     <a href="/kyudo/?mode=competition_list">大会を選択する</a>
-    <a href="/kyudo/?mode=edit_player">選手登録</a>
-    <a href="/kyudo/?mode=player_list">選手一覧</a>
     <a href="/kyudo/?mode=sandbox">sandbox</a>
   </div>
   <div>

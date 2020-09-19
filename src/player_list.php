@@ -1,8 +1,9 @@
 <?php
+$competition_id = $_GET['competition_id'];
 
 // 選手テーブルからデータ取得
 try {
-  $players = get_all_players($pdo);
+  $players = get_all_players($pdo, $competition_id);
 } catch (\PDOException $e) {
   error_log("\PDO::Exception:" . $e->getMessage());
   echo ($e->getMessage());

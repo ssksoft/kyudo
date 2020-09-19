@@ -44,6 +44,25 @@ try {
   ">
     新しい試合を追加
   </a>
+
+  <br />
+
+  <a href="/kyudo/?mode=edit_player&competition_id= 
+  <?php
+  echo $competition_id;
+  ?>
+  ">
+    選手登録
+  </a>
+  <br />
+  <a href="/kyudo/?mode=player_list&competition_id= 
+  <?php
+  echo $competition_id;
+  ?>
+  ">
+    選手一覧
+  </a>
+
 </div>
 
 
