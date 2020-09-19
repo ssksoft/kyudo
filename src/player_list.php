@@ -17,9 +17,9 @@ try {
   <thead>
     <tr>
       <th>選手ID</th>
-      <th>選手名</th>
       <th>団体名</th>
-      <th>段位</th>
+      <th>選手名</th>
+      <th>称号段位</th>
       <th>順位</th>
     </tr>
   </thead>

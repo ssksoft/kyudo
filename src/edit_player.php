@@ -5,8 +5,6 @@ ini_set('error_reporting', E_ALL);
 $competition_id = $_GET['competition_id'];
 
 $title = "選手登録";
-$player_name = '';
-$hit_record = '';
 
 ?>
 <left>
@@ -19,9 +17,32 @@ $hit_record = '';
   echo $competition_id;
   ?>
   " method="post">
-  <input type="text" name="player_name" value=<?php
-                                              echo $player_name;
-                                              ?>>
+  <table>
+    <tr>
+      <td>
+        団体名
+      </td>
+      <td>
+        <input type="text" name="team_name">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        選手名
+      </td>
+      <td>
+        <input type="text" name="player_name">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        段位
+      </td>
+      <td>
+        <input type="text" name="dan">
+      </td>
+    </tr>
+  </table>
   <left>
     <input type="submit" name="SaveOpt" value="Cancel" />
     <input type="submit" name="SaveOpt" value="Save" />
