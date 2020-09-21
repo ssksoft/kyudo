@@ -112,7 +112,7 @@ echo $competition['competition_id'];
         <font size=-1><tt><b>日時</b></tt></font><br />
         <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />
-        <table>
+        <table border="1">
           <?php
           for ($current_shot = 3; $current_shot >= 0; $current_shot--) {
           ?>
@@ -149,45 +149,58 @@ echo $competition['competition_id'];
             </td>
             <?php
             for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+              if ($current_person == 2 && $team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) {
             ?>
-              <td>
+                <td>
+                <?php
+              } else {
+                $first_3player_same_team = 0;
+                ?>
+                <td colspan="3">
+                <?php
+              }
+                ?>
                 <?php
                 echo $team_name[$current_person];
                 ?>
-              </td>
-            <?php
-            }
-            ?>
-          </tr>
-          <tr>
-            <td>
-              選手名
-            </td>
-            <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-            ?>
-              <td>
-                <?php
-                echo $player_name[$current_person];
-                ?>
-              </td>
-            <?php
-            }
-            ?>
+                </td>
           </tr>
         </table>
-        <center>
-          <input type="submit" name="SaveOpt" value="Cancel" />
-          <input type="submit" name="SaveOpt" value="Save" />
-        </center>
-      </form>
-      <table>
-        <tr>
-          <td>
-            選手ID
-          </td>
 
-          <form action="/kyudo/?mode=edit_hit_record&match_id=
+    </td>
+  <?php
+            }
+  ?>
+  </tr>
+  <tr>
+    <td>
+      選手名
+    </td>
+    <?php
+    for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+    ?>
+      <td>
+        <?php
+        echo $player_name[$current_person];
+        ?>
+      </td>
+    <?php
+    }
+    ?>
+  </tr>
+</table>
+<center>
+  <input type="submit" name="SaveOpt" value="Cancel" />
+  <input type="submit" name="SaveOpt" value="Save" />
+</center>
+</form>
+<table>
+  <tr>
+    <td>
+      選手ID
+    </td>
+
+    <form action="/kyudo/?mode=edit_hit_record&match_id=
               <?php
               echo $match['match_id'];
               ?>
@@ -196,22 +209,19 @@ echo $competition['competition_id'];
               echo $competition['competition_id'];
               ?>
               " method="post">
-            <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-            ?>
-              <td>
-                <input type="text" name="player_id[]" value="
-                <?php
-                echo $player_id[$current_person];
-                ?>">
-              </td>
-            <?php
-            }
-            ?>
-            <td>
-              <input type="submit" value="選手名を表示する">
-            </td>
-          </form>
+      <?php
+      for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+      ?>
+        <td>
+          <input type="text" name="player_id[]" value="<?php echo $player_id[$current_person]; ?>">
+        </td>
+      <?php
+      }
+      ?>
+      <td>
+        <input type="submit" value="選手名を表示する">
+      </td>
+    </form>
     </td>
   </tr>
 </table>
