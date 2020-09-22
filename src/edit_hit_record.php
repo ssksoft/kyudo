@@ -148,59 +148,62 @@ echo $competition['competition_id'];
               団体名
             </td>
             <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-              if ($current_person == 2 && $team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) {
-            ?>
-                <td>
-                <?php
-              } else {
-                $first_3player_same_team = 0;
-                ?>
-                <td colspan="3">
-                <?php
+            if (($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) && ($team_name[3] == $team_name[4] && $team_name[4] == $team_name[5] && $team_name[3] == $team_name[5])) {
+
+              echo "<td colspan=\"6\">";
+              echo $team_name[0];
+              echo "</td>";
+            } elseif ($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) {
+
+              for ($current_team = 0; $current_team < NUM_PLAYER / 3; $current_team++) {
+                echo '<td colspan="3">';
+                echo $team_name[0];
+                echo "</td>";
               }
-                ?>
-                <?php
-                echo $team_name[$current_person];
-                ?>
-                </td>
+              for ($current_team = 0; $current_team < NUM_PLAYER / 3; $current_team++) {
+                echo '<td>';
+                echo $team_name[2];
+                echo "</td>";
+              }
+            } elseif (($team_name[3] == $team_name[4] && $team_name[4] == $team_name[5] && $team_name[3] == $team_name[5])) {
+              for ($current_team = 0; $current_team < NUM_PLAYER / 3; $current_team++) {
+                echo '<td>';
+                echo $team_name[0];
+                echo "</td>";
+              }
+              echo '<td colspan="3">';
+              echo $team_name[3];
+              echo "</td>";
+            }
+            ?>
+          </tr>
+          <tr>
+            <td>
+              選手名
+            </td>
+
+            <?php
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+              echo "<td>";
+              echo $player_name[$current_person];
+              echo "</td>";
+            }
+            ?>
+
           </tr>
         </table>
+        <center>
+          <input type="submit" name="SaveOpt" value="Cancel" />
+          <input type="submit" name="SaveOpt" value="Save" />
+        </center>
+      </form>
+      <table>
+        <tr>
+          <td>
+            選手ID
+          </td>
 
-    </td>
-  <?php
-            }
-  ?>
-  </tr>
-  <tr>
-    <td>
-      選手名
-    </td>
-    <?php
-    for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-    ?>
-      <td>
-        <?php
-        echo $player_name[$current_person];
-        ?>
-      </td>
-    <?php
-    }
-    ?>
-  </tr>
-</table>
-<center>
-  <input type="submit" name="SaveOpt" value="Cancel" />
-  <input type="submit" name="SaveOpt" value="Save" />
-</center>
-</form>
-<table>
-  <tr>
-    <td>
-      選手ID
-    </td>
-
-    <form action="/kyudo/?mode=edit_hit_record&match_id=
+          <form action="/kyudo/?mode=edit_hit_record&match_id=
               <?php
               echo $match['match_id'];
               ?>
@@ -209,19 +212,19 @@ echo $competition['competition_id'];
               echo $competition['competition_id'];
               ?>
               " method="post">
-      <?php
-      for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-      ?>
-        <td>
-          <input type="text" name="player_id[]" value="<?php echo $player_id[$current_person]; ?>">
-        </td>
-      <?php
-      }
-      ?>
-      <td>
-        <input type="submit" value="選手名を表示する">
-      </td>
-    </form>
+            <?php
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+            ?>
+              <td>
+                <input type="text" name="player_id[]" value="<?php echo $player_id[$current_person]; ?>">
+              </td>
+            <?php
+            }
+            ?>
+            <td>
+              <input type="submit" value="選手名を表示する">
+            </td>
+          </form>
     </td>
   </tr>
 </table>
