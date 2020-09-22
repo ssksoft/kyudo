@@ -150,8 +150,11 @@ echo $competition['competition_id'];
             <?php
             if (($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) && ($team_name[3] == $team_name[4] && $team_name[4] == $team_name[5] && $team_name[3] == $team_name[5])) {
 
-              echo "<td colspan=\"6\">";
+              echo "<td colspan=\"3\">";
               echo $team_name[0];
+              echo "</td>";
+              echo "<td colspan=\"3\">";
+              echo $team_name[3];
               echo "</td>";
             } elseif ($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) {
 
