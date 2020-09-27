@@ -26,6 +26,8 @@ entity "的中記録テーブル（kyudo_tbl）" as hit_record_tbl {
   *competition_id : <<FK>>
   *match_id : <<FK>>
   *player_id : text <<FK>>
+  range : text
+  shoot_order : text
   hit_record : text
 }
 

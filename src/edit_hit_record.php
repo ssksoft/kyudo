@@ -145,6 +145,36 @@ echo $competition['competition_id'];
           ?>
           <tr>
             <td>
+              選手名
+            </td>
+
+            <?php
+            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+              echo "<td>";
+              echo $player_name[$current_person];
+              echo "</td>";
+            }
+            ?>
+
+          </tr>
+          <tr>
+            <td>
+              立順
+            </td>
+
+            <?php
+            for ($current_team = 0; $current_team < 2; $current_team++) {
+              for ($current_order = 3; $current_order > 0; $current_order--) {
+                echo "<td>";
+                echo $current_order;
+                echo "</td>";
+              }
+            }
+            ?>
+
+          </tr>
+          <tr>
+            <td>
               団体名
             </td>
             <?php
@@ -180,20 +210,7 @@ echo $competition['competition_id'];
             }
             ?>
           </tr>
-          <tr>
-            <td>
-              選手名
-            </td>
 
-            <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-              echo "<td>";
-              echo $player_name[$current_person];
-              echo "</td>";
-            }
-            ?>
-
-          </tr>
         </table>
         <center>
           <input type="submit" name="SaveOpt" value="Cancel" />

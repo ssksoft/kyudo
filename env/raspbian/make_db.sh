@@ -26,6 +26,8 @@ CREATE TABLE kyudo_tbl(\
 record_id  serial  NOT NULL  PRIMARY KEY,\
 competition_id serial NOT NULL REFERENCES competition_tbl(competition_id),\
 match_id serial NOT NULL REFERENCES match_tbl(match_id),\
+range   text,\
+shoot_order  text,\
 player_id serial NOT NULL REFERENCES player_tbl (player_id),\
 hit_record  text,\
 );
