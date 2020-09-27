@@ -161,12 +161,14 @@ echo $competition['competition_id'];
             <td>
               立順
             </td>
-
             <?php
             for ($current_team = 0; $current_team < 2; $current_team++) {
               for ($current_order = 3; $current_order > 0; $current_order--) {
                 echo "<td>";
                 echo $current_order;
+            ?>
+                <input type="hidden" name="shoot_order[]" value="<?php echo $current_order; ?>" />
+            <?php
                 echo "</td>";
               }
             }

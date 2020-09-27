@@ -7,6 +7,11 @@ $player_id = $_POST['player_id'];
 $hit_record_array = $_POST['hit_record'];
 $match_id = $_POST['match_id'];
 $competition_id = $_POST['competition_id'];
+$shoot_order = $_POST['shoot_order'];
+
+for ($i = 0; $i < 6; $i++) {
+    echo $shoot_order[$i];
+}
 
 const NUM_SHOOT = 4;
 define("NUM_PLAYER", count($hit_record_array) / NUM_SHOOT);
