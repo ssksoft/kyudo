@@ -8,9 +8,10 @@ $hit_record_array = $_POST['hit_record'];
 $match_id = $_POST['match_id'];
 $competition_id = $_POST['competition_id'];
 $shoot_order = $_POST['shoot_order'];
+$range = $_POST['range'];
 
-for ($i = 0; $i < 6; $i++) {
-    echo $shoot_order[$i];
+for ($i = 0; $i < 2; $i++) {
+    echo $range[$i];
 }
 
 const NUM_SHOOT = 4;

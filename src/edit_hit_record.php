@@ -212,6 +212,22 @@ echo $competition['competition_id'];
             }
             ?>
           </tr>
+          <tr>
+            <td>
+            </td>
+            <?php
+            for ($current_range = 2; $current_range > 0; $current_range--) {
+
+              echo '<td colspan="3">';
+              echo '第';
+              echo $current_range;
+              echo '射場';
+            ?>
+              <input type="hidden" name="range[]" value="<?php echo $current_range; ?>" />
+            <?php
+              echo "</td>";
+            }
+            ?>
 
         </table>
         <center>
