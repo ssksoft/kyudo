@@ -144,6 +144,12 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                 echo $record_id;
                 echo "<br/>";
 
+                if ($current_player < 3) {
+                    $current_range = 2;
+                } else {
+                    $current_range = 1;
+                }
+
                 if (isset($record_id)) {
                     try {
                         $num = update_hit_record($pdo, $record_id, $player_id[$current_player], $hit_records[$current_player]);
@@ -168,7 +174,9 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                             $player_id[$current_player],
                             $hit_records[$current_player],
                             $competition_id,
-                            $match_id
+                            $match_id,
+                            $current_range,
+                            $shoot_order[$current_player]
                         );
                         echo $player_id[$current_player];
                         echo "の記録を追加しました。";

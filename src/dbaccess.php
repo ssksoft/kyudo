@@ -26,15 +26,13 @@ function connect($params)
   return $pdo;
 }
 
-function insert_hit_record($pdo, $player_id = '', $hit_record = '', $competition_id, $match_id)
+function insert_hit_record($pdo, $player_id = '', $hit_record = '', $competition_id, $match_id, $range, $shoot_order)
 {
-  ini_set('display_errors', 1);
-  ini_set('error_reporting', E_ALL);
   // Prepare INSERT statement
   $sql = 'INSERT INTO kyudo_tbl'
-    . '(player_id, hit_record, competition_id,match_id)'
+    . '(player_id, hit_record, competition_id,match_id,range,shoot_order)'
     . ' VALUES'
-    . ' (:player_id, :hit_record, :competition_id, :match_id)';
+    . ' (:player_id, :hit_record, :competition_id, :match_id, :range, :shoot_order)';
   $stmt = $pdo->prepare($sql);
 
   // Pass value to statement
@@ -42,6 +40,8 @@ function insert_hit_record($pdo, $player_id = '', $hit_record = '', $competition
   $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
   $stmt->bindValue(':competition_id', $competition_id);
   $stmt->bindValue(':match_id', $match_id);
+  $stmt->bindValue(':range', pg_escape_string($range));
+  $stmt->bindValue(':shoot_order', pg_escape_string($shoot_order));
 
   // Execute statement
   $stmt->execute();
