@@ -10,10 +10,6 @@ $competition_id = $_POST['competition_id'];
 $shoot_order = $_POST['shoot_order'];
 $range = $_POST['range'];
 
-for ($i = 0; $i < 2; $i++) {
-    echo $range[$i];
-}
-
 const NUM_SHOOT = 4;
 define("NUM_PLAYER", count($hit_record_array) / NUM_SHOOT);
 
@@ -94,14 +90,12 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
             </table>
 
             <?php
-            $player_id = ($_POST['player_id']);
 
             $current_hit_record[] = array();
             $hit_records[] = array();
 
             for ($person = 0; $person < NUM_PLAYER; $person++) {
                 $hit_record = 0;
-
                 for ($i = 0; $i < NUM_SHOOT; $i++) {
                     $current_hit_record[$i] = $hit_record_array[$i * NUM_PLAYER + $person];
                 }
@@ -123,25 +117,14 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                 $hit_records[$person] = $hit_record;
             }
 
-            $record_id = NULL;
-
             for (
                 $current_player = 0;
                 $current_player < NUM_PLAYER;
                 $current_player++
             ) {
-                $record_id = get_record_id_from_matchid_playerid(
-                    $pdo,
-                    $match_id,
-                    $player_id[$current_player]
-                );
-
+                $hit_record = 0;
                 echo "現在のループ：";
                 echo $current_player;
-                echo "<br/>";
-
-                echo "レコードID：";
-                echo $record_id;
                 echo "<br/>";
 
                 if ($current_player < 3) {
@@ -149,49 +132,48 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                 } else {
                     $current_range = 1;
                 }
+                $current_shoot_order = $current_player % (2 + 1) + 1;
 
-                if (isset($record_id)) {
-                    try {
-                        $num = update_hit_record($pdo, $record_id, $player_id[$current_player], $hit_records[$current_player]);
-                        echo $player_id[$current_player];
-                        echo "の記録を更新しました。";
-                        echo "<br/>";
-                        echo "レコードID：";
-                        echo "$record_id";
-                        echo "<br/>";
-                        echo "<br/>";
-                    } catch (\PDOException $e) {
-                        error_log("\PDO::Exception: " . $e->getMessage());
-                        echo (" error message: <br />");
-                        echo ($e->getMessage());
-                        return;
-                    }
-                    error_log("UPDATE: affected lins = $num");
-                } else {
-                    try {
-                        $record_id = insert_hit_record(
-                            $pdo,
-                            $player_id[$current_player],
-                            $hit_records[$current_player],
-                            $competition_id,
-                            $match_id,
-                            $current_range,
-                            $shoot_order[$current_player]
-                        );
-                        echo $player_id[$current_player];
-                        echo "の記録を追加しました。";
-                        echo "<br/>";
-                        echo "新規追加レコードID：";
-                        echo $record_id;
-                        echo "<br/>";
-                        echo "<br/>";
-                    } catch (\PDOException $e) {
-                        echo ($e->getMessage());
-                        error_log("\PDO::Exception: " . $e->getMessage());
-                        return;
-                    }
-                    error_log("INSERT: new id = $record_id");
+                try {
+                    $num = update_hit_record($pdo, $player_id[$current_player], $hit_records[$current_player], $competition_id, $match_id, $current_range, $current_shoot_order);
+
+                    echo $player_id[$current_player];
+                    echo "の記録を更新しました。";
+                    echo "<br/>";
+                    echo "レコードID：";
+                    echo "<br/>";
+                    echo "<br/>";
+                } catch (\PDOException $e) {
+                    error_log("\PDO::Exception: " . $e->getMessage());
+                    echo (" error message: <br />");
+                    echo ($e->getMessage());
+                    return;
                 }
+                error_log("UPDATE: affected lins = $num");
+
+                // try {
+                //     $record_id = insert_hit_record(
+                //         $pdo,
+                //         $player_id[$current_player],
+                //         $hit_records[$current_player],
+                //         $competition_id,
+                //         $match_id,
+                //         $current_range,
+                //         $shoot_order[$current_player]
+                //     );
+                //     echo $player_id[$current_player];
+                //     echo "の記録を追加しました。";
+                //     echo "<br/>";
+                //     echo "新規追加レコードID：";
+                //     echo $record_id;
+                //     echo "<br/>";
+                //     echo "<br/>";
+                // } catch (\PDOException $e) {
+                //     echo ($e->getMessage());
+                //     error_log("\PDO::Exception: " . $e->getMessage());
+                //     return;
+                // }
+                // error_log("INSERT: new id = $record_id");
             }
 
             ?>

@@ -21,7 +21,6 @@ entity "試合テーブル（match_tbl）" as match_tbl {
 }
 
 entity "的中記録テーブル（kyudo_tbl）" as hit_record_tbl {
-  *record_id : serial NOT NULL PRIMARY KEY UNIQUE
   --
   *competition_id : <<FK>>
   *match_id : <<FK>>

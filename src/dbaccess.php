@@ -50,26 +50,65 @@ function insert_hit_record($pdo, $player_id = '', $hit_record = '', $competition
   return $pdo->lastInsertId('kyudo_tbl_id_seq');
 }
 
-function update_hit_record($pdo, $record_id, $player_id, $hit_record)
+function update_hit_record($pdo, $player_id, $hit_record, $competition_id, $match_id, $current_range, $current_shoot_order)
 {
-  //Prepare UPDATE statement
-  $sql = 'UPDATE kyudo_tbl'
-    . ' SET player_id = :player_id'
-    . ' , hit_record = :hit_record'
-    . ' WHERE record_id = :record_id';
-  $stmt = $pdo->prepare($sql);
+  // 着目している射場立順のレコードの有無を確認
+  $sql_select = 'SELECT * FROM kyudo_tbl'
+    . ' WHERE range = :range'
+    . ' and shoot_order = :shoot_order';
+
+  $stmt_select = $pdo->prepare($sql_select);
+  $stmt_select->bindValue(':range', pg_escape_string($current_range));
+  $stmt_select->bindValue(':shoot_order', pg_escape_string($current_shoot_order));
+
+  // Execute DELETE statement
+  $stmt_select->execute();
+
+  // すでに記録が存在する場合
+  if ($stmt_select->rowCount()) {
+    echo $current_range;
+    echo $current_shoot_order;
+
+    // 記録を更新
+    //Prepare UPDATE statement
+    $sql = 'UPDATE kyudo_tbl'
+      . ' SET player_id = :player_id'
+      . ' , hit_record = :hit_record'
+      . ' WHERE range = :range'
+      . ' and shoot_order = :shoot_order';
+    $stmt = $pdo->prepare($sql);
 
 
-  // Pass value to statement
-  $stmt->bindValue(':player_id', pg_escape_string($player_id));
-  $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
-  $stmt->bindValue(':record_id', (int) $record_id);
+    // Pass value to statement
+    $stmt->bindValue(':player_id', pg_escape_string($player_id));
+    $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
+    $stmt->bindValue(':range', pg_escape_string($current_range));
+    $stmt->bindValue(':shoot_order', pg_escape_string($current_shoot_order));
 
-  // Execute UPDATE statement
-  $stmt->execute();
+    // Execute UPDATE statement
+    $stmt->execute();
+  } else {
+    // Prepare INSERT statement
+    $sql = 'INSERT INTO kyudo_tbl'
+      . '(player_id, hit_record, competition_id,match_id,range,shoot_order)'
+      . ' VALUES'
+      . ' (:player_id, :hit_record, :competition_id, :match_id, :range, :shoot_order)';
+    $stmt = $pdo->prepare($sql);
+
+    // Pass value to statement
+    $stmt->bindValue(':player_id', pg_escape_string($player_id));
+    $stmt->bindValue(':hit_record', pg_escape_string($hit_record));
+    $stmt->bindValue(':competition_id', $competition_id);
+    $stmt->bindValue(':match_id', $match_id);
+    $stmt->bindValue(':range', pg_escape_string($current_range));
+    $stmt->bindValue(':shoot_order', pg_escape_string($current_shoot_order));
+
+    // Execute statement
+    $stmt->execute();
+  }
 
   // Return updated the number of rows
-  return $stmt->rowCount();
+  // return $stmt->rowCount();
 }
 
 function get_record_by_competition_id($pdo, $competition_id)
