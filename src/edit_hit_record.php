@@ -8,57 +8,32 @@ $player_id[] = array();
 const NUM_PLAYER = 6;
 $competition_id = $_GET['competition_id'];
 
-// Get Result of selected id
-try {
-  $kyudo_tbl = get_record_by_competition_id($pdo, $competition_id);
-} catch (\PDOException $e) {
-  echo ($e->getMessage());
-  error_log("\PDO::Exception: " . $e->getMessage());
-  return;
+
+// 選手情報を取得
+$kyudo_tbl = array();
+if (isset($_POST['player_id'])) {
+  $player_id = $_POST['player_id'];
+
+  for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
+    $players[$current_player] = get_player($pdo, $player_id[$current_player]);
+    $kyudo_tbl[$current_player]['hit_record'] = 0;
+    $kyudo_tbl[$current_player]['player_id'] = $player_id[$current_player];
+  }
+} else {
+  try {
+    $kyudo_tbl = get_record_by_competition_id($pdo, $competition_id);
+  } catch (\PDOException $e) {
+    echo ($e->getMessage());
+    error_log("\PDO::Exception: " . $e->getMessage());
+    return;
+  }
+  for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
+    $players[$current_player] = get_player($pdo, $kyudo_tbl[$current_player]['player_id']);
+  }
 }
-for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
-  $players[$current_player] = get_player($pdo, $kyudo_tbl[$current_player]['player_id']);
-}
 
-// echo $kyudo_tbl[0]['hit_record'];
-// echo $kyudo_tbl[1]['hit_record'];
-// echo count($kyudo_tbl[0]);
-
-$array_tmp = array();
-
-$array_tmp[0]['height'] = 170;
-$array_tmp[1]['height'] = 110;
-// $array_tmp[]['blood'] = 'A';
-// $array_tmp[]['hobbies'] = array('soccer', 'tennis', 'mathematics');
-// $array_tmp[]['height'] = 165;
-// $array_tmp[]['blood'] = 'AB';
-// $array_tmp[]['hobbies'] = array('piano', 'golf');
-// echo $array_tmp[0]['height'];
-echo (count($array_tmp));
 
 $title = "行射記録";
-$hit_record = '';
-$player_name[] = array();
-$team_name[] = array();
-
-
-
-// if (isset($_POST['player_id'])) {
-//   $player_id = $_POST['player_id'];
-
-//   for ($i = 0; $i < NUM_PLAYER; $i++) {
-//     $player = get_player($pdo, $player_id[$i]);
-//     $player_name[$i] = $player['player_name'];
-//     $team_name[$i] = $player['team_name'];
-//   }
-// } else {
-//   for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-//     $player_id[$current_person] = '';
-//     $player_name[$current_person] = '';
-//     $team_name[$current_person] = '';
-//   }
-// }
-
 $record_manager = new RecordManager();
 
 $competition_id = $_GET['competition_id'];
