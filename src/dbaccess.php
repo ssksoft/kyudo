@@ -72,11 +72,10 @@ function update_hit_record($pdo, $record_id, $player_id, $hit_record)
   return $stmt->rowCount();
 }
 
-function getRecordById($pdo, $id)
+function get_record_by_competition_id($pdo, $competition_id)
 {
   // Prepare and execute SELECT statement
-  $id = (int) $id;
-  $condition = "WHERE id = $id";
+  $condition = "WHERE competition_id = $competition_id";
   $stmt = $pdo->query(
     'SELECT *'
       . ' FROM kyudo_tbl '
@@ -85,14 +84,16 @@ function getRecordById($pdo, $id)
 
   // Get SELECT result
   $record = array();
+  $i = 0;
   while ($row = $stmt->fetch(\pdo::FETCH_ASSOC)) {
-    $record = array(
-      'id' => $row['id'],
-      'datetime' => $row['datetime'],
-      'player_name' => $row['player_name'],
-      'hit_record' => $row['hit_record'],
-    );
-    break;
+    $record[$i]['record_id']      = $row['record_id'];
+    $record[$i]['hit_record']     = $row['hit_record'];
+    $record[$i]['player_id']      = $row['player_id'];
+    $record[$i]['match_id']       = $row['match_id'];
+    $record[$i]['competition_id'] = $row['competition_id'];
+    $record[$i]['range']          = $row['range'];
+    $record[$i]['shoot_order']    = $row['shoot_order'];
+    $i = $i + 1;
   }
   return $record;
 }
@@ -509,4 +510,30 @@ function get_record_id_from_matchid_playerid($pdo, $match_id, $player_id)
   $row = $stmt->fetch(\PDO::FETCH_ASSOC);
   $get_record_id = $row['record_id'];
   return $get_record_id;
+}
+
+
+function get_players_by_player_id($pdo, $player_id)
+{
+  $condition = "player_id = $player_id";
+  // Execute SELECT statement
+  $stmt = $pdo->query(
+    'SELECT *'
+      . ' FROM player_tbl'
+      . ' WHERE ' . $condition
+      . ' ORDER BY player_id'
+  );
+
+  //Get SELECT result
+  $players = array();
+  while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+    $players[] = array(
+      'player_id' => $row['player_id'],
+      'player_name' => $row['player_name'],
+      'team_name' => $row['team_name'],
+      'dan' => $row['dan'],
+      'rank' => $row['rank']
+    );
+  }
+  return $players;
 }

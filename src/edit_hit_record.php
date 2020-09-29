@@ -2,55 +2,64 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 require 'record_manager.php';
-$record_id = NULL;
+// $record_id = NULL;
 $player_id[] = array();
 
 const NUM_PLAYER = 6;
+$competition_id = $_GET['competition_id'];
 
-if (isset($_GET['record_id'])) {
-  echo ($_GET['mode']);
-  $record_id = intval($_GET['record_id']);
-  // Get Result of selected id
-  try {
-    $record = getRecordById($pdo, $record_id);
-  } catch (\PDOException $e) {
-    echo ($e->getMessage());
-    error_log("\PDO::Exception: " . $e->getMessage());
-    return;
-  }
-  echo ("no exception");
-  $title = "Edit($record_id)";
-  $datetime = htmlspecialchars($record['datetime']);
-  $player_id = htmlspecialchars($record['player_id']);
-  $hit_record = htmlspecialchars($record['hit_record']);
-} else {
-
-  $title = "行射記録";
-  $datetime = $now; // Default value is current time as template
-  $hit_record = '';
-  $player_name[] = array();
-  $team_name[] = array();
-
-
-
-  if (isset($_POST['player_id'])) {
-    $player_id = $_POST['player_id'];
-
-    for ($i = 0; $i < NUM_PLAYER; $i++) {
-      $player = get_player($pdo, $player_id[$i]);
-      $player_name[$i] = $player['player_name'];
-      $team_name[$i] = $player['team_name'];
-    }
-  } else {
-    for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
-      $player_id[$current_person] = '';
-      $player_name[$current_person] = '';
-      $team_name[$current_person] = '';
-    }
-  }
+// Get Result of selected id
+try {
+  $kyudo_tbl = get_record_by_competition_id($pdo, $competition_id);
+} catch (\PDOException $e) {
+  echo ($e->getMessage());
+  error_log("\PDO::Exception: " . $e->getMessage());
+  return;
 }
+for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
+  $players[$current_player] = get_player($pdo, $kyudo_tbl[$current_player]['player_id']);
+}
+
+// echo $kyudo_tbl[0]['hit_record'];
+// echo $kyudo_tbl[1]['hit_record'];
+// echo count($kyudo_tbl[0]);
+
+$array_tmp = array();
+
+$array_tmp[0]['height'] = 170;
+$array_tmp[1]['height'] = 110;
+// $array_tmp[]['blood'] = 'A';
+// $array_tmp[]['hobbies'] = array('soccer', 'tennis', 'mathematics');
+// $array_tmp[]['height'] = 165;
+// $array_tmp[]['blood'] = 'AB';
+// $array_tmp[]['hobbies'] = array('piano', 'golf');
+// echo $array_tmp[0]['height'];
+echo (count($array_tmp));
+
+$title = "行射記録";
+$hit_record = '';
+$player_name[] = array();
+$team_name[] = array();
+
+
+
+// if (isset($_POST['player_id'])) {
+//   $player_id = $_POST['player_id'];
+
+//   for ($i = 0; $i < NUM_PLAYER; $i++) {
+//     $player = get_player($pdo, $player_id[$i]);
+//     $player_name[$i] = $player['player_name'];
+//     $team_name[$i] = $player['team_name'];
+//   }
+// } else {
+//   for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+//     $player_id[$current_person] = '';
+//     $player_name[$current_person] = '';
+//     $team_name[$current_person] = '';
+//   }
+// }
+
 $record_manager = new RecordManager();
-$record_str = $record_manager->get_record_as_str($hit_record);
 
 $competition_id = $_GET['competition_id'];
 $competition = get_competition($pdo, $competition_id);
@@ -109,8 +118,6 @@ echo $competition['competition_id'];
 
         <input type="hidden" name="match_id" value="<?php echo $match_id; ?>" />
 
-        <font size=-1><tt><b>日時</b></tt></font><br />
-        <input type="text" name="datetime" size="19" value="<?php echo $datetime; ?>" />
         <br />
         <table border="1">
           <?php
@@ -123,7 +130,9 @@ echo $competition['competition_id'];
                 ?>
                 本目</td>
               <?php
-              for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+              for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
+                $record_num = $kyudo_tbl[$current_player]['hit_record'];
+                $record_str = $record_manager->get_record_as_str($record_num);
               ?>
                 <td> <select name="hit_record[]">
                     <option value="○">○</option>
@@ -149,9 +158,9 @@ echo $competition['competition_id'];
             </td>
 
             <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+            for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
               echo "<td>";
-              echo $player_name[$current_person];
+              echo $players[$current_player]['player_name'];
               echo "</td>";
             }
             ?>
@@ -180,13 +189,13 @@ echo $competition['competition_id'];
               団体名
             </td>
             <?php
-            if (($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) && ($team_name[3] == $team_name[4] && $team_name[4] == $team_name[5] && $team_name[3] == $team_name[5])) {
+            if (($players[0]['team_name'] == $players[1]['team_name'] && $players[1]['team_name'] == $players[2]['team_name'] && $players[0]['team_name'] == $players[2]['team_name']) && ($players[3]['team_name'] == $players[4]['team_name'] && $players[4]['team_name'] == $players[5]['team_name'] && $players[3]['team_name'] == $players[5]['team_name'])) {
 
               echo "<td colspan=\"3\">";
-              echo $team_name[0];
+              echo $players[0]['team_name'];
               echo "</td>";
               echo "<td colspan=\"3\">";
-              echo $team_name[3];
+              echo $players[3]['team_name'];
               echo "</td>";
             } elseif ($team_name[0] == $team_name[1] && $team_name[1] == $team_name[2] && $team_name[0] == $team_name[2]) {
 
@@ -251,10 +260,10 @@ echo $competition['competition_id'];
               ?>
               " method="post">
             <?php
-            for ($current_person = 0; $current_person < NUM_PLAYER; $current_person++) {
+            for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
             ?>
               <td>
-                <input type="text" name="player_id[]" value="<?php echo $player_id[$current_person]; ?>">
+                <input type="text" name="player_id[]" value="<?php echo $kyudo_tbl[$current_player]['player_id']; ?>">
               </td>
             <?php
             }
