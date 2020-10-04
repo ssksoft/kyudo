@@ -125,7 +125,6 @@ function get_record_by_competition_id($pdo, $competition_id)
   $record = array();
   $i = 0;
   while ($row = $stmt->fetch(\pdo::FETCH_ASSOC)) {
-    $record[$i]['record_id']      = $row['record_id'];
     $record[$i]['hit_record']     = $row['hit_record'];
     $record[$i]['player_id']      = $row['player_id'];
     $record[$i]['match_id']       = $row['match_id'];

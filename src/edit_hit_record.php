@@ -2,24 +2,45 @@
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 require 'record_manager.php';
-// $record_id = NULL;
 $player_id[] = array();
 
 const NUM_PLAYER = 6;
+
 $competition_id = $_GET['competition_id'];
+$competition = get_competition($pdo, $competition_id);
+
+$match_id = $_GET['match_id'];
+$match = get_match($pdo, $match_id);
 
 
 // 選手情報を取得
 $kyudo_tbl = array();
+
+// 選手名を表示するボタンを押下した場合
 if (isset($_POST['player_id'])) {
   $player_id = $_POST['player_id'];
 
   for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
     $players[$current_player] = get_player($pdo, $player_id[$current_player]);
-    $kyudo_tbl[$current_player]['hit_record'] = 0;
+
+    // kyudo_tblのデフォルト値を格納する
+    $kyudo_tbl[$current_player]['competition_id'] = $competition_id; // デフォルト表示の×
+    $kyudo_tbl[$current_player]['match_id'] = $match_id; // デフォルト表示の×
     $kyudo_tbl[$current_player]['player_id'] = $player_id[$current_player];
+
+    if ($current_player < 3) {
+      $kyudo_tbl[$current_player]['range'] = 2;
+    } else {
+      $kyudo_tbl[$current_player]['range'] = 1;
+    }
+
+    $kyudo_tbl[$current_player]['shoot_order'] = 3 - $current_player % 3;
+    $kyudo_tbl[$current_player]['hit_record'] = 0; // デフォルト表示の×
+
   }
-} else {
+}
+// デフォルト表示（DBから取得）
+else {
   try {
     $kyudo_tbl = get_record_by_competition_id($pdo, $competition_id);
   } catch (\PDOException $e) {
@@ -36,11 +57,7 @@ if (isset($_POST['player_id'])) {
 $title = "行射記録";
 $record_manager = new RecordManager();
 
-$competition_id = $_GET['competition_id'];
-$competition = get_competition($pdo, $competition_id);
 
-$match_id = $_GET['match_id'];
-$match = get_match($pdo, $match_id);
 
 ?>
 
@@ -82,11 +99,10 @@ echo $competition['competition_id'];
     <td>
       <form action="/kyudo/?mode=save" method="post">
         <input type="hidden" name="competition_id" value="<?php echo $competition_id; ?>" />
-        <input type="hidden" name="record_id" value="<?php echo $record_id; ?>" />
         <?php
-        for ($person = 0; $person < NUM_PLAYER; $person++) {
+        for ($current_player = 0; $current_player < NUM_PLAYER; $current_player++) {
         ?>
-          <input type="hidden" name="player_id[]" value="<?php echo $player_id[$person]; ?>" />
+          <input type="hidden" name="player_id[]" value="<?php echo $kyudo_tbl[$current_player]['player_id']; ?>" />
         <?php
         }
         ?>
