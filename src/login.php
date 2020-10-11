@@ -11,7 +11,7 @@ if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 // DB内でPOSTされたメールアドレスを検索
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS);
-  $stmt = $pdo->prepare('select * from userData where email = ?');
+  $stmt = $pdo->prepare('select * from user_data_tbl where email = ?');
   $stmt->execute([$_POST['email']]);
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (\Exception $e) {
@@ -19,6 +19,7 @@ try {
 }
 // emailがDB内に存在しているか確認
 if (!isset($row['email'])) {
+  echo "test";
   echo 'メールアドレス又はパスワードが間違っています。';
   return false;
 }
@@ -29,6 +30,7 @@ if (password_verify($_POST['password'], $row['password'])) {
   $_SESSION['EMAIL'] = $row['email'];
   echo 'ログインしました';
 } else {
+  echo "test2";
   echo 'メールアドレス又はパスワードが間違っています。';
   return false;
 }
