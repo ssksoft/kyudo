@@ -40,6 +40,14 @@ entity "選手テーブル（player_tbl）" as player_tbl {
   rank : text
 }
 
+entity "ユーザデータテーブル（user_data_tbl）" as user_data_tbl {
+  *id : serial NOT NULL PRIMARY KEY
+  --
+  email : text UNIQUE
+  team_name : text
+  password : text
+}
+
 competition_tbl ---o{ match_tbl
 match_tbl ---o{ hit_record_tbl
 player_tbl ---o{ hit_record_tbl
