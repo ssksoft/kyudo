@@ -150,30 +150,6 @@ for ($i = 0; $i < NUM_PLAYER; $i++) {
                     return;
                 }
                 error_log("UPDATE: affected lins = $num");
-
-                // try {
-                //   $record_id = insert_hit_record(
-                //     $pdo,
-                //     $player_id[$current_player],
-                //     $hit_records[$current_player],
-                //     $competition_id,
-                //     $match_id,
-                //     $current_range,
-                //     $shoot_order[$current_player]
-                //   );
-                //   echo $player_id[$current_player];
-                //   echo "の記録を追加しました。";
-                //   echo "<br/>";
-                //   echo "新規追加レコードID：";
-                //   echo $record_id;
-                //   echo "<br/>";
-                //   echo "<br/>";
-                // } catch (\PDOException $e) {
-                //   echo ($e->getMessage());
-                //   error_log("\PDO::Exception: " . $e->getMessage());
-                //   return;
-                // }
-                // error_log("INSERT: new id = $record_id");
             }
 
             ?>
