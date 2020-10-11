@@ -1,8 +1,6 @@
 <?php
-function h($s)
-{
-  return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
-}
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 
 session_start();
 
@@ -44,7 +42,17 @@ if (isset($_SESSION['EMAIL'])) {
 
 </html>
 
+
 <?php
+if (isset($_POST['email']) && isset($_POST['password'])) {
+} else {
+  goto end;
+}
+function h($s)
+{
+  return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
+}
+
 require_once('config.php');
 
 // データベースへ接続、テーブルがない場合は作成
@@ -61,11 +69,8 @@ try {
   echo $e->getMessage() . PHP_EOL;
 }
 
-echo $_POST['email'];
-
 // POSTのValidate
-if (!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-  echo 'tmp';
+if ((!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))) {
   echo '入力された値が不正です。';
   return false;
 }
@@ -89,5 +94,7 @@ try {
   echo "登録済みのメールアドレスです。";
 }
 
+
+end:
 
 ?>
