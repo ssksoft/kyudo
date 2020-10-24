@@ -575,3 +575,26 @@ function get_players_by_player_id($pdo, $player_id)
   }
   return $players;
 }
+function confirm_email($pdo, $email)
+{
+
+  // DB内でPOSTされたメールアドレスを検索
+  try {
+    $condition = 'email = ?';
+    $sql = 'SELECT *'
+      . ' FROM '
+      . ' user_data_tbl'
+      . ' WHERE' . $condition;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($email);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (\Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+  }
+  // emailがDB内に存在しているか確認
+  if (!isset($row['email'])) {
+    echo 'メールアドレス又はパスワードが間違っています。';
+    return false;
+  }
+}

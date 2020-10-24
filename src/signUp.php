@@ -59,12 +59,6 @@ require_once('config.php');
 
 try {
   $pdo = new PDO(DSN, DB_USER, DB_PASS);
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $pdo->exec("create table if not exists user_data_tbl(
-    id serial not null primary key,
-    email text,
-    password text,
-  )");
 } catch (Exception $e) {
   echo $e->getMessage() . PHP_EOL;
 }
@@ -80,6 +74,8 @@ if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password']
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 } else {
   echo 'パスワードは半角英数字をそれぞれ1文字以上含んだ8文字以上で設定してください。';
+  echo 'よくないパスワード';
+  goto end;
 }
 
 // 登録処理
