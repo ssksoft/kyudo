@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
-require 'record_manager.php';
+require 'RecordManager.php';
 $player_id[] = array();
 
 const NUM_PLAYER = 6;

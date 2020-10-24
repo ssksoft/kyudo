@@ -1,5 +1,5 @@
 <?php
-require 'record_manager.php';
+require 'RecordManager.php';
 
 if (isset($_POST['FORDAYS']))
   $days = (int) $_POST['FORDAYS'];
