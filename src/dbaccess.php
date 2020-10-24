@@ -580,14 +580,16 @@ function confirm_email($pdo, $email)
 
   // DB内でPOSTされたメールアドレスを検索
   try {
-    $condition = 'email = ?';
+    $condition = 'email = :email';
     $sql = 'SELECT *'
       . ' FROM '
       . ' user_data_tbl'
-      . ' WHERE' . $condition;
-
+      . ' WHERE ' . $condition;
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($email);
+
+    // Pass value to statement
+    $stmt->bindValue(':email', pg_escape_string($email));
+    $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
   } catch (\Exception $e) {
     echo $e->getMessage() . PHP_EOL;
@@ -595,6 +597,7 @@ function confirm_email($pdo, $email)
   // emailがDB内に存在しているか確認
   if (!isset($row['email'])) {
     echo 'メールアドレス又はパスワードが間違っています。';
-    return false;
+  } else {
   }
+  return $row;
 }

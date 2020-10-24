@@ -1,7 +1,23 @@
 <?php
-require_once('config.php');
-
+require 'dbaccess.php';
 session_start();
+
+// Initialize
+try {
+  // Read parameters from configuration file as .ini
+  $params = parse_ini_file('conf/kyudo.ini', true);
+  if ($params === false) {
+    throw new \Exception("Error reading ini configuration file");
+  }
+
+  //DB connection
+  $pdo = connect($params['database']);
+} catch (\PDOException $e) {
+  error_log("\PDO::Exception" . $e->getMessage());
+  echo ($e->getMessage());
+  echo ("... Under maintenance");
+  goto end;
+}
 
 // POSTのvalidate
 if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -10,7 +26,10 @@ if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 }
 // DB内でPOSTされたメールアドレスを検索
 $email = $_POST['email'];
-if (confirm_email($pdo, $email)) {
+
+$row = confirm_email($pdo, $email);
+if (isset($row['email'])) {
+  // Donothing
 } else {
   return false;
 }
@@ -25,3 +44,5 @@ if (password_verify($_POST['password'], $row['password'])) {
   echo 'メールアドレス又はパスワードが間違っています。';
   return false;
 }
+
+end:

@@ -55,12 +55,21 @@ function h($s)
 
 require_once('config.php');
 
-// データベースへ接続、テーブルがない場合は作成
-
+// Initialize
 try {
-  $pdo = new PDO(DSN, DB_USER, DB_PASS);
-} catch (Exception $e) {
-  echo $e->getMessage() . PHP_EOL;
+  // Read parameters from configuration file as .ini
+  $params = parse_ini_file('conf/kyudo.ini', true);
+  if ($params === false) {
+    throw new \Exception("Error reading ini configuration file");
+  }
+
+  //DB connection
+  $pdo = connect($params['database']);
+} catch (\PDOException $e) {
+  error_log("\PDO::Exception" . $e->getMessage());
+  echo ($e->getMessage());
+  echo ("... Under maintenance");
+  goto end;
 }
 
 // POSTのValidate
@@ -74,7 +83,6 @@ if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password']
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 } else {
   echo 'パスワードは半角英数字をそれぞれ1文字以上含んだ8文字以上で設定してください。';
-  echo 'よくないパスワード';
   goto end;
 }
 
