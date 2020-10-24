@@ -31,6 +31,7 @@ $row = confirm_email($pdo, $email);
 if (isset($row['email'])) {
   // Donothing
 } else {
+  echo 'メールアドレス又はパスワードが間違っています。';
   return false;
 }
 
@@ -40,7 +41,6 @@ if (password_verify($_POST['password'], $row['password'])) {
   $_SESSION['EMAIL'] = $row['email'];
   echo 'ログインしました';
 } else {
-  echo "test2";
   echo 'メールアドレス又はパスワードが間違っています。';
   return false;
 }
