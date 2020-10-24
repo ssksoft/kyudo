@@ -1,5 +1,10 @@
 <?php
-
+if (isset($_SESSION['EMAIL'])) {
+  // Do nothing
+} else {
+  echo 'SessionがTimeoutしました。';
+  exit;
+}
 require 'dbaccess.php';
 
 // Initialize

@@ -40,6 +40,7 @@ if (password_verify($_POST['password'], $row['password'])) {
   session_regenerate_id(true);
   $_SESSION['EMAIL'] = $row['email'];
   echo 'ログインしました';
+  echo "<a href='/kyudo'>記録はこちら。</a>";
 } else {
   echo 'メールアドレス又はパスワードが間違っています。';
   return false;
