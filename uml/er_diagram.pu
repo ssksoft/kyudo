@@ -44,7 +44,6 @@ entity "ユーザデータテーブル（user_data_tbl）" as user_data_tbl {
   *id : serial NOT NULL PRIMARY KEY
   --
   email : text UNIQUE
-  team_name : text
   password : text
 }
 
