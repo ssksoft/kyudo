@@ -6,3 +6,11 @@ admin.site.register(Match)
 admin.site.register(Player)
 admin.site.register(Hit)
 admin.site.register(User)
+
+
+# class CompetitionAdmin(admin.ModelAdmin):
+#     list_display = ('id',)
+#     list_display_links = ('id',)
+
+
+# admin.site.register(Competition, CompetitionAdmin)
