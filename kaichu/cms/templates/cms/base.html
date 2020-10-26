@@ -1,9 +1,9 @@
 {% load i18n static %}
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html>{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset=" UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="{% static 'cms/css/bootstrap.min.css' %}">
   {% block extra_css %}{% endblock %}
@@ -16,8 +16,6 @@
     <font size="3">
     </font>
     <div class="left-column">
-      <!-- <a href="/kyudo/">トップ</a>
-      <a href="/kyudo/?mode=competition_list">大会を選択する</a> -->
     </div>
     <div>
       <blockquote>

@@ -18,10 +18,9 @@
     {% for competition in competitions %}
     <tr>
       <td>{{ competition.id }}</td>
+      <td>{{ competition.name }}</td>
       <td>
-      </td>
-      <td>
-        編集
+        <a href="{% url 'cms:edit_competition' %}">編集</a>
       </td>
       <td>
         削除
