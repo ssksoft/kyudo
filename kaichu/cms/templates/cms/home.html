@@ -1,0 +1,33 @@
+{% extends "cms/base.html" %}
+
+{% block content %}
+<h4 class="mt-4 border-bottom">ホーム</h4>
+
+
+<link rel="stylesheet" href="table.css">
+<table class="competition_table" border="1">
+  <thead>
+    <tr>
+      <th>大会ID</th>
+      <th>大会名</th>
+      <th>編集</th>
+      <th>削除</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for competition in competitions %}
+    <tr>
+      <td>{{ competition.id }}</td>
+      <td>
+      </td>
+      <td>
+        編集
+      </td>
+      <td>
+        削除
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
