@@ -11,22 +11,22 @@ def home(request):
 
 
 def edit_competition(request, competition_id=None):
-    return HttpResponse('aiai')
-    # if competition_id:
-    #     competition = get_object_or_404(Competition, pk=competition_id)
-    # else:
-    #     competition = Competition()
+    # return HttpResponse('aiai')
+    if competition_id:
+        competition = get_object_or_404(Competition, pk=competition_id)
+    else:
+        competition = Competition()
 
-    # if request.method == 'POST':
-    #     form = CompetitionForm(request.POST, instance=competition)
-    #     if form.is_valid():
-    #         book = form.save(commit=False)
-    #         book.save()
-    #         return redirect('cms:competition_list')
-    # else:
-    #     form = CompetitionForm(instance=competition)
+    if request.method == 'POST':
+        form = CompetitionForm(request.POST, instance=competition)
+        if form.is_valid():
+            book = form.save(commit=False)
+            book.save()
+            return redirect('cms:competition_list')
+    else:
+        form = CompetitionForm(instance=competition)
 
-    # return render(request, 'cms/edit_compatition.html', dict(form=form, competition_id=competition_id))
+    return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
 
 
 # def delete_competition(request, competition_id):
