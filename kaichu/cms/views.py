@@ -10,7 +10,7 @@ def home(request):
     return render(request, 'cms/home.html', {'competitions': competitions})
 
 
-def edit_competition(request):
+def edit_competition(request, competition_id=None):
     return HttpResponse('aiai')
     # if competition_id:
     #     competition = get_object_or_404(Competition, pk=competition_id)
