@@ -22,7 +22,7 @@ def edit_competition(request, competition_id=None):
         if form.is_valid():
             book = form.save(commit=False)
             book.save()
-            return redirect('cms:competition_list')
+            return redirect('cms:home')
     else:
         form = CompetitionForm(instance=competition)
 

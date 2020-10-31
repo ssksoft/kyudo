@@ -12,7 +12,7 @@
 </center>
 
 {% if competition_id %}
-<form action="{% url 'cms:mod_competition' competition_id=competition_id %}" method="post">
+<form action="{% url 'cms:edit_competition' competition_id=competition_id %}" method="post">
   {% else %}
   <form action="{% url 'cms:add_competition' %}" method="post"></form>
   {% endif %}
