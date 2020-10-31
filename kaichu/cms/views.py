@@ -3,6 +3,8 @@ from django.http import HttpResponse
 
 from cms.models import Competition
 from cms.forms import CompetitionForm
+from cms.models import Match
+# from cms.forms import CompetitionForm
 
 
 def home(request):
@@ -39,3 +41,9 @@ def delete_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     competition.delete()
     return redirect('cms:competition_list')
+
+
+def match_list(request, competition_id):
+    matches = Match.objects.all().order_by('id')
+    return render(request, 'cms/match_list.html', {'matches': matches})
+    # return render(request, 'cms/match_list.html', dict(competition_id=competition_id))

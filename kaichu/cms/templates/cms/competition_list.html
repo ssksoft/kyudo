@@ -1,9 +1,4 @@
 {% extends "cms/base.html" %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="table.css">
-{% endblock %}
-
 {% block content %}
 <h4 class="mt-4 border-bottom">ホーム</h4>
 <a href="{% url 'cms:add_competition' %}" class="btn btn-primary btn-sm my-3">追加</a>
@@ -20,7 +15,7 @@
     {% for competition in competitions %}
     <tr>
       <td>{{ competition.id }}</td>
-      <td>{{ competition.name }}</td>
+      <td><a href="{% url 'cms:match_list' competition_id=competition.id %}">{{ competition.name }}</a></td>
       <td>
         <a href="{% url 'cms:edit_competition' competition_id=competition.id %}"
           class="btn btn-outline-primary btn-sm">編集</a>
