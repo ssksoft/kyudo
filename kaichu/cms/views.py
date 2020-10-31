@@ -7,7 +7,13 @@ from cms.forms import CompetitionForm
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
-    return render(request, 'cms/home.html', {'competitions': competitions})
+    # return render(request, 'cms/home.html', {'competitions': competitions})
+    return render(request, 'cms/competition_list.html', {'competitions': competitions})
+
+
+def competition_list(request):
+    competitions = Competition.objects.all().order_by('id')
+    return render(request, 'cms/competition_list.html', {'competitions': competitions})
 
 
 def edit_competition(request, competition_id=None):
