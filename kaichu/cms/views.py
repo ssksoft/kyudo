@@ -26,9 +26,9 @@ def edit_competition(request, competition_id=None):
     if request.method == 'POST':
         form = CompetitionForm(request.POST, instance=competition)
         if form.is_valid():
-            book = form.save(commit=False)
-            book.save()
-            return redirect('cms:home')
+            competition = form.save(commit=False)
+            competition.save()
+            return redirect('cms:competition_list')
     else:
         form = CompetitionForm(instance=competition)
 

@@ -1,10 +1,13 @@
 {% extends "cms/base.html" %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="table.css">
+{% endblock %}
+
 {% block content %}
 <h4 class="mt-4 border-bottom">ホーム</h4>
+<a href="{% url 'cms:add_competition' %}" class="btn btn-primary btn-sm my-3">追加</a>
 
-
-<link rel="stylesheet" href="table.css">
 <table class="competition_table" border="1">
   <thead>
     <tr>
