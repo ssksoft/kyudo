@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.urls import reverse
+from urllib.parse import urlencode
 
 from cms.models import Competition
 from cms.forms import CompetitionForm
 from cms.models import Match
-# from cms.forms import CompetitionForm
+from cms.forms import MatchForm
 
 
 def home(request):
@@ -46,4 +48,25 @@ def delete_competition(request, competition_id):
 def match_list(request, competition_id):
     matches = Match.objects.all().order_by('id')
     return render(request, 'cms/match_list.html', {'matches': matches})
-    # return render(request, 'cms/match_list.html', dict(competition_id=competition_id))
+
+
+# def edit_match(request, competition_id, match_id=None):
+#     # return HttpResponse('aiai')
+#     if match_id:
+#         match = get_object_or_404(Match, pk=match_id)
+#     else:
+#         match = Match()
+
+#     if request.method == 'POST':
+#         form = MatchForm(request.POST, instance=match)
+#         if form.is_valid():
+#             match = form.save(commit=False)
+#             match.save()
+#             redirect_url = reverse('cms:match_list')
+#             parameter = urlencode({'competition_id': competition_id})
+#             url = f'{redirect_url}?{parameter}'
+#             return redirect(url)
+#     else:
+#         form = MatchForm(instance=match)
+
+#     return render(request, 'cms/edit_match.html', dict(form=form, match_id=match_id))

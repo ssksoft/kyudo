@@ -15,7 +15,7 @@ class Match(models.Model):
     name = models.CharField('試合名', max_length=255)
 
     def __str__(self):
-        return self.match_name
+        return self.name
 
 
 class Player(models.Model):
