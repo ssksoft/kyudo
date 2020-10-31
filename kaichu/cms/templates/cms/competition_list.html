@@ -8,13 +8,12 @@
 <h4 class="mt-4 border-bottom">ホーム</h4>
 <a href="{% url 'cms:add_competition' %}" class="btn btn-primary btn-sm my-3">追加</a>
 
-<table class="competition_table" border="1">
+<table class="table table-striped table-bordered">
   <thead>
     <tr>
-      <th>大会ID</th>
-      <th>大会名</th>
-      <th>編集</th>
-      <th>削除</th>
+      <th scope="col">大会ID</th>
+      <th scope="col">大会名</th>
+      <th scope="col">操作</th>
     </tr>
   </thead>
   <tbody>
@@ -23,10 +22,10 @@
       <td>{{ competition.id }}</td>
       <td>{{ competition.name }}</td>
       <td>
-        <a href="{% url 'cms:edit_competition' competition_id=competition.id %}">編集</a>
-      </td>
-      <td>
-        <a href="{% url 'cms:delete_competition' competition_id=competition.id %}">削除</a>
+        <a href="{% url 'cms:edit_competition' competition_id=competition.id %}"
+          class="btn btn-outline-primary btn-sm">編集</a>
+        <a href="{% url 'cms:delete_competition' competition_id=competition.id %}"
+          class="btn btn-outline-danger btn-sm">削除</a>
       </td>
     </tr>
     {% endfor %}
