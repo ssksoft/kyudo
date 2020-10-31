@@ -9,4 +9,6 @@ urlpatterns = [
          views.edit_competition, name='add_competition'),
     path('edit_competition/<int:competition_id>',
          views.edit_competition, name='edit_competition'),
+    path('delete_competition/<int:competition_id>',
+         views.delete_competition, name='delete_competition'),
 ]

@@ -26,7 +26,7 @@
         <a href="{% url 'cms:edit_competition' competition_id=competition.id %}">編集</a>
       </td>
       <td>
-        削除
+        <a href="{% url 'cms:delete_competition' competition_id=competition.id %}">削除</a>
       </td>
     </tr>
     {% endfor %}

@@ -35,7 +35,7 @@ def edit_competition(request, competition_id=None):
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
 
 
-# def delete_competition(request, competition_id):
-#     competition = get_object_or_404(Competition, pk=competition_id)
-#     competition.delete()
-#     return redirect('cms:home')
+def delete_competition(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    competition.delete()
+    return redirect('cms:competition_list')
