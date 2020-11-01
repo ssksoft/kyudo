@@ -64,9 +64,8 @@ def edit_match(request, competition_id, match_id=None):
         if form.is_valid():
             match = form.save(commit=False)
             match.save()
-            return render(request, 'cms/match_list/2', dict(matches=matches, competition_id=competition_id))
+            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
     else:
         form = MatchForm(instance=match)
 
-    return render(request, 'cms/edit_match.html', dict(form=form, match_id=match_id))
-    # return HttpResponse('Hi')
+    return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
