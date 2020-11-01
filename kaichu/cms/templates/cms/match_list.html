@@ -16,7 +16,13 @@
     <tr>
       <td>{{ match.id }}</td>
       <td>{{ match.name }}</td>
-      <td></td>
+      <td>
+        <a href="{% url 'cms:edit_match' competition_id=competition_id match_id=match.id %}"
+          class="btn btn-outline-primary btn-sm">編集</a>
+
+        <a href="{% url 'cms:delete_match' competition_id=competition_id match_id=match.id %}"
+          class="btn btn-outline-danger btn-sm">削除</a>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
