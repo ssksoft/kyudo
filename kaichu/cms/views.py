@@ -77,3 +77,25 @@ def delete_match(request, competition_id, match_id):
     match.delete()
     matches = Match.objects.all().order_by('id')
     return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+
+
+def edit_hit(request, competition_id, match_id=None):
+    return HttpResponse('Hi')
+    # if match_id:
+    #     match = get_object_or_404(Match, pk=match_id)
+    # else:
+    #     match = Match()
+
+    # if request.method == 'POST':
+    #     form = MatchForm(request.POST, instance=match)
+    #     if form.is_valid():
+    #         match = form.save(commit=False)
+    #         match.save()
+    #         matches = Match.objects.all().order_by('id')
+    #         return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+    # else:
+    #     initial_dict = dict(
+    #         name='', competition=Competition.objects.get(id=competition_id))
+    #     form = MatchForm(instance=match, initial=initial_dict)
+
+    # return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))

@@ -1,0 +1,42 @@
+{% extends "cms/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}的中記録の編集{% endblock title %}
+
+{% block content %}
+{{ NUM_SHOT=4 }}
+
+<h4 class="mt-4 mb-5 border-bottom">的中記録の編集</h4>
+
+<form action="{% url 'cms:edit_hit' competition_id=competition_id match_id=match_id %}" method="post">
+  {% csrf_token %}
+  {% bootstrap_form form layout='horizontal' %}
+  <div class="form-group row">
+    <div class="offset-md-3 col-md-9">
+      <button type="submit" class="btn btn-primary">送信</button>
+    </div>
+  </div>
+</form>
+
+<table>
+  {% for current_shot in range(NUM_SHOT,0,1) %}
+  <tr>
+    {{current_shot}}
+    本目
+    <td>
+      {% for current_player in range(NUM_PLAYER) %}
+
+    <td> <select>
+        <option value="○">○</option>
+        <option value="×">×</option>
+        </option>
+    </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="{% url 'cms:match_list' competition_id=competition_id %}" class="btn btn-secondary btn-sm">
+  戻る
+</a>
+{% endblock content %}
