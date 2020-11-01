@@ -12,4 +12,4 @@ class CompetitionForm(ModelForm):
 class MatchForm(ModelForm):
     class Meta:
         model = Match
-        fields = ('name',)
+        fields = ('name', 'competition')

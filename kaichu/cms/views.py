@@ -52,7 +52,7 @@ def match_list(request, competition_id):
 
 
 def edit_match(request, competition_id, match_id=None):
-    competition_id = competition_id
+    # competition = get_object_or_404(Competition, pk=competition_id)
     matches = Match.objects.all().order_by('id')
     if match_id:
         match = get_object_or_404(Match, pk=match_id)
@@ -66,6 +66,8 @@ def edit_match(request, competition_id, match_id=None):
             match.save()
             return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
     else:
-        form = MatchForm(instance=match)
+        competition, _ = Competition.objects.get(name='国体')
+        initial_dict = dict(name='test', competition='国体')
+        form = MatchForm(instance=match, initial=initial_dict)
 
     return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
