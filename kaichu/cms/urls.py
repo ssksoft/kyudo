@@ -14,6 +14,6 @@ urlpatterns = [
          views.delete_competition, name='delete_competition'),
     path('match_list/<int:competition_id>',
          views.match_list, name='match_list'),
-    # path('add_match/<int:competition_id>/',
-    #      views.edit_match, name='add_match'),
+    path('add_match/',
+         views.edit_match, name='add_match'),
 ]

@@ -47,26 +47,25 @@ def delete_competition(request, competition_id):
 
 def match_list(request, competition_id):
     matches = Match.objects.all().order_by('id')
+    # return render(request, 'cms/match_list/2', dict(matches=matches, competition_id=competition_id))
     return render(request, 'cms/match_list.html', {'matches': matches})
 
 
-# def edit_match(request, competition_id, match_id=None):
-#     # return HttpResponse('aiai')
-#     if match_id:
-#         match = get_object_or_404(Match, pk=match_id)
-#     else:
-#         match = Match()
+def edit_match(request):
+    return HttpResponse('Hello')
+    # matches = Match.objects.all().order_by('id')
+    # if match_id:
+    #     match = get_object_or_404(Match, pk=match_id)
+    # else:
+    #     match = Match()
 
-#     if request.method == 'POST':
-#         form = MatchForm(request.POST, instance=match)
-#         if form.is_valid():
-#             match = form.save(commit=False)
-#             match.save()
-#             redirect_url = reverse('cms:match_list')
-#             parameter = urlencode({'competition_id': competition_id})
-#             url = f'{redirect_url}?{parameter}'
-#             return redirect(url)
-#     else:
-#         form = MatchForm(instance=match)
+    # if request.method == 'POST':
+    #     form = MatchForm(request.POST, instance=match)
+    #     if form.is_valid():
+    #         match = form.save(commit=False)
+    #         match.save()
+    #         return render(request, 'cms/match_list/2', dict(matches=matches, competition_id=competition_id))
+    # else:
+    #     form = MatchForm(instance=match)
 
-#     return render(request, 'cms/edit_match.html', dict(form=form, match_id=match_id))
+    # return render(request, 'cms/edit_match.html', dict(form=form, match_id=match_id))
