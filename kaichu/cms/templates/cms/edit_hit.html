@@ -13,16 +13,28 @@
     text-align: center;
   }
 
-  .btn.active {
-    background-color: #ccc;
-  }
-
-  .btn>span:last-of-type,
-  .btn.active>span:first-of-type {
+  .btn>span:nth-of-type(1) {
     display: none;
   }
 
-  .btn.active>span:last-of-type {
+  .btn>span:nth-of-type(2) {
+    display: none;
+  }
+
+  .btn.hit>span:nth-of-type(1) {
+    display: inline;
+  }
+
+  .btn.hit>span:nth-of-type(2) {
+    display: none;
+  }
+
+
+  .btn.miss>span:nth-of-type(1) {
+    display: none;
+  }
+
+  .btn.miss>span:nth-of-type(2) {
     display: inline;
   }
 </style>
@@ -30,7 +42,16 @@
   $(function () {
     $('.btn').on('click', function (event) {
       event.preventDefault();
-      $(this).toggleClass('active');
+      var classVal = $(this).attr('class')
+      if (classVal == 'btn') {
+        $(this).addClass('hit')
+      }
+      else if (classVal == 'btn hit') {
+        $(this).addClass('miss').removeClass('hit')
+      }
+      else if (classVal == 'btn miss') {
+        $(this).removeClass('miss')
+      }
     });
   });
 </script>
