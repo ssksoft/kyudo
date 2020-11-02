@@ -10,16 +10,52 @@
   {% for current_shot in shots %}
   <tr>
     <td>
-      {{ current_shot }}本目
+      {{current_shot}}本目
     </td>
+    {% for current_shooting_order in shooting_order %}
     <td>
       <select>
         <option value="○">○</option>
         <option value="×">×</option>
       </select>
     </td>
+    {% endfor %}
   </tr>
   {% endfor %}
+  <tr>
+    <td>選手名</td>
+    {% for current_shooting_order in shooting_order %}
+    <td>
+      a
+    </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td>立順</td>
+    {% for current_shooting_order in shooting_order %}
+    <td>
+      a
+    </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td>団体名</td>
+    {% for current_shooting_order in shooting_order %}
+    <td>
+      a
+    </td>
+    {% endfor %}
+  </tr>
+  <tr>
+    <td>射場</td>
+    {% for current_shooting_order in shooting_order %}
+    <td>
+      a
+    </td>
+    {% endfor %}
+  </tr>
+</table>
+
 </table>
 
 <a href="{% url 'cms:match_list' competition_id=competition_id %}" class="btn btn-secondary btn-sm">
