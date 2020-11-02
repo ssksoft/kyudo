@@ -8,6 +8,7 @@ from cms.forms import CompetitionForm
 from cms.models import Match
 from cms.forms import MatchForm
 from cms.models import Hit
+from cms.models import Player
 
 
 def home(request):
@@ -80,8 +81,13 @@ def delete_match(request, competition_id, match_id):
 
 
 def edit_hit(request, competition_id, match_id):
-    # try:
-    #     hits = get_object_or_404(Hit, match__id=match_id)
-    # except:
     hits = None
-    return render(request, 'cms/edit_hit.html', dict(competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+    return render(request, 'cms/edit_hit.html', dict(hits=hits, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+
+
+def get_players(request, competition_id, match_id):
+    player_id = request.POST.getlist('player_id')
+    print(player_id)
+    # player = get_object_or_404(Player, pk=player_id)
+    # return render(request, 'cms/edit_hit2.html', dict(player=player, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+    return HttpResponse('Hello')
