@@ -84,4 +84,4 @@ def edit_hit(request, competition_id, match_id):
     #     hits = get_object_or_404(Hit, match__id=match_id)
     # except:
     hits = None
-    return render(request, 'cms/edit_hit.html', dict(competition_id=competition_id, match_id=match_id))
+    return render(request, 'cms/edit_hit.html', dict(competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1]))
