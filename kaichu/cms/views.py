@@ -88,6 +88,5 @@ def edit_hit(request, competition_id, match_id):
 def get_players(request, competition_id, match_id):
     player_id = request.POST.getlist('player_id')
     print(player_id)
-    # player = get_object_or_404(Player, pk=player_id)
-    # return render(request, 'cms/edit_hit2.html', dict(player=player, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
-    return HttpResponse('Hello')
+    player = get_object_or_404(Player, pk=player_id[0])
+    return render(request, 'cms/edit_hit.html', dict(player=player, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
