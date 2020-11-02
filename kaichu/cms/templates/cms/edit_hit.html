@@ -1,4 +1,41 @@
 {% extends "cms/base.html" %}
+{% block extra_css %}
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<style>
+  .btn {
+    display: block;
+    width: 96px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #3692ff;
+    color: #fff;
+    text-align: center;
+  }
+
+  .btn.active {
+    background-color: #ccc;
+  }
+
+  .btn>span:last-of-type,
+  .btn.active>span:first-of-type {
+    display: none;
+  }
+
+  .btn.active>span:last-of-type {
+    display: inline;
+  }
+</style>
+<script>
+  $(function () {
+    $('.btn').on('click', function (event) {
+      event.preventDefault();
+      $(this).toggleClass('active');
+    });
+  });
+</script>
+{% endblock %}
+
 {% load bootstrap4 %}
 
 {% block title %}的中記録の編集{% endblock title %}
@@ -14,10 +51,10 @@
     </td>
     {% for current_shooting_order in shooting_order %}
     <td>
-      <select>
-        <option value="○">○</option>
-        <option value="×">×</option>
-      </select>
+      <div class="btn" data-text-default="Click" data-text-clicked="Done">
+        <span>〇</span>
+        <span>×</span>
+      </div>
     </td>
     {% endfor %}
   </tr>
