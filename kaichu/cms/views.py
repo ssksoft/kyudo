@@ -7,6 +7,7 @@ from cms.models import Competition
 from cms.forms import CompetitionForm
 from cms.models import Match
 from cms.forms import MatchForm
+from cms.models import Hit
 
 
 def home(request):
@@ -47,7 +48,6 @@ def delete_competition(request, competition_id):
 
 def match_list(request, competition_id):
     matches = Match.objects.all().order_by('id')
-    # return render(request, 'cms/match_list/2', dict(matches=matches, competition_id=competition_id))
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
 
 
@@ -79,23 +79,9 @@ def delete_match(request, competition_id, match_id):
     return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
 
 
-def edit_hit(request, competition_id, match_id=None):
-    return HttpResponse('Hi')
-    # if match_id:
-    #     match = get_object_or_404(Match, pk=match_id)
-    # else:
-    #     match = Match()
-
-    # if request.method == 'POST':
-    #     form = MatchForm(request.POST, instance=match)
-    #     if form.is_valid():
-    #         match = form.save(commit=False)
-    #         match.save()
-    #         matches = Match.objects.all().order_by('id')
-    #         return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
-    # else:
-    #     initial_dict = dict(
-    #         name='', competition=Competition.objects.get(id=competition_id))
-    #     form = MatchForm(instance=match, initial=initial_dict)
-
-    # return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
+def edit_hit(request, competition_id, match_id):
+    # try:
+    #     hits = get_object_or_404(Hit, match__id=match_id)
+    # except:
+    hits = None
+    return render(request, 'cms/edit_hit.html', dict(competition_id=competition_id, match_id=match_id), {'shot_range': range(4, 0, -1), 'player_range': range(6)})
