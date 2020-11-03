@@ -75,7 +75,7 @@
         {{current_shot}}本目
       </td>
       {% for current_shooting_order in shooting_order %}
-      <td>
+      <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
           <span>〇</span>
           <span>×</span>
@@ -86,23 +86,23 @@
     {% endfor %}
     <tr>
       <td>選手ID</td>
-      {% for current_shooting_order in shooting_order %}
-      <td>
+      {% for player in players %}
+      <td align="center">
+        {{player.id}}
       </td>
       {% endfor %}
-    </tr>
     <tr>
       <td>選手名</td>
       {% for player in players %}
-      <td>
-        {{player}}
+      <td align="center">
+        {{player.name}}
       </td>
       {% endfor %}
     </tr>
     <tr>
       <td>立順</td>
       {% for current_shooting_order in shooting_order %}
-      <td>
+      <td align="center">
         {{ current_shooting_order }}
         <input type="hidden" name="range[]" value= />
       </td>
@@ -110,19 +110,19 @@
     </tr>
     <tr>
       <td>団体名</td>
-      <td colspan="3">
+      <td colspan="3" align="center">
         東京都
       </td>
-      <td colspan="3">
+      <td colspan="3" align="center">
         京都府
       </td>
     </tr>
     <tr>
       <td>射場</td>
-      <td colspan="3">
+      <td colspan="3" align="center">
         第2射場
       </td>
-      <td colspan="3">
+      <td colspan="3" align="center">
         第1射場
       </td>
     </tr>
