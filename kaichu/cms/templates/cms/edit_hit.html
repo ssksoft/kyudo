@@ -66,7 +66,6 @@
 <h4 class="mt-4 mb-5 border-bottom">的中記録の編集</h4>
 
 {% if players %}
-{{players.0.name}}
 
 <form>
   <table class="table">
@@ -94,9 +93,9 @@
     </tr>
     <tr>
       <td>選手名</td>
-      {% for current_shooting_order in shooting_order %}
+      {% for player in players %}
       <td>
-        a
+        {{player}}
       </td>
       {% endfor %}
     </tr>
