@@ -44,6 +44,7 @@
       event.preventDefault();
       var classVal = $(this).attr('class')
       if (classVal == 'button') {
+        $(this).empty();
         $(this).append('<input type="hidden" name="hit[]" value= "〇"/>');
         $(this).append('〇');
       }
