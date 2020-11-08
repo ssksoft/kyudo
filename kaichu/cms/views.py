@@ -109,19 +109,7 @@ def save_hit(request, competition_id, match_id):
                                                              NUM_PLAYER + player]
 
         hit_records.append(copy.deepcopy(current_player_hit_record))
-        # hit_records.append(['〇', '×', '×', '×'])
-        # hit_records.append(['×', '×', '×', '×'])
-        # for shot in range(len(current_hit_record)):
-        #     if current_hit_record[shot] == '〇':
-        #         hit_record = hit_record + \
-        #             2 ** (len(current_hit_record) - 1 - shot)
-        #     else:
-        #         hit_record = hit_record
 
-    # return HttpResponse([hit_record_str, hit_records])
-    # return HttpResponse(hit_record_str[0])
-    # return HttpResponse(hit_records[0])
-    # return HttpResponse(current_player_hit_record)
     return HttpResponse(hit_records)
 
     # return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))

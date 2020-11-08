@@ -124,9 +124,7 @@
   </table>
   <br />
   {% csrf_token %}
-  <div class="offset-md-3 col-md-9">
-    <button type="submit" class="btn btn-primary">送信</button>
-  </div>
+  <button type="submit" class="btn btn-primary">記録を保存する</button>
 </form>
 {% else %}
 <form action="{% url 'cms:get_players' competition_id=competition_id match_id=match_id %}" method="POST">
