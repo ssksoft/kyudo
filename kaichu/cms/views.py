@@ -92,3 +92,32 @@ def get_players(request, competition_id, match_id):
         players.append(get_object_or_404(Player, pk=player_id))
 
     return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+
+
+def save_hit(request, competition_id, match_id):
+    hit_record_str = request.POST.getlist('hit')
+
+    current_player_hit_record = ['×', '×', '×', '×']
+    hit_records = []
+    NUM_PLAYER = 6
+    NUM_SHOT = 4
+    for player in range(NUM_PLAYER):
+        for shot in range(NUM_SHOT):
+            current_player_hit_record[shot] = hit_record_str[shot *
+                                                             NUM_PLAYER + player]
+        hit_records.append(current_player_hit_record)
+        # hit_records.append(['×', '×', '×', '×'])
+        # for shot in range(len(current_hit_record)):
+        #     if current_hit_record[shot] == '〇':
+        #         hit_record = hit_record + \
+        #             2 ** (len(current_hit_record) - 1 - shot)
+        #     else:
+        #         hit_record = hit_record
+
+    # return HttpResponse([hit_record_str, hit_records])
+    # return HttpResponse(hit_record_str[0])
+    # return HttpResponse(hit_records[0])
+    # return HttpResponse(current_player_hit_record)
+    return HttpResponse(hit_records)
+
+    # return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))

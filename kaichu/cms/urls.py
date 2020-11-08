@@ -24,4 +24,6 @@ urlpatterns = [
          views.edit_hit, name='edit_hit'),
     path('get_players/<int:competition_id>/<int:match_id>',
          views.get_players, name='get_players'),
+    path('save_hit/<int:competition_id>/<int:match_id>',
+         views.save_hit, name='save_hit'),
 ]
