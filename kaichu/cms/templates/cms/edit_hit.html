@@ -34,7 +34,7 @@
       else if (classVal == 'button miss') {
         $(this).removeClass('miss')
         $(this).empty()
-        $(this).append('<input type="hidden" name="hit" value= "a"/>')
+        $(this).append('<input type="hidden" name="hit" value= " "/>')
       }
     });
   });
@@ -60,7 +60,7 @@
       {% for current_shooting_order in shooting_order %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
-          <input type="hidden" name="hit" value="a" />
+          <input type="hidden" name="hit" value=" " />
         </div>
       </td>
       {% endfor %}

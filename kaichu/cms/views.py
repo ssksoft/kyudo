@@ -10,6 +10,8 @@ from cms.forms import MatchForm
 from cms.models import Hit
 from cms.models import Player
 
+import copy
+
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
@@ -105,7 +107,9 @@ def save_hit(request, competition_id, match_id):
         for shot in range(NUM_SHOT):
             current_player_hit_record[shot] = hit_record_str[shot *
                                                              NUM_PLAYER + player]
-        hit_records.append(current_player_hit_record)
+
+        hit_records.append(copy.deepcopy(current_player_hit_record))
+        # hit_records.append(['〇', '×', '×', '×'])
         # hit_records.append(['×', '×', '×', '×'])
         # for shot in range(len(current_hit_record)):
         #     if current_hit_record[shot] == '〇':
