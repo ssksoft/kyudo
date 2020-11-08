@@ -44,7 +44,8 @@
       event.preventDefault();
       var classVal = $(this).attr('class')
       if (classVal == 'button') {
-        $(this).addClass('hit')
+        $(this).append('<input type="hidden" name="hit[]" value= "〇"/>');
+        $(this).append('〇');
       }
       else if (classVal == 'button hit') {
         $(this).addClass('miss').removeClass('hit')
@@ -68,6 +69,29 @@
 {% if players %}
 
 <form>
+  <div id="div1"></div>
+  <input type="button" value="追加" onclick="clickBtn1()">
+  <input type="button" value="削除" onclick="clickBtn2()">
+
+  <script>
+    function clickBtn1() {
+      const div1 = document.getElementById("div1");
+      // 要素の追加
+      if (!div1.hasChildNodes()) {
+        const p1 = document.createElement("p");
+        const text1 = document.createTextNode("テスト");
+        p1.appendChild(text1);
+        div1.appendChild(p1);
+      }
+    }
+    function clickBtn2() {
+      // 要素の削除
+      const div1 = document.getElementById("div1");
+      if (div1.hasChildNodes()) {
+        div1.removeChild(div1.firstChild);
+      }
+    }
+  </script>
   <table class="table">
     {% for current_shot in shots %}
     <tr>
@@ -110,12 +134,25 @@
     </tr>
     <tr>
       <td>団体名</td>
+      {% if players.0.team_name == players.1.team_name %}
       <td colspan="3" align="center">
-        東京都
+        {{players.0.team_name}}
       </td>
+      {% else %}
       <td colspan="3" align="center">
-        京都府
+        {{players.0.team_name}}
+        {{players.1.team_name}}
+        {{players.2.team_name}}
       </td>
+      {% endif %}
+      {% if players.3.team_name == players.4.team_name == players.5.team_name%}
+      <td colspan="3" align="center">
+        {{players.3.team_name}}
+      </td>
+      {% else %}
+      <td colspan="3" align="center">
+      </td>
+      {% endif %}
     </tr>
     <tr>
       <td>射場</td>
@@ -140,14 +177,6 @@
       {% endfor %}
     </tr>
     <tr>
-      <td>選手名</td>
-      {% for current_shooting_order in shooting_order %}
-      <td>
-        a
-      </td>
-      {% endfor %}
-    </tr>
-    <tr>
       <td>立順</td>
       {% for current_shooting_order in shooting_order %}
       <td>
@@ -155,15 +184,6 @@
         <input type="hidden" name="range[]" value= />
       </td>
       {% endfor %}
-    </tr>
-    <tr>
-      <td>団体名</td>
-      <td colspan="3">
-        東京都
-      </td>
-      <td colspan="3">
-        京都府
-      </td>
     </tr>
     <tr>
       <td>射場</td>
