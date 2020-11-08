@@ -13,30 +13,6 @@
     justify-content: center;
     align-items: center;
   }
-
-  .button>span:nth-of-type(1) {
-    display: none;
-  }
-
-  .button>span:nth-of-type(2) {
-    display: none;
-  }
-
-  .button.hit>span:nth-of-type(1) {
-    display: inline;
-  }
-
-  .button.hit>span:nth-of-type(2) {
-    display: none;
-  }
-
-  .button.miss>span:nth-of-type(1) {
-    display: none;
-  }
-
-  .button.miss>span:nth-of-type(2) {
-    display: inline;
-  }
 </style>
 <script>
   $(function () {
@@ -44,15 +20,21 @@
       event.preventDefault();
       var classVal = $(this).attr('class')
       if (classVal == 'button') {
-        $(this).empty();
-        $(this).append('<input type="hidden" name="hit[]" value= "〇"/>');
-        $(this).append('〇');
+        $(this).addClass('hit')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit[]" value= "〇"/>')
+        $(this).append('〇')
       }
       else if (classVal == 'button hit') {
         $(this).addClass('miss').removeClass('hit')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit[]" value= "×"/>')
+        $(this).append('×')
       }
       else if (classVal == 'button miss') {
         $(this).removeClass('miss')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit[]" value= ""/>')
       }
     });
   });
@@ -102,8 +84,6 @@
       {% for current_shooting_order in shooting_order %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
-          <span>〇</span>
-          <span>×</span>
         </div>
       </td>
       {% endfor %}
