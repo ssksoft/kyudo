@@ -57,7 +57,7 @@
       <td>
         {{current_shot}}本目
       </td>
-      {% for current_shooting_order in shooting_order %}
+      {% for current_shooting_order in shoot_order %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
           <input type="hidden" name="hit" value=" " />
@@ -70,6 +70,7 @@
       <td>選手ID</td>
       {% for player in players %}
       <td align="center">
+        <input type="hidden" name="player_id" value={{ player.id }} />
         {{player.id}}
       </td>
       {% endfor %}
@@ -83,41 +84,42 @@
     </tr>
     <tr>
       <td>立順</td>
-      {% for current_shooting_order in shooting_order %}
+      {% for current_shoot_order in shoot_order %}
       <td align="center">
-        {{ current_shooting_order }}
-        <input type="hidden" name="range[]" value= />
+        {{ current_shoot_order }}
+        <input type="hidden" name="shoot_order" value={{ current_shoot_order }} />
       </td>
       {% endfor %}
     </tr>
     <tr>
       <td>団体名</td>
-      {% if players.0.team_name == players.1.team_name %}
+      {% if players.0.team_name == players.1.team_name and players.1.team_name == players.2.team_name and players.0.team_name == players.2.team_name %}
       <td colspan="3" align="center">
         {{players.0.team_name}}
       </td>
       {% else %}
       <td colspan="3" align="center">
-        {{players.0.team_name}}
-        {{players.1.team_name}}
-        {{players.2.team_name}}
+        団体名が一致していません
       </td>
       {% endif %}
-      {% if players.3.team_name == players.4.team_name == players.5.team_name%}
+      {% if players.3.team_name == players.4.team_name and players.4.team_name == players.5.team_name and players.3.team_name == players.5.team_name %}
       <td colspan="3" align="center">
         {{players.3.team_name}}
       </td>
       {% else %}
       <td colspan="3" align="center">
+        団体名が一致していません
       </td>
       {% endif %}
     </tr>
     <tr>
       <td>射場</td>
       <td colspan="3" align="center">
+        <input type="hidden" name="ground" value="2" />
         第2射場
       </td>
       <td colspan="3" align="center">
+        <input type="hidden" name="ground" value="1" />
         第1射場
       </td>
     </tr>

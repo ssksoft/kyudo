@@ -8,6 +8,7 @@ from cms.forms import CompetitionForm
 from cms.models import Match
 from cms.forms import MatchForm
 from cms.models import Hit
+from cms.forms import HitForm
 from cms.models import Player
 
 import copy
@@ -93,10 +94,31 @@ def get_players(request, competition_id, match_id):
     for player_id in players_id:
         players.append(get_object_or_404(Player, pk=player_id))
 
-    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
 
 
 def save_hit(request, competition_id, match_id):
+    player_ids = request.POST.getlist('player_id')
+    grounds = request.POST.getlist('ground'),
+    shoot_orders = request.POST.getlist('shoot_order'),
+    hit_records = request.POST.getlist('hit')
+    hit = Hit()
+    # forループで選手数分保存操作必要
+    for player in range(len(player_ids)):
+        hit_form_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            match=Match.objects.get(id=match_id),
+            player=Player.objects.get(id=player_ids[player]),
+            ground=grounds[player],
+            shoot_order=shoot_orders[player],
+            hit_record=hit_records[player])
+        form = HitForm(hit_form_dict, instance=hit)
+        if form.is_valid():
+            hit = form.save(commit=False)
+            hit.save()
+            matches = Match.objects.all().order_by('id')
+            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+
     hit_record_str = request.POST.getlist('hit')
 
     current_player_hit_record = ['×', '×', '×', '×']
@@ -109,6 +131,9 @@ def save_hit(request, competition_id, match_id):
                                                              NUM_PLAYER + player]
 
         hit_records.append(copy.deepcopy(current_player_hit_record))
+    match_initial_dict = dict(
+        name='', match=Competition.objects.get(id=competition_id))
+    competition = CompetitionForm(instance=competition, initial=initial_dict)
 
     return HttpResponse(hit_records)
 
