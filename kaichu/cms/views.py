@@ -98,28 +98,11 @@ def get_players(request, competition_id, match_id):
 
 
 def save_hit(request, competition_id, match_id):
-    player_ids = request.POST.getlist('player_id')
-    grounds = request.POST.getlist('ground'),
-    shoot_orders = request.POST.getlist('shoot_order'),
-    hit_records = request.POST.getlist('hit')
+    player_ids = request.POST.getlist('player_ids')
+    grounds = request.POST.getlist('grounds'),
+    shoot_orders = request.POST.getlist('shoot_orders'),
+    hit_records_post = request.POST.getlist('hit_records')
     hit = Hit()
-    # forループで選手数分保存操作必要
-    for player in range(len(player_ids)):
-        hit_form_dict = dict(
-            competition=Competition.objects.get(id=competition_id),
-            match=Match.objects.get(id=match_id),
-            player=Player.objects.get(id=player_ids[player]),
-            ground=grounds[player],
-            shoot_order=shoot_orders[player],
-            hit_record=hit_records[player])
-        form = HitForm(hit_form_dict, instance=hit)
-        if form.is_valid():
-            hit = form.save(commit=False)
-            hit.save()
-            matches = Match.objects.all().order_by('id')
-            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
-
-    hit_record_str = request.POST.getlist('hit')
 
     current_player_hit_record = ['×', '×', '×', '×']
     hit_records = []
@@ -127,14 +110,36 @@ def save_hit(request, competition_id, match_id):
     NUM_SHOT = 4
     for player in range(NUM_PLAYER):
         for shot in range(NUM_SHOT):
-            current_player_hit_record[shot] = hit_record_str[shot *
-                                                             NUM_PLAYER + player]
+            current_player_hit_record[shot] = hit_records_post[
+                (NUM_SHOT-shot-1) * NUM_PLAYER]
 
         hit_records.append(copy.deepcopy(current_player_hit_record))
-    match_initial_dict = dict(
-        name='', match=Competition.objects.get(id=competition_id))
-    competition = CompetitionForm(instance=competition, initial=initial_dict)
 
-    return HttpResponse(hit_records)
+    a = 0
+    # forループで選手数分保存操作必要
+    for player in range(len(player_ids)):
+        hit_form_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            match=Match.objects.get(id=match_id),
+            player=Player.objects.get(id=player_ids[player]),
+            ground=grounds[0][player],
+            shoot_order=shoot_orders[0][player],
+            hit=hit_records[player])
 
+        form = HitForm(hit_form_dict, instance=hit)
+        if form.is_valid():
+            hit = form.save(commit=False)
+            hit.save()
+            matches = Match.objects.all().order_by('id')
+            # return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+            a = 1
+
+    return HttpResponse(a)
+
+    # match_initial_dict = dict(
+    #     name='', match=Competition.objects.get(id=competition_id))
+    # competition = CompetitionForm(instance=competition, initial=initial_dict)
+
+    # return HttpResponse(hit_records)
+    # return HttpResponse([hit_records_post[0], player_ids, grounds, shoot_orders, hit_records[1]])
     # return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))

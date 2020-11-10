@@ -22,19 +22,19 @@
       if (classVal == 'button') {
         $(this).addClass('hit')
         $(this).empty()
-        $(this).append('<input type="hidden" name="hit" value= "〇"/>')
+        $(this).append('<input type="hidden" name="hit_records" value= "〇"/>')
         $(this).append('〇')
       }
       else if (classVal == 'button hit') {
         $(this).addClass('miss').removeClass('hit')
         $(this).empty()
-        $(this).append('<input type="hidden" name="hit" value= "×"/>')
+        $(this).append('<input type="hidden" name="hit_records" value= "×"/>')
         $(this).append('×')
       }
       else if (classVal == 'button miss') {
         $(this).removeClass('miss')
         $(this).empty()
-        $(this).append('<input type="hidden" name="hit" value= " "/>')
+        $(this).append('<input type="hidden" name="hit_records" value= " "/>')
       }
     });
   });
@@ -60,7 +60,7 @@
       {% for current_shooting_order in shoot_order %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
-          <input type="hidden" name="hit" value=" " />
+          <input type="hidden" name="hit_records" value=" " />
         </div>
       </td>
       {% endfor %}
@@ -70,7 +70,7 @@
       <td>選手ID</td>
       {% for player in players %}
       <td align="center">
-        <input type="hidden" name="player_id" value={{ player.id }} />
+        <input type="hidden" name="player_ids" value={{ player.id }} />
         {{player.id}}
       </td>
       {% endfor %}
@@ -87,7 +87,7 @@
       {% for current_shoot_order in shoot_order %}
       <td align="center">
         {{ current_shoot_order }}
-        <input type="hidden" name="shoot_order" value={{ current_shoot_order }} />
+        <input type="hidden" name="shoot_orders" value={{ current_shoot_order }} />
       </td>
       {% endfor %}
     </tr>
@@ -115,11 +115,15 @@
     <tr>
       <td>射場</td>
       <td colspan="3" align="center">
-        <input type="hidden" name="ground" value="2" />
+        <input type="hidden" name="grounds" value="2" />
+        <input type="hidden" name="grounds" value="2" />
+        <input type="hidden" name="grounds" value="2" />
         第2射場
       </td>
       <td colspan="3" align="center">
-        <input type="hidden" name="ground" value="1" />
+        <input type="hidden" name="grounds" value="1" />
+        <input type="hidden" name="grounds" value="1" />
+        <input type="hidden" name="grounds" value="1" />
         第1射場
       </td>
     </tr>
