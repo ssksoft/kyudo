@@ -114,7 +114,6 @@ def save_hit(request, competition_id, match_id):
 
         hit_records.append(copy.deepcopy(current_player_hit_record))
 
-    a = 0
     # forループで選手数分保存操作必要
     for player in range(len(player_ids)):
         hit_form_dict = dict(
@@ -129,15 +128,6 @@ def save_hit(request, competition_id, match_id):
         if form.is_valid():
 
             hit.save()
-            # return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
-            a = a + 1
 
-    return HttpResponse(a)
-
-    # match_initial_dict = dict(
-    #     name='', match=Competition.objects.get(id=competition_id))
-    # competition = CompetitionForm(instance=competition, initial=initial_dict)
-
-    # return HttpResponse(hit_records)
-    # return HttpResponse([hit_records_post[0], player_ids, grounds, shoot_orders, hit_records[1]])
-    # return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+    matches = Match.objects.all().order_by('id')
+    return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
