@@ -102,7 +102,6 @@ def save_hit(request, competition_id, match_id):
     grounds = request.POST.getlist('grounds'),
     shoot_orders = request.POST.getlist('shoot_orders'),
     hit_records_post = request.POST.getlist('hit_records')
-    hit = Hit()
 
     current_player_hit_record = ['×', '×', '×', '×']
     hit_records = []
@@ -125,14 +124,13 @@ def save_hit(request, competition_id, match_id):
             ground=grounds[0][player],
             shoot_order=shoot_orders[0][player],
             hit=hit_records[player])
-
+        hit = Hit()
         form = HitForm(hit_form_dict, instance=hit)
         if form.is_valid():
-            hit = form.save(commit=False)
+
             hit.save()
-            matches = Match.objects.all().order_by('id')
             # return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
-            a = 1
+            a = a + 1
 
     return HttpResponse(a)
 
