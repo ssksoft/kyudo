@@ -118,6 +118,9 @@ def save_hit(request, competition_id, match_id):
     # 記録の保存
     hit_form_dict = []
     a = 0
+    existing_hit_records = Hit.objects.filter(match_id=match_id)
+    num_existing_record = existing_hit_records.count()
+    # return HttpResponse(existing_hit_records.count())
     for player in range(len(player_ids)):
         # 現在の選手の的中記録を辞書型で整理
         hit_form_dict = dict(
@@ -128,22 +131,21 @@ def save_hit(request, competition_id, match_id):
             shoot_order=shoot_orders[0][player],
             hit=hit_records[player])
 
-        # existing_hit_records = Hit.objects.filter(match_id=match_id)
-        # if existing_hit_records.count():
-        #     # 更新処理
-        #     hits = Hit.objects.filter(
-        #         match_id=match_id).order_by('id').values()
-        #     hit_id = hits[player]['id']
-        #     hit = get_object_or_404(Hit, pk=hit_id)
-        #     form = HitForm(hit_form_dict, instance=hit)
+        if num_existing_record > 0:
+            # 更新処理
+            hits = Hit.objects.filter(
+                match_id=match_id).order_by('id').values()
+            hit_id = hits[player]['id']
+            hit = get_object_or_404(Hit, pk=hit_id)
+            form = HitForm(hit_form_dict, instance=hit)
 
-        # else:
-        #     # 新規追加
-        #     hit = Hit()
-        #     form = HitForm(hit_form_dict, instance=hit)
+        else:
+            # 新規追加
+            hit = Hit()
+            form = HitForm(hit_form_dict, instance=hit)
 
-        hit = Hit()
-        form = HitForm(hit_form_dict, instance=hit)
+        # hit = Hit()
+        # form = HitForm(hit_form_dict, instance=hit)
 
         if form.is_valid():
             a = a+1
