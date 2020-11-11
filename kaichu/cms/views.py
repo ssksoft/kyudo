@@ -144,17 +144,11 @@ def save_hit(request, competition_id, match_id):
             hit = Hit()
             form = HitForm(hit_form_dict, instance=hit)
 
-        # hit = Hit()
-        # form = HitForm(hit_form_dict, instance=hit)
-
         if form.is_valid():
             a = a+1
             hit_save_obj = form.save()
             hit_save_obj.save()
 
-    return HttpResponse(a)
-    # return HttpResponse(form)
-
-    # matches = Match.objects.filter(
-    #     competition_id=competition_id).values()
-    # return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
+    matches = Match.objects.filter(
+        competition_id=competition_id).values()
+    return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
