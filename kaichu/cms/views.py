@@ -51,7 +51,9 @@ def delete_competition(request, competition_id):
 
 
 def match_list(request, competition_id):
-    matches = Match.objects.all().order_by('id')
+    matches = Match.objects.filter(
+        competition_id=competition_id).values()
+
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
 
 
@@ -114,7 +116,7 @@ def save_hit(request, competition_id, match_id):
 
         hit_records.append(copy.deepcopy(current_player_hit_record))
 
-    # forループで選手数分保存操作必要
+    # 記録の保存
     for player in range(len(player_ids)):
         hit_form_dict = dict(
             competition=Competition.objects.get(id=competition_id),
@@ -126,7 +128,6 @@ def save_hit(request, competition_id, match_id):
         hit = Hit()
         form = HitForm(hit_form_dict, instance=hit)
         if form.is_valid():
-
             hit.save()
 
     matches = Match.objects.all().order_by('id')
