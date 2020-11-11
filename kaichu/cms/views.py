@@ -137,9 +137,11 @@ def save_hit(request, competition_id, match_id):
             # 更新処理
             hits = Hit.objects.filter(match_id=match_id).order_by('id')
             hit = hits[player]
+            # return HttpResponse(hit)
         else:
             # 新規追加
             hit = Hit()
+
         form = HitForm(hit_form_dict, instance=hit)
         if form.is_valid():
             hit.save()
