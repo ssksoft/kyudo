@@ -117,9 +117,8 @@ def save_hit(request, competition_id, match_id):
 
     # 記録の保存
     hit_form_dict = []
+    a = 0
     for player in range(len(player_ids)):
-        existing_hit_records = Hit.objects.filter(match_id=match_id)
-
         # 現在の選手の的中記録を辞書型で整理
         hit_form_dict = dict(
             competition=Competition.objects.get(id=competition_id),
@@ -129,23 +128,31 @@ def save_hit(request, competition_id, match_id):
             shoot_order=shoot_orders[0][player],
             hit=hit_records[player])
 
-        if existing_hit_records.count():
-            # 更新処理
-            hits = Hit.objects.filter(
-                match_id=match_id).order_by('id').values()
-            hit_id = hits[player]['id']
-            hit = get_object_or_404(Hit, pk=hit_id)
-            form = HitForm(hit_form_dict, instance=hit)
+        # existing_hit_records = Hit.objects.filter(match_id=match_id)
+        # if existing_hit_records.count():
+        #     # 更新処理
+        #     hits = Hit.objects.filter(
+        #         match_id=match_id).order_by('id').values()
+        #     hit_id = hits[player]['id']
+        #     hit = get_object_or_404(Hit, pk=hit_id)
+        #     form = HitForm(hit_form_dict, instance=hit)
 
-        else:
-            # 新規追加
-            hit = Hit()
-            form = HitForm(hit_form_dict, instance=hit)
+        # else:
+        #     # 新規追加
+        #     hit = Hit()
+        #     form = HitForm(hit_form_dict, instance=hit)
 
-    if form.is_valid():
-        hit_save_obj = form.save(commit=False)
-        hit_save_obj.save()
+        hit = Hit()
+        form = HitForm(hit_form_dict, instance=hit)
 
-    matches = Match.objects.filter(
-        competition_id=competition_id).values()
-    return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
+        if form.is_valid():
+            a = a+1
+            hit_save_obj = form.save()
+            hit_save_obj.save()
+
+    return HttpResponse(a)
+    # return HttpResponse(form)
+
+    # matches = Match.objects.filter(
+    #     competition_id=competition_id).values()
+    # return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
