@@ -16,7 +16,6 @@ import copy
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
-    # return render(request, 'cms/home.html', {'competitions': competitions})
     return render(request, 'cms/competition_list.html', {'competitions': competitions})
 
 
@@ -26,7 +25,6 @@ def competition_list(request):
 
 
 def edit_competition(request, competition_id=None):
-    # return HttpResponse('aiai')
     if competition_id:
         competition = get_object_or_404(Competition, pk=competition_id)
     else:
@@ -108,7 +106,6 @@ def save_hit(request, competition_id, match_id):
 
     # 的中記録の整形
     current_player_hit_record = ['×', '×', '×', '×']
-    # current_player_hit_record = []
     hit_records = []
     NUM_PLAYER = 6
     NUM_SHOT = 4
@@ -140,7 +137,6 @@ def save_hit(request, competition_id, match_id):
                 match_id=match_id).order_by('id').values()
             hit_id = hits[player]['id']
             hit = get_object_or_404(Hit, pk=hit_id)
-            # return HttpResponse(hits[0]['id'])
             form = HitForm(hit_form_dict, instance=hit)
 
         else:
@@ -151,16 +147,6 @@ def save_hit(request, competition_id, match_id):
         if form.is_valid():
             hit = form.save(commit=False)
             hit.save()
-
-    # return HttpResponse(hit_form_dict)
-    # return HttpResponse(len(hit_form_dict))
-    # return HttpResponse(a)
-    # return HttpResponse(len(hit_records[0:4]))
-    # return HttpResponse(hit_records[0])
-    # return HttpResponse('a')
-
-    # return HttpResponse(current_player_hit_record)
-    # return HttpResponse(hit_records_post[18])
 
     matches = Match.objects.filter(
         competition_id=competition_id).values()
