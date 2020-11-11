@@ -135,9 +135,11 @@ def save_hit(request, competition_id, match_id):
 
         if existing_hit_records.count():
             # 更新処理
-            hits = Hit.objects.filter(match_id=match_id).order_by('id')
-            hit = hits[player]
-            # return HttpResponse(hit)
+            hits = Hit.objects.filter(
+                match_id=match_id).order_by('id').values()
+            hit_id = hits[player]['id']
+            hit = get_object_or_404(Hit, pk=hit_id)
+            return HttpResponse(hits[0]['id'])
         else:
             # 新規追加
             hit = Hit()
