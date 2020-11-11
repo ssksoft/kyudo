@@ -118,49 +118,50 @@ def save_hit(request, competition_id, match_id):
                 NUM_SHOT-1-shot) * NUM_PLAYER + player]
         hit_records.append(copy.deepcopy(current_player_hit_record))
 
-    # # 記録の保存
-    # a = 0
-    # hit_form_dict = []
-    # for player in range(len(player_ids)):
-    #     a = a+1
-    #     existing_hit_records = Hit.objects.filter(match_id=match_id)
+    # 記録の保存
+    a = 0
+    hit_form_dict = []
+    for player in range(len(player_ids)):
+        a = a+1
+        existing_hit_records = Hit.objects.filter(match_id=match_id)
 
-    #     # 現在の選手の的中記録を辞書型で整理
-    #     hit_form_dict.append(dict(
-    #         competition=Competition.objects.get(id=competition_id),
-    #         match=Match.objects.get(id=match_id),
-    #         player=Player.objects.get(id=player_ids[player]),
-    #         ground=grounds[0][player],
-    #         shoot_order=shoot_orders[0][player],
-    #         hit=hit_records[player]))
+        # 現在の選手の的中記録を辞書型で整理
+        hit_form_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            match=Match.objects.get(id=match_id),
+            player=Player.objects.get(id=player_ids[player]),
+            ground=grounds[0][player],
+            shoot_order=shoot_orders[0][player],
+            hit=hit_records[player])
 
-    #     if existing_hit_records.count():
-    #         # 更新処理
-    #         hits = Hit.objects.filter(
-    #             match_id=match_id).order_by('id').values()
-    #         hit_id = hits[player]['id']
-    #         hit = get_object_or_404(Hit, pk=hit_id)
-    #         # return HttpResponse(hits[0]['id'])
-    #         form = HitForm(hit_form_dict, instance=hit)
+        if existing_hit_records.count():
+            # 更新処理
+            hits = Hit.objects.filter(
+                match_id=match_id).order_by('id').values()
+            hit_id = hits[player]['id']
+            hit = get_object_or_404(Hit, pk=hit_id)
+            # return HttpResponse(hits[0]['id'])
+            form = HitForm(hit_form_dict, instance=hit)
 
-    #     else:
-    #         # 新規追加
-    #         hit = Hit()
-    #         form = HitForm(hit_form_dict, instance=hit)
+        else:
+            # 新規追加
+            hit = Hit()
+            form = HitForm(hit_form_dict, instance=hit)
 
-    #     if form.is_valid():
-    #         hit = form.save(commit=False)
-    #         hit.save()
+        if form.is_valid():
+            hit = form.save(commit=False)
+            hit.save()
 
     # return HttpResponse(hit_form_dict)
     # return HttpResponse(len(hit_form_dict))
     # return HttpResponse(a)
-    return HttpResponse(hit_records)
+    # return HttpResponse(len(hit_records[0:4]))
+    # return HttpResponse(hit_records[0])
+    # return HttpResponse('a')
 
     # return HttpResponse(current_player_hit_record)
     # return HttpResponse(hit_records_post[18])
 
-    # matches = Match.objects.filter(
-    #     competition_id=competition_id).values()
-
-    # return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
+    matches = Match.objects.filter(
+        competition_id=competition_id).values()
+    return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
