@@ -116,10 +116,8 @@ def save_hit(request, competition_id, match_id):
         hit_records.append(copy.deepcopy(current_player_hit_record))
 
     # 記録の保存
-    a = 0
     hit_form_dict = []
     for player in range(len(player_ids)):
-        a = a+1
         existing_hit_records = Hit.objects.filter(match_id=match_id)
 
         # 現在の選手の的中記録を辞書型で整理
@@ -144,9 +142,9 @@ def save_hit(request, competition_id, match_id):
             hit = Hit()
             form = HitForm(hit_form_dict, instance=hit)
 
-        if form.is_valid():
-            hit = form.save(commit=False)
-            hit.save()
+    if form.is_valid():
+        hit_save_obj = form.save(commit=False)
+        hit_save_obj.save()
 
     matches = Match.objects.filter(
         competition_id=competition_id).values()
