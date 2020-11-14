@@ -84,8 +84,30 @@ def delete_match(request, competition_id, match_id):
 
 
 def edit_hit(request, competition_id, match_id):
-    hits = None
-    return render(request, 'cms/edit_hit.html', dict(hits=hits, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shooting_order=[3, 2, 1, 3, 2, 1]))
+    if Hit.objects.filter(match_id=match_id).exists():
+        hits = Hit.objects.filter(match_id=match_id).order_by('id').values()
+        player_ids = []
+        for current_record in range(len(hits)):
+            player_ids.append(hits[current_record]['player_id'])
+
+        players = []
+        for player_id in player_ids:
+            players.append(get_object_or_404(Player, pk=player_id))
+
+        tmp = hits[0]['hit']
+        tmp2 = copy.deepcopy(tmp.split(','))
+
+        existing_hit = []
+        for i in range(6):
+            existing_hit.append({
+                'column': i,
+                'hit': tmp2})
+    else:
+        players = None
+        hits = None
+        existing_hit = None
+
+    return render(request, 'cms/edit_hit.html', dict(players=players, hits=hits, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hit=existing_hit))
 
 
 def get_players(request, competition_id, match_id):
@@ -113,14 +135,16 @@ def save_hit(request, competition_id, match_id):
         for shot in range(NUM_SHOT):
             current_player_hit_record[shot] = hit_records_post[(
                 NUM_SHOT-1-shot) * NUM_PLAYER + player]
-        hit_records.append(copy.deepcopy(current_player_hit_record))
+        hit_records.append(copy.deepcopy(''.join(current_player_hit_record)))
 
     # 記録の保存
     hit_form_dict = []
     a = 0
     existing_hit_records = Hit.objects.filter(match_id=match_id)
     num_existing_record = existing_hit_records.count()
-    # return HttpResponse(existing_hit_records.count())
+
+    # return HttpResponse(grounds)
+
     for player in range(len(player_ids)):
         # 現在の選手の的中記録を辞書型で整理
         hit_form_dict = dict(
