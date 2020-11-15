@@ -25,6 +25,10 @@ class HitForm(ModelForm):
 
 
 class PlayerForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PlayerForm, self).__init__(*args, **kwargs)
+        self.fields['competition'].disabled = True
+
     class Meta:
         model = Player
         fields = ('competition', 'name', 'team_name',
