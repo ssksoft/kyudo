@@ -133,12 +133,18 @@ def save_hit(request, competition_id, match_id):
     NUM_SHOT = 4
     for player in range(NUM_PLAYER):
         for shot in range(NUM_SHOT):
-            current_player_hit_record[shot] = hit_records_post[(
+            current_shot = hit_records_post[(
                 NUM_SHOT-1-shot) * NUM_PLAYER + player]
+            if current_shot == ' ':
+                current_player_hit_record[shot] = '-'
+            else:
+                current_player_hit_record[shot] = current_shot
+
         hit_records.append(copy.deepcopy(''.join(current_player_hit_record)))
-        hit_records[player] = [
-            element.replace(' ', '-') for element in current_player_hit_record]
+        # hit_records[player] = [
+        #     element.replace(' ', '-') for element in current_player_hit_record]
     # return HttpResponse(hit_records)
+
     # 記録の保存
     hit_form_dict = []
     a = 0
