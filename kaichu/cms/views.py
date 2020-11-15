@@ -10,6 +10,7 @@ from cms.forms import MatchForm
 from cms.models import Hit
 from cms.forms import HitForm
 from cms.models import Player
+from cms.forms import PlayerForm
 
 import copy
 
@@ -186,3 +187,35 @@ def save_hit(request, competition_id, match_id):
     matches = Match.objects.filter(
         competition_id=competition_id).values()
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
+
+
+def player_list(request, competition_id):
+    players = Player.objects.filter(
+        competition_id=competition_id).values()
+
+    return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+
+
+# def edit_player(request, competition_id, player_id=None):
+#     if player_id:
+#         player = get_object_or_404(Match, pk=player_id)
+#     else:
+#         player = Match()
+
+#     if request.method == 'POST':
+#         form = MatchForm(request.POST, instance=player)
+#         if form.is_valid():
+#             player = form.save(commit=False)
+#             player.save()
+#             matches = Match.objects.all().order_by('id')
+#             return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+#     else:
+#         initial_dict = dict(
+#             competition=Competition.objects.get(id=competition_id),
+#             name='',
+#             team_name='',
+#             dan='',
+#             rank='')
+#         form = PlayerForm(instance=player, initial=initial_dict)
+
+#     return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
