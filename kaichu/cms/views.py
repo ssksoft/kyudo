@@ -84,6 +84,9 @@ def delete_match(request, competition_id, match_id):
 
 
 def edit_hit(request, competition_id, match_id):
+    NUM_HIT = 4
+    NUM_PLAYER = 6
+
     if Hit.objects.filter(match_id=match_id).exists():
         hits = Hit.objects.filter(match_id=match_id).order_by('id').values()
         player_ids = []
@@ -94,20 +97,23 @@ def edit_hit(request, competition_id, match_id):
         for player_id in player_ids:
             players.append(get_object_or_404(Player, pk=player_id))
 
-        tmp = hits[0]['hit']
-        tmp2 = copy.deepcopy(tmp.split(','))
+        current_row_hits = ['×'] * NUM_PLAYER
+        existing_hits = []
 
-        existing_hit = []
-        for i in range(6):
-            existing_hit.append({
-                'column': i,
-                'hit': tmp2})
+        # return HttpResponse(hits[1]['hit'][])
+        for current_shot in range(NUM_HIT-1, -1, -1):
+            for current_player in range(NUM_PLAYER):
+                current_row_hits[current_player] = hits[current_player]['hit'][current_shot]
+            existing_hits.append({
+                'shot_num': current_shot+1,
+                'hit': copy.deepcopy(current_row_hits)
+            })
+        # return HttpResponse(existing_hits)
     else:
         players = None
-        hits = None
-        existing_hit = None
+        existing_hits = None
 
-    return render(request, 'cms/edit_hit.html', dict(players=players, hits=hits, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hit=existing_hit))
+    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
 
 
 def get_players(request, competition_id, match_id):

@@ -52,16 +52,16 @@
 {% if players %}
 <form action="{% url 'cms:save_hit' competition_id=competition_id match_id=match_id %}" method="post">
   <table class="table">
-    {% for current_shot in shots %}
+    {% for current_shot in existing_hits %}
     <tr>
       <td>
-        {{current_shot}}本目
+        {{current_shot.shot_num}}本目
       </td>
-      {% for current_shooting_order in shoot_order %}
+      {% for current_player_hit in current_shot.hit %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
-          <input type="hidden" name="hit_records" value=" ">
-          <!-- {{ hits }} -->
+          <input type="hidden" name="hit_records" value={{ current_player_hit }}>
+          {{ current_player_hit }}
         </div>
       </td>
       {% endfor %}
