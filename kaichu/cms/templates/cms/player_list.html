@@ -17,15 +17,10 @@
     {% for player in players %}
     <tr>
       <td>{{ player.id }}</td>
-      <td>
-          {{ player.name }}
-      </td>
-      <td>
-      </td>
-      <td>
-      </td>
-      <td>
-      </td>
+      <td>{{ player.name }}</td>
+      <td>{{ player.team_name }}</td>
+      <td>{{ player.dan }}</td>
+      <td>{{ player.rank }}</td>
     </tr>
     {% endfor %}
   </tbody>
