@@ -198,12 +198,12 @@ def player_list(request, competition_id):
 
 def edit_player(request, competition_id, player_id=None):
     if player_id:
-        player = get_object_or_404(Match, pk=player_id)
+        player = get_object_or_404(Player, pk=player_id)
     else:
-        player = Match()
+        player = Player()
 
     if request.method == 'POST':
-        form = MatchForm(request.POST, instance=player)
+        form = PlayerForm(request.POST, instance=player)
         if form.is_valid():
             player = form.save(commit=False)
             player.save()
