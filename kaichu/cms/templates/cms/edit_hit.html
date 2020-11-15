@@ -52,6 +52,7 @@
 {% if players %}
 <form action="{% url 'cms:save_hit' competition_id=competition_id match_id=match_id %}" method="post">
   <table class="table">
+    {% if existing_hits %}
     {% for current_shot in existing_hits %}
     <tr>
       <td>
@@ -67,6 +68,22 @@
       {% endfor %}
     </tr>
     {% endfor %}
+    {% else %}
+    {% for current_shot in shots %}
+    <tr>
+      <td>
+        {{current_shot}}本目
+      </td>
+      {% for current_shot in shoot_order %}
+      <td align="center">
+        <div class="button" data-text-default="Click" data-text-clicked="Done">
+          <input type="hidden" name="hit_records" value=" ">
+        </div>
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+    {% endif %}
     <tr>
       <td>選手ID</td>
       {% for player in players %}
