@@ -12,9 +12,13 @@ class CompetitionForm(ModelForm):
 
 
 class MatchForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MatchForm, self).__init__(*args, **kwargs)
+        self.fields['competition'].disabled = True
+
     class Meta:
         model = Match
-        fields = ('name', 'competition')
+        fields = ('competition', 'name')
 
 
 class HitForm(ModelForm):

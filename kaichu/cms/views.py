@@ -71,7 +71,8 @@ def edit_match(request, competition_id, match_id=None):
             return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
     else:
         initial_dict = dict(
-            name='', competition=Competition.objects.get(id=competition_id))
+            name=match.name,
+            competition=Competition.objects.get(id=competition_id))
         form = MatchForm(instance=match, initial=initial_dict)
 
     return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
