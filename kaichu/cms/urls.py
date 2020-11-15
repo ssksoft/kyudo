@@ -26,10 +26,6 @@ urlpatterns = [
          views.get_players, name='get_players'),
     path('save_hit/<int:competition_id>/<int:match_id>',
          views.save_hit, name='save_hit'),
-    #     path('add_player/<int:competition_id>',
-    #          views.edit_player, name='add_player'),
-    #     path('edit_player/<int:competition_id>',
-    #          views.edit_player, name='edit_player'),
     path('player_list/<int:competition_id>',
          views.player_list, name='player_list')
 ]
