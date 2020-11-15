@@ -154,8 +154,6 @@ def save_hit(request, competition_id, match_id):
     existing_hit_records = Hit.objects.filter(match_id=match_id)
     num_existing_record = existing_hit_records.count()
 
-    # return HttpResponse(grounds)
-
     for player in range(len(player_ids)):
         # 現在の選手の的中記録を辞書型で整理
         hit_form_dict = dict(
@@ -212,10 +210,10 @@ def edit_player(request, competition_id, player_id=None):
     else:
         initial_dict = dict(
             competition=Competition.objects.get(id=competition_id),
-            name='',
-            team_name='',
-            dan='',
-            rank='')
+            name=player.name,
+            team_name=player.team_name,
+            dan=player.dan,
+            rank=player.rank)
         form = PlayerForm(instance=player, initial=initial_dict)
 
     return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
