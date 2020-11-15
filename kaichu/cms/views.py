@@ -100,7 +100,6 @@ def edit_hit(request, competition_id, match_id):
         current_row_hits = ['×'] * NUM_PLAYER
         existing_hits = []
 
-        # return HttpResponse(hits[1]['hit'][])
         for current_shot in range(NUM_HIT-1, -1, -1):
             for current_player in range(NUM_PLAYER):
                 current_row_hits[current_player] = hits[current_player]['hit'][current_shot]
@@ -108,7 +107,7 @@ def edit_hit(request, competition_id, match_id):
                 'shot_num': current_shot+1,
                 'hit': copy.deepcopy(current_row_hits)
             })
-        # return HttpResponse(existing_hits)
+
     else:
         players = None
         existing_hits = None
