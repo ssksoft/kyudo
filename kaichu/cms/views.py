@@ -194,3 +194,28 @@ def player_list(request, competition_id):
         competition_id=competition_id).values()
 
     return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+
+
+def edit_player(request, competition_id, player_id=None):
+    if player_id:
+        player = get_object_or_404(Match, pk=player_id)
+    else:
+        player = Match()
+
+    if request.method == 'POST':
+        form = MatchForm(request.POST, instance=player)
+        if form.is_valid():
+            player = form.save(commit=False)
+            player.save()
+            matches = Match.objects.all().order_by('id')
+            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+    else:
+        initial_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            name='',
+            team_name='',
+            dan='',
+            rank='')
+        form = PlayerForm(instance=player, initial=initial_dict)
+
+    return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
