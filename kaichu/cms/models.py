@@ -23,7 +23,7 @@ class Player(models.Model):
         Competition, verbose_name='大会', related_name='players', on_delete=models.CASCADE)
     name = models.CharField('選手名', max_length=255)
     team_name = models.CharField('団体名', max_length=255)
-    dan = models.CharField('段位', max_length=255)
+    dan = models.CharField('称号段位', max_length=255)
     rank = models.CharField('順位', max_length=255)
 
     def __str__(self):
