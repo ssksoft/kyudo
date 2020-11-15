@@ -29,5 +29,7 @@ urlpatterns = [
     path('add_player/<int:competition_id>',
          views.edit_player, name='add_player'),
     path('player_list/<int:competition_id>',
-         views.player_list, name='player_list')
+         views.player_list, name='player_list'),
+    path('edit_player/<int:competition_id>/<int:player_id>',
+         views.edit_player, name='edit_player')
 ]
