@@ -150,6 +150,18 @@
   {% csrf_token %}
   <button type="submit" class="btn btn-primary">記録を保存する</button>
 </form>
+<br>
+
+<form action="{% url 'cms:change_player' competition_id=competition_id match_id=match_id %}" method="post">
+  {% for player in players %}
+      <td align="center">
+        <input type="hidden" name="player_ids" value={{ player.id }} />
+      </td>
+  {% endfor %}
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">選手を変更する</button>
+</form>
+
 {% else %}
 <form action="{% url 'cms:get_players' competition_id=competition_id match_id=match_id %}" method="POST">
   <table class="table">

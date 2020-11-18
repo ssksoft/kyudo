@@ -218,3 +218,10 @@ def edit_player(request, competition_id, player_id=None):
         form = PlayerForm(instance=player, initial=initial_dict)
 
     return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
+
+
+def change_player(request, competition_id, match_id):
+    player_ids = request.POST.getlist('player_ids')
+    players = None
+    existing_hits = None
+    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
