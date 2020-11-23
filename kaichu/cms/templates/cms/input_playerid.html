@@ -1,0 +1,45 @@
+{% extends "cms/base.html" %}
+{% load bootstrap4 %}
+{% block title %}選手IDの入力{% endblock title %}
+{% block content %}
+
+<h4 class="mt-4 mb-5 border-bottom">選手IDの入力</h4>
+
+<form action="{% url 'cms:get_players' competition_id=competition_id match_id=match_id %}" method="POST">
+  <table class="table">
+    <tr>
+      <td>選手ID</td>
+      {% for player_id in player_ids %}
+      <td>
+        <input class="form-control" type="text" value={{ player_id}} name="player_id">
+      </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>立順</td>
+      {% for current_shooting_order in shoot_order %}
+      <td>
+        {{ current_shooting_order }}
+        <input type="hidden" name="range[]" value= />
+      </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>射場</td>
+      <td colspan="3">
+        第2射場
+      </td>
+      <td colspan="3">
+        第1射場
+      </td>
+    </tr>
+  </table>
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">的中記録開始</button>
+</form>
+<br>
+
+<a href="{% url 'cms:match_list' competition_id=competition_id %}" class="btn btn-secondary btn-sm">
+  戻る
+</a>
+{% endblock content %}
