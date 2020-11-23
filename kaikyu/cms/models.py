@@ -19,11 +19,26 @@ class Match(models.Model):
 
 
 class Player(models.Model):
+
+    DAN_CHOICES = [
+        ("初段", "初段"),
+        ("弐段", "弐段"),
+        ("参段", "参段"),
+        ("四段", "四段"),
+        ("五段", "五段"),
+        ("錬士五段", "錬士五段"),
+        ("錬士六段", "錬士六段"),
+        ("教士六段", "教士六段"),
+        ("教士七段", "教士七段"),
+        ("教士八段", "教士八段"),
+        ("範士八段", "範士八段")
+    ]
+
     competition = models.ForeignKey(
         Competition, verbose_name='大会', related_name='players', on_delete=models.CASCADE)
     name = models.CharField('選手名', max_length=255)
     team_name = models.CharField('団体名', max_length=255)
-    dan = models.CharField('称号段位', max_length=255)
+    dan = models.CharField('称号段位', max_length=255, choices=DAN_CHOICES)
     rank = models.CharField('順位', max_length=255)
 
     def __str__(self):
