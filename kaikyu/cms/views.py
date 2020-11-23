@@ -209,8 +209,10 @@ def edit_player(request, competition_id, player_id=None):
         if form.is_valid():
             player = form.save(commit=False)
             player.save()
-            matches = Match.objects.all().order_by('id')
-            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+
+            players = Player.objects.filter(
+                competition_id=competition_id).values()
+            return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
     else:
         initial_dict = dict(
             competition=Competition.objects.get(id=competition_id),
