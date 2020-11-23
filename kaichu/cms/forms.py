@@ -14,7 +14,7 @@ class CompetitionForm(ModelForm):
 class MatchForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(MatchForm, self).__init__(*args, **kwargs)
-        self.fields['competition'].disabled = True
+        self.fields['competition'].widget.attrs['readonly'] = 'readonly'
 
     class Meta:
         model = Match

@@ -89,6 +89,7 @@ def edit_hit(request, competition_id, match_id):
     NUM_HIT = 4
     NUM_PLAYER = 6
 
+    # 記録の編集
     if Hit.objects.filter(match_id=match_id).exists():
         hits = Hit.objects.filter(match_id=match_id).order_by('id').values()
         player_ids = []
@@ -110,9 +111,10 @@ def edit_hit(request, competition_id, match_id):
                 'hit': copy.deepcopy(current_row_hits)
             })
 
+    # 記録の追加
     else:
-        players = None
-        existing_hits = None
+        player_ids = None
+        return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
 
     return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
 
