@@ -31,7 +31,7 @@ class HitForm(ModelForm):
 class PlayerForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PlayerForm, self).__init__(*args, **kwargs)
-        self.fields['competition'].disabled = True
+        self.fields['competition'].widget.attrs['readonly'] = 'readonly'
 
     class Meta:
         model = Player
