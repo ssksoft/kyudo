@@ -3,6 +3,7 @@ from cms.models import Competition
 from cms.models import Match
 from cms.models import Hit
 from cms.models import Player
+from django import forms
 
 
 class CompetitionForm(ModelForm):

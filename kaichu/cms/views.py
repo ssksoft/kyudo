@@ -12,6 +12,7 @@ from cms.forms import HitForm
 from cms.models import Player
 from cms.forms import PlayerForm
 
+
 import copy
 
 
@@ -184,26 +185,6 @@ def save_hit(request, competition_id, match_id):
             a = a+1
             hit_save_obj = form.save()
             hit_save_obj.save()
-
-    # # 不要な記録の検索と削除
-    # saved_hit = Hit.objects.filter(
-    #     match_id=match_id)
-    # num_saved_hit = saved_hit.count()
-
-    # for num_current_hit_record in range(num_saved_hit):
-    #     for player_id in player_ids:
-    #         necessary_hit = Hit.objects.filter(
-    #             match_id=match_id, player_id=player_id)
-
-    #         # 保存対象の選手の記録
-    #         if(necessary_hit):
-    #             pass
-    #         # 削除対象の選手の記録
-    #         else:
-    #             return HttpResponse(player_id)
-    #             deleted_hit = existing_hit_records.objects.filter(
-    #                 player_id=player_id)
-    #             deleted_hit.delete()
 
     matches = Match.objects.filter(
         competition_id=competition_id).values()
