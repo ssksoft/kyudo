@@ -11,7 +11,8 @@
       <td>選手ID</td>
       {% for player_id in player_ids %}
       <td>
-        <input class="form-control" type="text" value={{ player_id}} name="player_id">
+        <input class="form-control" 
+        type="text" value="{{ player_id }}"  name="player_id">
       </td>
       {% endfor %}
     </tr>

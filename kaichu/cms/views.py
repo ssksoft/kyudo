@@ -113,7 +113,7 @@ def edit_hit(request, competition_id, match_id):
 
     # 記録の追加
     else:
-        player_ids = None
+        player_ids = ['']*NUM_PLAYER
         return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
 
     return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
