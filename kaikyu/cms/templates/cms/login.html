@@ -1,0 +1,8 @@
+<form action="cms/login" enctype="multipart/form-data" method="POST">
+  {% csrf_token %}
+  {{ login_form }}
+  <input type="submit" value="submit">
+</form>
+
+<a href="{% url 'cms:registration' %}">新規登録はこちら</a>
+

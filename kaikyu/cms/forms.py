@@ -38,3 +38,14 @@ class PlayerForm(ModelForm):
         model = Player
         fields = ('competition', 'name', 'team_name',
                   'dan', 'rank')
+
+
+class RegistrationForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()
+    email = forms.EmailField()
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()
