@@ -186,13 +186,15 @@ def save_hit(request, competition_id, match_id):
             hit_save_obj.save()
 
     # 不要な記録の検索と削除
-    current_hit_records = existing_hit_records.objects.filter(
-        player_id=player_ids)
-    num_current_hit_records = current_hit_records.count()
+    player_ids_num = [int(player_id) for player_id in player_ids]
+    saved_hit = Hit.objects.filter(
+        match_id=match_id, player_id__in=player_ids_num)
+    num_saved_hit = saved_hit.count()
 
-    for num_current_hit_record in num_current_hit_records:
+    for num_current_hit_record in range(num_saved_hit):
         for player_id in player_ids:
-            necessary_hit = num_current_hit_record.filter(player_id)
+            necessary_hit = Hit.objects.filter(
+                match_id=match_id, player_id=player_id)
 
             # 保存対象の選手の記録
             if(necessary_hit):
