@@ -185,6 +185,24 @@ def save_hit(request, competition_id, match_id):
             hit_save_obj = form.save()
             hit_save_obj.save()
 
+    # 不要な記録の検索と削除
+    current_hit_records = existing_hit_records.objects.filter(
+        player_id=player_ids)
+    num_current_hit_records = current_hit_records.count()
+
+    for num_current_hit_record in num_current_hit_records:
+        for player_id in player_ids:
+            necessary_hit = num_current_hit_record.filter(player_id)
+
+            # 保存対象の選手の記録
+            if(necessary_hit):
+                pass
+            # 削除対象の選手の記録
+            else:
+                deleted_hit = existing_hit_records.objects.filter(
+                    player_id=player_id)
+                deleted_hit.delete()
+
     matches = Match.objects.filter(
         competition_id=competition_id).values()
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
