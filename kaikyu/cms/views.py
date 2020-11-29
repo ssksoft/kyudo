@@ -37,16 +37,21 @@ def has_alphabet(text):
 
 def login_user(request):
     if request.method == 'POST':
-        login_form = LoginForm(request.POST)
-        username = login_form['username']
-        password = login_form['password']
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             django_login(request, user)
-            return HttpResponseRedirect('/new_post')
+            competitions = Competition.objects.all().order_by('id')
+            return HttpResponse("test")
+            return reverse("cms:home")
+
         else:
+            login_form = LoginForm(request.POST)
             login_form.add_error(None, "ユーザー名またはパスワードが異なります。")
             return render(request, 'cms/login.html', {'login_form': login_form})
+
         return render(request, 'cms/login.html', {'login_form': login_form})
     else:
         login_form = LoginForm()
