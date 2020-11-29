@@ -43,9 +43,7 @@ def login_user(request):
 
         if user is not None:
             django_login(request, user)
-            competitions = Competition.objects.all().order_by('id')
-            return HttpResponse("test")
-            return reverse("cms:home")
+            return redirect('/cms/home')
 
         else:
             login_form = LoginForm(request.POST)
