@@ -96,6 +96,9 @@ def edit_competition(request, competition_id=None):
         competition = Competition()
 
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('/accounts/login')
+
         form = CompetitionForm(request.POST, instance=competition)
         if form.is_valid():
             competition = form.save(commit=False)

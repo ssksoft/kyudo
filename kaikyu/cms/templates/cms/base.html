@@ -17,16 +17,9 @@
         KAIKYU
       </a>
     </h1>
-    <font size=" 3">
-    </font>
-    <div class="left-column">
-    </div>
-    <div>
-      <blockquote>
-        <hr size="1">
-      </blockquote>
-    </div>
-
+    <a class="nav-link">ユーザ名：{{ user.get_username }}</a>
+    <a class="nav-link" href="{% url 'accounts:logout' %}">ログアウト</a>
+    
     <div class="container">
       {% block content %}
       {{ content }}
