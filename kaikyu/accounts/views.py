@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import(
     LoginView, LogoutView
@@ -18,5 +18,4 @@ class Logout(LoginRequiredMixin, LogoutView):
 
 
 def index(request):
-    # return HttpResponse("hello")
-    return render(request, 'login.html')
+    return redirect(request, '/cms/home/html')
