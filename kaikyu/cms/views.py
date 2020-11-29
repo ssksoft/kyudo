@@ -38,8 +38,8 @@ def has_alphabet(text):
 def login_user(request):
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
-        username = login_form.username
-        password = login_form.password
+        username = login_form['username']
+        password = login_form['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             django_login(request, user)
