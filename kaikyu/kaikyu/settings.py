@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cms.apps.CmsConfig',
     'bootstrap4',
+    'user_sessions',
     'accounts.apps.AccountsConfig',
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'kaikyu.urls'
@@ -127,3 +129,5 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/cms/home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+SESSION_ENGINE = 'user_sessions.backends.db'
