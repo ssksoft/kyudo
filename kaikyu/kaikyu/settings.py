@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cms.apps.CmsConfig',
     'bootstrap4',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# LOGIN_URL = '/cms/login/'
+# LOGIN_REDIRECT_URL = '/cms/home/'
+# LOGOUT_REDIRECT_URL = '/cms/login/'
