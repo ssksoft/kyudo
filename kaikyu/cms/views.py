@@ -23,62 +23,6 @@ from django.contrib.auth import authenticate, login as django_login
 import copy
 
 
-def has_digit(text):
-    if re.search("\d", text):
-        return True
-    return False
-
-
-def has_alphabet(text):
-    if re.search("[a-zA-Z]", text):
-        return True
-    return False
-
-
-def login_user(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            django_login(request, user)
-            return redirect('/cms/home')
-
-        else:
-            login_form = LoginForm(request.POST)
-            login_form.add_error(None, "ユーザー名またはパスワードが異なります。")
-            return render(request, 'cms/login.html', {'login_form': login_form})
-
-        return render(request, 'cms/login.html', {'login_form': login_form})
-    else:
-        login_form = LoginForm()
-    return render(request, 'cms/login.html', {'login_form': login_form})
-
-    # アカウントとパスワードが合致したら、専用の画面に遷移する
-    # アカウントとパスワードが合致しなかったら、エラーメッセージ付きのログイン画面に遷移する
-
-
-def registration_user(request):
-    if request.method == 'POST':
-        registration_form = RegistrationForm(request.POST)
-        password = request.POST['password']
-        if len(password) < 8:
-            registration_form.add_error('password', "文字数が8文字未満です。")
-        if not has_digit(password):
-            registration_form.add_error('password', "数字が含まれていません")
-        if not has_alphabet(password):
-            registration_form.add_error('password', "アルファベットが含まれていません")
-        if registration_form.has_error('password'):
-            return render(request, 'cms/registration.html', {'registration_form': registration_form})
-        user = User.objects.create_user(
-            username=request.POST['username'], password=password, email=request.POST['email'])
-        return render(request, 'cms/login.html')
-    else:
-        registration_form = RegistrationForm()
-    return render(request, 'cms/registration.html', {'registration_form': registration_form})
-
-
 def home(request):
     competitions = Competition.objects.all().order_by('id')
     return render(request, 'cms/competition_list.html', {'competitions': competitions})
