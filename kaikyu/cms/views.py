@@ -19,6 +19,7 @@ from cms.forms import RegistrationForm
 from django.contrib.auth.models import User
 import re
 from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth.decorators import login_required
 
 import copy
 
@@ -54,9 +55,11 @@ def edit_competition(request, competition_id=None):
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
 
 
+@login_required
 def delete_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     competition.delete()
+
     return redirect('cms:competition_list')
 
 
