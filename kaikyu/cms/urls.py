@@ -34,6 +34,4 @@ urlpatterns = [
          views.edit_player, name='edit_player'),
     path('change_player/<int:competition_id>/<int:match_id>',
          views.change_player, name='change_player'),
-    path('login/', views.login_user, name='login'),
-    path("registration/", views.registration_user, name='registration')
 ]
