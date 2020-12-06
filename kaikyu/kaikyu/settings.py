@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'bootstrap4',
     'user_sessions',
     'accounts.apps.AccountsConfig',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +137,13 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 SESSION_ENGINE = 'user_sessions.backends.db'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.accounts.auth.backends.AuthenticationBackend',
+)
+
+# ログアウトリンクのクリック一回でログアウトする設定
+ACCOUNT_LOGOUT_ON_GET = True
