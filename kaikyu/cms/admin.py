@@ -18,11 +18,3 @@ class HitAdmin(admin.ModelAdmin):
 admin.site.register(Player, PlayerAdmin)
 admin.site.register(Hit, HitAdmin)
 admin.site.register(User)
-
-
-# class CompetitionAdmin(admin.ModelAdmin):
-#     list_display = ('id',)
-#     list_display_links = ('id',)
-
-
-# admin.site.register(Competition, CompetitionAdmin)

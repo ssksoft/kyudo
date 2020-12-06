@@ -132,7 +132,6 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/cms/home'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
