@@ -133,6 +133,7 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/cms/home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
 
@@ -140,7 +141,3 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
 SITE_ID = 1
-
-
-# ログアウトリンクのクリック一回でログアウトする設定
-ACCOUNT_LOGOUT_ON_GET = True
