@@ -131,3 +131,5 @@ LOGIN_REDIRECT_URL = '/cms/home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 SESSION_ENGINE = 'user_sessions.backends.db'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
