@@ -21,11 +21,11 @@
               <a class="nav-link">ユーザ名：{{ user.get_username }}</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'accounts:logout' %}">ログアウト</a>
+              <a class="nav-link" href="#">ログアウト</a>
             </li>
           {% else %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'accounts:login' %}">ログイン</a>
+              <a class="nav-link" href="#">ログイン</a>
             </li>
           {% endif %}
         </ul>
