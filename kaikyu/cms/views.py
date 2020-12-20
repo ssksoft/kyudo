@@ -12,11 +12,6 @@ from cms.forms import HitForm
 from cms.models import Player
 from cms.forms import PlayerForm
 
-
-from cms.forms import LoginForm
-from cms.forms import RegistrationForm
-
-from django.contrib.auth.models import User
 import re
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
