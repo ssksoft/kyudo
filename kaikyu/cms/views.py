@@ -30,25 +30,43 @@ def competition_list(request):
 
 
 @login_required
-def edit_competition(request, competition_id=None):
-    if competition_id:
-        competition = get_object_or_404(Competition, pk=competition_id)
-    else:
-        competition = Competition()
-
+def add_competition(request):
+    return HttpResponse('Hello')
+    competition = Competition()
     if request.method == 'POST':
-        if not request.user.is_authenticated:
-            return redirect('/accounts/login')
-
-        form = CompetitionForm(request.POST, instance=competition)
-        if form.is_valid():
-            competition = form.save(commit=False)
-            competition.save()
+        if(save_competition(request, competition)):
             return redirect('cms:competition_list')
+        else:
+            return HttpResponseRedirect('保存に失敗しました。')
     else:
         form = CompetitionForm(instance=competition)
 
+    return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
+
+
+@login_required
+def edit_competition(request, competition_id):
+    competition = get_object_or_404(Competition, pk=competition_id)
+    if request.method == 'POST':
+        if(save_competition(request, competition)):
+            return redirect('cms:competition_list')
+        else:
+            return HttpResponseRedirect('保存に失敗しました。')
+    else:
+        form = CompetitionForm(instance=competition)
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
+
+
+def save_competition(request, competition):
+    form = CompetitionForm(request.POST, instance=competition)
+    if form.is_valid():
+        competition = form.save(commit=True)
+        competition.save()
+        success_save_competition = 1
+    else:
+        success_save_competition = 0
+
+    return success_save_competition
 
 
 @login_required
