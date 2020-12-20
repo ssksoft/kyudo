@@ -29,6 +29,7 @@ def competition_list(request):
     return render(request, 'cms/competition_list.html', {'competitions': competitions})
 
 
+@login_required
 def edit_competition(request, competition_id=None):
     if competition_id:
         competition = get_object_or_404(Competition, pk=competition_id)
