@@ -1,0 +1,79 @@
+@startuml er_diagram
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "大会テーブル" as competition_tbl {
+  *competition_id : serial NOT NULL PRIMARY KEY UNIQUE
+  --
+  competition_name : text
+  competition_type : text
+}
+
+entity "試合テーブル" as match_tbl {
+  *match_id : serial NOT NULL PRIMARY KEY UNIQUE
+  --
+  *competition_id : <<FK>>
+  match_name : text
+}
+
+entity "的中記録テーブル" as hit_record_tbl {
+  --
+  *competition_id : <<FK>>
+  *match_id : <<FK>>
+  *player_id : text <<FK>>
+  range : text
+  shoot_order : text
+  hit_record : text
+}
+
+entity "選手テーブル" as player_tbl {
+  *player_id : serial NOT NULL PRIMARY KEY UNIQUE
+  --
+  *competition_id : <<FK>>
+  player_name : text
+  team_name : text
+  dan : text
+  rank : text
+}
+
+entity "ユーザテーブル" as user_tbl {
+  *id : serial NOT NULL PRIMARY KEY
+  --
+  password : text NOT NULL
+  last_login datetime
+  is_superuser bool NOT NULL
+  username text NOT NULL UNIQUE
+  lastname NOT NULL
+  email : text NOT NULL
+  is_staff bool NOT NULL
+  is_zctive bool NOT NULL
+  date_joined datetime NOT NULL
+  first_name text NOTNULL
+}
+
+entity "ユーザグループテーブル" as user_group_tbl {
+  *id : serial NOT NULL PRIMARY KEY
+  --
+}
+
+entity "ユーザグループ対応テーブル" as user_and_group_tbl {
+  *id : serial NOT NULL PRIMARY KEY
+  --
+  *user_id integer NOT NULL
+  *user_group_id integer NOT NILL
+}
+
+competition_tbl ---o{ match_tbl
+match_tbl ---o{ hit_record_tbl
+player_tbl ---o{ hit_record_tbl
+competition_tbl ---o{ hit_record_tbl
+competition_tbl ---o{ player_tbl
+
+user_tbl ---o{user_and_group_tbl
+user_group_tbl ---o{user_and_group_tbl
+
+@enduml
