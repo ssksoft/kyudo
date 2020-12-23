@@ -13,4 +13,13 @@ class UserGroup(models.Model):
     class Meta:
         verbose_name_plural = 'UserGroup'
 
-    user_group = models.ManyToManyField(CustomUser)
+
+class UserAndGroup(models.Model):
+    class Meta:
+        verbose_name_plural = 'UserAndGroup'
+
+    user_group = models.ForeignKey(
+        UserGroup, verbose_name='ユーザグループ', on_delete=models.CASCADE)
+
+    user = models.ForeignKey(
+        CustomUser, verbose_name='ユーザ', on_delete=models.CASCADE)
