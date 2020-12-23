@@ -1,1 +1,0 @@
-scp -r -P 2222 -i C:/Users/sasat/Desktop/kyudo/env/raspbian/.vagrant/machines/default/virtualbox/private_key ../src/* vagrant@127.0.0.1:/var/www/html/kyudo

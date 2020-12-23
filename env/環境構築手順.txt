@@ -1,8 +1,0 @@
-環境構築手順
-
-・vagrant up（ホスト）
-・install.bat（ホスト）
-・ユーザ名：vagrantのホームディレクトリでsh install.sh（ゲスト）
-・releaseでdeploy.bat
-・Webブラウザで127.0.0.1:8080/kyudo
-・競技システムにアクセスできることを確認
