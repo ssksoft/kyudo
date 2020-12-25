@@ -13,7 +13,7 @@ from cms.models import Player
 from cms.forms import PlayerForm
 
 from accounts.models import UserGroup
-# from accounts.forms import UserGroupForm
+from accounts.forms import UserGroupForm
 from accounts.models import UserAndGroup
 # from accounts.forms import UserAndGroupForm
 
@@ -36,18 +36,21 @@ def competition_list(request):
 
 @login_required
 def add_competition(request):
-    # return HttpResponse("hello")
     competition = Competition()
     if request.method == 'POST':
-        return HttpResponse(save_competition(request, competition))
-        save_competition(request, competition)
-        # if(0 == save_competition(request, competition)):
-        #     if(0 == add_usergroup(competition_id)):
-        #         return redirect('cms:competition_list')
-        #     else:
-        #         return HttpResponseRedirect('保存に失敗しました。')
-        # else:
-        #     return HttpResponseRedirect('保存に失敗しました。')
+        competition_id = save_competition(request, competition)
+        # return HttpResponse('Hi2')
+        if(competition_id != -1):
+
+            result_add_usergroup = add_usergroup(request, competition_id)
+            return HttpResponse(result_add_usergroup)
+
+            if(result_add_usergroup != -1):
+                return redirect('cms:competition_list')
+            else:
+                return HttpResponseRedirect('保存に失敗しました。')
+        else:
+            HttpResponse('保存に失敗しました。')
     else:
         pass
     form = CompetitionForm(instance=competition)
@@ -58,16 +61,17 @@ def add_competition(request):
 @login_required
 def add_usergroup(request, competition_id):
     user_group = UserGroup()
-    usergroup_form_dict = dict(
-        competition=Competition.objects.get(id=competition_id))
-    # form = UserGroupForm(usergroup_form_dict, instance=user_group)
-    # if form.is_valid():
-    #     user_group_save_obj = form.save(commit=False)
-    #     user_group_save_obj.save()
-    #     return 0
-    # else:
-    #     return 1
-    return 0
+    usergroup_form_dict = {}
+    usergroup_form_dict['competition'] = Competition.objects.get(
+        id=competition_id)
+    form = UserGroupForm(usergroup_form_dict, instance=user_group)
+
+    if form.is_valid():
+        user_group_save_obj = form.save(commit=False)
+        user_group_save_obj.save()
+        return 0
+    else:
+        return -1
 
 
 @login_required
@@ -91,13 +95,12 @@ def save_competition(request, competition):
     if form.is_valid():
         competition = form.save(commit=True)
         competition.save()
-        latest_record_pk = Competition.objects.order_by('id').reverse().first()
-        return HttpResponse(latest_record_pk.id)
-        success_save_competition = 0
+        latest_record_pk = Competition.objects.order_by(
+            'id').reverse().first().id
     else:
-        success_save_competition = -1
+        latest_record_pk = -1
 
-    return success_save_competition
+    return latest_record_pk
 
 
 @login_required

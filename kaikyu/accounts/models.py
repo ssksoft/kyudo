@@ -15,7 +15,10 @@ class UserGroup(models.Model):
         verbose_name_plural = 'UserGroup'
 
     competition = models.ForeignKey(
-        Competition, verbose_name='大会', on_delete=models.CASCADE)
+        Competition,
+        default=0,
+        verbose_name='大会',
+        on_delete=models.CASCADE)
 
 
 class UserAndGroup(models.Model):
