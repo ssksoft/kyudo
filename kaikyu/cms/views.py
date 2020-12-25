@@ -39,12 +39,8 @@ def add_competition(request):
     competition = Competition()
     if request.method == 'POST':
         competition_id = save_competition(request, competition)
-        # return HttpResponse('Hi2')
         if(competition_id != -1):
-
             result_add_usergroup = add_usergroup(request, competition_id)
-            return HttpResponse(result_add_usergroup)
-
             if(result_add_usergroup != -1):
                 return redirect('cms:competition_list')
             else:
