@@ -6,16 +6,3 @@ from django.contrib.auth.views import(
 from django.http import HttpResponse
 
 from . forms import LoginForm
-
-
-# class Login(LoginView):
-#     form_class = LoginForm
-#     template_name = 'login.html'
-
-
-# class Logout(LoginRequiredMixin, LogoutView):
-#     template_name = 'login.html'
-
-
-# def index(request):
-#     return redirect(request, '/cms/home/html')

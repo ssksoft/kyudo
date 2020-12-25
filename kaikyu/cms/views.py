@@ -12,6 +12,11 @@ from cms.forms import HitForm
 from cms.models import Player
 from cms.forms import PlayerForm
 
+from accounts.models import UserGroup
+# from accounts.forms import UserGroupForm
+from accounts.models import UserAndGroup
+# from accounts.forms import UserAndGroupForm
+
 import re
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
@@ -31,40 +36,66 @@ def competition_list(request):
 
 @login_required
 def add_competition(request):
-    return HttpResponse('Hello')
+    # return HttpResponse("hello")
     competition = Competition()
     if request.method == 'POST':
-        if(save_competition(request, competition)):
-            return redirect('cms:competition_list')
-        else:
-            return HttpResponseRedirect('保存に失敗しました。')
+        return HttpResponse(save_competition(request, competition))
+        save_competition(request, competition)
+        # if(0 == save_competition(request, competition)):
+        #     if(0 == add_usergroup(competition_id)):
+        #         return redirect('cms:competition_list')
+        #     else:
+        #         return HttpResponseRedirect('保存に失敗しました。')
+        # else:
+        #     return HttpResponseRedirect('保存に失敗しました。')
     else:
-        form = CompetitionForm(instance=competition)
+        pass
+    form = CompetitionForm(instance=competition)
 
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
+
+
+@login_required
+def add_usergroup(request, competition_id):
+    user_group = UserGroup()
+    usergroup_form_dict = dict(
+        competition=Competition.objects.get(id=competition_id))
+    # form = UserGroupForm(usergroup_form_dict, instance=user_group)
+    # if form.is_valid():
+    #     user_group_save_obj = form.save(commit=False)
+    #     user_group_save_obj.save()
+    #     return 0
+    # else:
+    #     return 1
+    return 0
 
 
 @login_required
 def edit_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     if request.method == 'POST':
-        if(save_competition(request, competition)):
-            return redirect('cms:competition_list')
-        else:
-            return HttpResponseRedirect('保存に失敗しました。')
+        save_competition(request, competition)
+        # if(0 == save_competition(request, competition)):
+        #     return redirect('cms:competition_list')
+        # else:
+        #     return HttpResponse('保存に失敗しました。')
     else:
-        form = CompetitionForm(instance=competition)
+        pass
+    form = CompetitionForm(instance=competition)
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
 
 
+@login_required
 def save_competition(request, competition):
     form = CompetitionForm(request.POST, instance=competition)
     if form.is_valid():
         competition = form.save(commit=True)
         competition.save()
-        success_save_competition = 1
-    else:
+        latest_record_pk = Competition.objects.order_by('id').reverse().first()
+        return HttpResponse(latest_record_pk.id)
         success_save_competition = 0
+    else:
+        success_save_competition = -1
 
     return success_save_competition
 

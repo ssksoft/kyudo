@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from cms.models import Competition
 
 
 class CustomUser(AbstractUser):
@@ -12,6 +13,9 @@ class UserGroup(models.Model):
 
     class Meta:
         verbose_name_plural = 'UserGroup'
+
+    competition = models.ForeignKey(
+        Competition, verbose_name='大会', on_delete=models.CASCADE)
 
 
 class UserAndGroup(models.Model):
