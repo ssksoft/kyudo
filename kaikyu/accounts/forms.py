@@ -10,6 +10,7 @@ class UserGroupForm(ModelForm):
         fields = ('id', 'competition')
 
 
-# class UserAndGroup(ModelForm):
-#     class Meta:
-#         model = UserAndGroup
+class UserAndGroupForm(ModelForm):
+    class Meta:
+        model = UserAndGroup
+        fields = ('id', 'user_group', 'user')

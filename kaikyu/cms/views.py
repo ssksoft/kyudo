@@ -12,10 +12,12 @@ from cms.forms import HitForm
 from cms.models import Player
 from cms.forms import PlayerForm
 
+from accounts.models import CustomUser
+
 from accounts.models import UserGroup
 from accounts.forms import UserGroupForm
 from accounts.models import UserAndGroup
-# from accounts.forms import UserAndGroupForm
+from accounts.forms import UserAndGroupForm
 
 import re
 from django.contrib.auth import authenticate, login as django_login
@@ -39,12 +41,17 @@ def add_competition(request):
     competition = Competition()
     if request.method == 'POST':
         competition_id = save_competition(request, competition)
-        if(competition_id != -1):
-            result_add_usergroup = add_usergroup(request, competition_id)
-            if(result_add_usergroup != -1):
-                return redirect('cms:competition_list')
+        if(int(competition_id) != -1):
+            usergroup_id = add_usergroup(request, competition_id)
+            if(int(usergroup_id) != -1):
+                userandgroup_id = add_userandgroup(request,
+                                                   usergroup_id, request.user.id)
+                if(int(userandgroup_id) != -1):
+                    return redirect('cms:competition_list')
+                else:
+                    return HttpResponse('保存に失敗しました。')
             else:
-                return HttpResponseRedirect('保存に失敗しました。')
+                return HttpResponse('保存に失敗しました。')
         else:
             HttpResponse('保存に失敗しました。')
     else:
@@ -65,7 +72,30 @@ def add_usergroup(request, competition_id):
     if form.is_valid():
         user_group_save_obj = form.save(commit=False)
         user_group_save_obj.save()
-        return 0
+        latest_record_pk = UserGroup.objects.order_by(
+            'id').reverse().first().id
+        return latest_record_pk
+    else:
+        return -1
+
+
+@login_required
+def add_userandgroup(request, usergroup_pk, user_pk):
+
+    userandgroup = UserAndGroup()
+    userandgroup_form_dict = {}
+    userandgroup_form_dict['usergroup'] = UserGroup.objects.get(
+        id=usergroup_pk)
+    userandgroup_form_dict['user'] = CustomUser.objects.get(
+        id=user_pk)
+    form = UserAndGroupForm(userandgroup_form_dict, instance=userandgroup)
+
+    if form.is_valid():
+        userandgroup_save_obj = form.save(commit=False)
+        userandgroup_save_obj.save()
+        latest_record_pk = UserAndGroup.objects.order_by(
+            'id').reverse().first().id
+        return latest_record_pk
     else:
         return -1
 
@@ -74,11 +104,7 @@ def add_usergroup(request, competition_id):
 def edit_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     if request.method == 'POST':
-        save_competition(request, competition)
-        # if(0 == save_competition(request, competition)):
-        #     return redirect('cms:competition_list')
-        # else:
-        #     return HttpResponse('保存に失敗しました。')
+        saved_pk = save_competition(request, competition)
     else:
         pass
     form = CompetitionForm(instance=competition)
