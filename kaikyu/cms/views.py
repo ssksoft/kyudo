@@ -116,7 +116,6 @@ def save_competition(request, competition):
     form = CompetitionForm(request.POST, instance=competition)
     if form.is_valid():
         competition = form.save(commit=True)
-        competition.save()
         latest_record_pk = Competition.objects.order_by(
             'id').reverse().first().id
     else:
