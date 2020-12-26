@@ -49,11 +49,11 @@ def add_competition(request):
                 if(int(userandgroup_id) != -1):
                     return redirect('cms:competition_list')
                 else:
-                    return HttpResponse('保存に失敗しました。')
+                    return HttpResponse('ユーザグループとユーザの対応の保存に失敗しました。')
             else:
-                return HttpResponse('保存に失敗しました。')
+                return HttpResponse('ユーザグループの保存に失敗しました。')
         else:
-            HttpResponse('保存に失敗しました。')
+            HttpResponse('大会の保存に失敗しました。')
     else:
         pass
     form = CompetitionForm(instance=competition)
@@ -84,7 +84,7 @@ def add_userandgroup(request, usergroup_pk, user_pk):
 
     userandgroup = UserAndGroup()
     userandgroup_form_dict = {}
-    userandgroup_form_dict['usergroup'] = UserGroup.objects.get(
+    userandgroup_form_dict['user_group'] = UserGroup.objects.get(
         id=usergroup_pk)
     userandgroup_form_dict['user'] = CustomUser.objects.get(
         id=user_pk)
