@@ -25,6 +25,8 @@ from django.contrib.auth.decorators import login_required
 
 import copy
 
+from django.db import transaction
+
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
@@ -38,24 +40,25 @@ def competition_list(request):
 
 @login_required
 def add_competition(request):
-    competition = Competition()
-    if request.method == 'POST':
-        competition_id = save_competition(request, competition)
-        if(int(competition_id) != -1):
-            usergroup_id = add_usergroup(request, competition_id)
-            if(int(usergroup_id) != -1):
-                userandgroup_id = add_userandgroup(request,
-                                                   usergroup_id, request.user.id)
-                if(int(userandgroup_id) != -1):
-                    return redirect('cms:competition_list')
+    with transaction.atomic():
+        competition = Competition()
+        if request.method == 'POST':
+            competition_id = save_competition(request, competition)
+            if(int(competition_id) != -1):
+                usergroup_id = add_usergroup(request, competition_id)
+                if(int(usergroup_id) != -1):
+                    userandgroup_id = add_userandgroup(request,
+                                                       usergroup_id, request.user.id)
+                    if(int(userandgroup_id) != -1):
+                        return redirect('cms:competition_list')
+                    else:
+                        return HttpResponse('ユーザグループとユーザの対応の保存に失敗しました。')
                 else:
-                    return HttpResponse('ユーザグループとユーザの対応の保存に失敗しました。')
+                    return HttpResponse('ユーザグループの保存に失敗しました。')
             else:
-                return HttpResponse('ユーザグループの保存に失敗しました。')
+                HttpResponse('大会の保存に失敗しました。')
         else:
-            HttpResponse('大会の保存に失敗しました。')
-    else:
-        pass
+            pass
     form = CompetitionForm(instance=competition)
 
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
