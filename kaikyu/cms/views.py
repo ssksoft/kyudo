@@ -73,8 +73,7 @@ def add_usergroup(request, competition_id):
     form = UserGroupForm(usergroup_form_dict, instance=user_group)
 
     if form.is_valid():
-        user_group_save_obj = form.save(commit=False)
-        user_group_save_obj.save()
+        form.save()
         latest_record_pk = UserGroup.objects.order_by(
             'id').reverse().first().id
         return latest_record_pk
@@ -94,8 +93,7 @@ def add_userandgroup(request, usergroup_pk, user_pk):
     form = UserAndGroupForm(userandgroup_form_dict, instance=userandgroup)
 
     if form.is_valid():
-        userandgroup_save_obj = form.save(commit=False)
-        userandgroup_save_obj.save()
+        form.save()
         latest_record_pk = UserAndGroup.objects.order_by(
             'id').reverse().first().id
         return latest_record_pk
