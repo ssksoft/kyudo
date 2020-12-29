@@ -44,19 +44,13 @@ def add_competition(request):
         competition = Competition()
         if request.method == 'POST':
             competition_id = save_competition(request, competition)
-            if(int(competition_id) != -1):
-                usergroup_id = add_usergroup(request, competition_id)
-                if(int(usergroup_id) != -1):
-                    userandgroup_id = add_userandgroup(request,
-                                                       usergroup_id, request.user.id)
-                    if(int(userandgroup_id) != -1):
-                        return redirect('cms:competition_list')
-                    else:
-                        return HttpResponse('ユーザグループとユーザの対応の保存に失敗しました。')
-                else:
-                    return HttpResponse('ユーザグループの保存に失敗しました。')
+            usergroup_id = add_usergroup(request, competition_id)
+            userandgroup_id = add_userandgroup(request,
+                                               usergroup_id, request.user.id)
+            if(int(userandgroup_id) != -1):
+                return redirect('cms:competition_list')
             else:
-                HttpResponse('大会の保存に失敗しました。')
+                return HttpResponse('保存に失敗しました。')
         else:
             pass
     form = CompetitionForm(instance=competition)
@@ -66,37 +60,42 @@ def add_competition(request):
 
 @login_required
 def add_usergroup(request, competition_id):
-    user_group = UserGroup()
-    usergroup_form_dict = {}
-    usergroup_form_dict['competition'] = Competition.objects.get(
-        id=competition_id)
-    form = UserGroupForm(usergroup_form_dict, instance=user_group)
+    if(int(competition_id) != -1):
+        user_group = UserGroup()
+        usergroup_form_dict = {}
+        usergroup_form_dict['competition'] = Competition.objects.get(
+            id=competition_id)
+        form = UserGroupForm(usergroup_form_dict, instance=user_group)
 
-    if form.is_valid():
-        form.save()
-        latest_record_pk = UserGroup.objects.order_by(
-            'id').reverse().first().id
-        return latest_record_pk
+        if form.is_valid():
+            form.save()
+            latest_record_pk = UserGroup.objects.order_by(
+                'id').reverse().first().id
+            return latest_record_pk
+        else:
+            return -1
     else:
         return -1
 
 
 @login_required
 def add_userandgroup(request, usergroup_pk, user_pk):
+    if(int(usergroup_pk) != -1):
+        userandgroup = UserAndGroup()
+        userandgroup_form_dict = {}
+        userandgroup_form_dict['user_group'] = UserGroup.objects.get(
+            id=usergroup_pk)
+        userandgroup_form_dict['user'] = CustomUser.objects.get(
+            id=user_pk)
+        form = UserAndGroupForm(userandgroup_form_dict, instance=userandgroup)
 
-    userandgroup = UserAndGroup()
-    userandgroup_form_dict = {}
-    userandgroup_form_dict['user_group'] = UserGroup.objects.get(
-        id=usergroup_pk)
-    userandgroup_form_dict['user'] = CustomUser.objects.get(
-        id=user_pk)
-    form = UserAndGroupForm(userandgroup_form_dict, instance=userandgroup)
-
-    if form.is_valid():
-        form.save()
-        latest_record_pk = UserAndGroup.objects.order_by(
-            'id').reverse().first().id
-        return latest_record_pk
+        if form.is_valid():
+            form.save()
+            latest_record_pk = UserAndGroup.objects.order_by(
+                'id').reverse().first().id
+            return latest_record_pk
+        else:
+            return -1
     else:
         return -1
 
