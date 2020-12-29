@@ -126,9 +126,14 @@ def save_competition(request, competition):
 
 @login_required
 def delete_competition(request, competition_id):
-    competition = get_object_or_404(Competition, pk=competition_id)
-    competition.delete()
-
+    current_login_user_id = request.user.id
+    num_current_login_user_in_userandgroup = UserAndGroup.objects.filter(
+        user=current_login_user_id)
+    if num_current_login_user_in_userandgroup:
+        competition = get_object_or_404(Competition, pk=competition_id)
+        competition.delete()
+    else:
+        return HttpResponse('権限がありません。')
     return redirect('cms:competition_list')
 
 
