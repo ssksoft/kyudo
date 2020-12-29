@@ -139,6 +139,7 @@ def match_list(request, competition_id):
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
 
 
+@login_required
 def edit_match(request, competition_id, match_id=None):
     if match_id:
         match = get_object_or_404(Match, pk=match_id)
@@ -161,6 +162,7 @@ def edit_match(request, competition_id, match_id=None):
     return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
 
 
+@login_required
 def delete_match(request, competition_id, match_id):
     match = get_object_or_404(Match, pk=match_id)
     match.delete()
