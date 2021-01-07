@@ -27,6 +27,7 @@ import copy
 
 from django.db import transaction
 
+# test
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
