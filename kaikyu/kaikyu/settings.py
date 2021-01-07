@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
 ]
 
 MIDDLEWARE = [
@@ -64,9 +63,7 @@ ROOT_URLCONF = 'kaikyu.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,9 +131,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# LOGIN_URL = '/accounts/login/'
-# LOGIN_REDIRECT_URL = '/cms/home'
-# ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/cms/home'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
