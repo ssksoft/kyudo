@@ -27,7 +27,6 @@ import copy
 
 from django.db import transaction
 
-# test
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
@@ -176,6 +175,7 @@ def delete_match(request, competition_id, match_id):
     return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
 
 
+@login_required
 def edit_hit(request, competition_id, match_id):
     NUM_HIT = 4
     NUM_PLAYER = 6
@@ -219,6 +219,7 @@ def get_players(request, competition_id, match_id):
     return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
 
 
+@login_required
 def save_hit(request, competition_id, match_id):
     # 記録画面からデータを取得
     player_ids = request.POST.getlist('player_ids')
@@ -288,6 +289,7 @@ def player_list(request, competition_id):
     return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
 
 
+@login_required
 def edit_player(request, competition_id, player_id=None):
     if player_id:
         player = get_object_or_404(Player, pk=player_id)
@@ -315,6 +317,7 @@ def edit_player(request, competition_id, player_id=None):
     return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
 
 
+@login_required
 def change_player(request, competition_id, match_id):
     player_ids = request.POST.getlist('player_ids')
     return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
