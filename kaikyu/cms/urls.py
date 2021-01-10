@@ -34,4 +34,6 @@ urlpatterns = [
          views.edit_player, name='edit_player'),
     path('change_player/<int:competition_id>/<int:match_id>',
          views.change_player, name='change_player'),
+    path('delete_player/<int:competition_id>/<int:player_id>',
+         views.delete_player, name='delete_player'),
 ]

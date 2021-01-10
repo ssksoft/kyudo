@@ -11,6 +11,7 @@
       <th scope="col">団体名</th>
       <th scope="col">称号段位</th>
       <th scope="col">競技順位</th>
+      <th scope="col">操作</th>
     </tr>
   </thead>
   <tbody>
@@ -18,13 +19,19 @@
     <tr>
       <td>{{ player.id }}</td>
       <td>
-        <a href="{% url 'cms:edit_player' competition_id=competition_id player_id=player.id %}">
           {{ player.name }}
-        </a>
       </td>
       <td>{{ player.team_name }}</td>
       <td>{{ player.dan }}</td>
       <td>{{ player.rank }}</td>
+      <td>
+        <a href="{% url 'cms:edit_player' competition_id=competition_id player_id=player.id %}"
+          class="btn btn-outline-primary btn-sm">
+          編集
+        </a>
+        <a href="{% url 'cms:delete_player' competition_id=competition_id player_id=player.id %}"
+          class="btn btn-outline-danger btn-sm">削除</a>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
