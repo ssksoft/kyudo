@@ -175,7 +175,6 @@ def delete_match(request, competition_id, match_id):
     return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
 
 
-@login_required
 def edit_hit(request, competition_id, match_id):
     NUM_HIT = 4
     NUM_PLAYER = 6
