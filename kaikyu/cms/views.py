@@ -30,7 +30,7 @@ from django.db import transaction
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
-    return render(request, 'cms/competition_list.html', {'competitions': competitions})
+    return redirect('cms:competition_list')
 
 
 def competition_list(request):
