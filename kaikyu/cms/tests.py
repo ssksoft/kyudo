@@ -22,8 +22,4 @@ class AddCompetitionTests(TestCase):
         self.client.force_login(CustomUser.objects.create_user('tester'))
         target_url = '/cms/add_competition/'
         response = self.client.get(target_url)
-        expected_url = '/accounts/login/' + '?next=' + target_url
-        self.assertRedirects(response, expected_url=expected_url,
-                             status_code=302, target_status_code=200)
-
-    # def test_login_as_authorized_user:
+        self.assertEqual(response.status_code, 200)
