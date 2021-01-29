@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from accounts.models import CustomUser
+from .views import *
+from django.views.generic import TemplateView
 
 
 class HomeTests(TestCase):
@@ -23,3 +25,30 @@ class AddCompetitionTests(TestCase):
         target_url = '/cms/add_competition/'
         response = self.client.get(target_url)
         self.assertEqual(response.status_code, 200)
+
+
+class AddUserGroupTests(TestCase):
+    urls = 'cms.test_urls'
+
+    def setUp(self):
+        super().setUp()
+        self.path = reverse('cms:test_add_usergroup')
+
+    def test_valid_competition_id(self):
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+        target_url = '/cms/add_competition/'
+        response = self.client.get(target_url)
+
+        # テスト対象を実行
+        response = self.client.get(self.path)
+
+        # テスト結果を確認
+        self.assertEqual(1, 1)
+
+
+class TestAddUserGroupView(TemplateView):
+    def get(self, request, *args, **kwds):
+        return HttpResponse()
+
+    def post(self, request, *args, **kwds):
+        return HttpResponse()
