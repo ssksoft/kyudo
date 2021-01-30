@@ -44,7 +44,7 @@ def add_competition(request):
         competition = Competition()
         if request.method == 'POST':
             competition_id = save_competition(request, competition)
-            usergroup_id = add_usergroup(request, competition_id)
+            usergroup_id = add_usergroup(competition_id)
             userandgroup_id = add_userandgroup(request,
                                                usergroup_id, request.user.id)
             if(int(userandgroup_id) != -1):
@@ -58,8 +58,7 @@ def add_competition(request):
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
 
 
-@login_required
-def add_usergroup(request, competition_id):
+def add_usergroup(competition_id):
     if(int(competition_id) != -1):
         user_group = UserGroup()
         usergroup_form_dict = {}

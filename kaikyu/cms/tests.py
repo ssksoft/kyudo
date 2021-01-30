@@ -33,7 +33,6 @@ class AddUserGroupTests(TestCase):
 
     def setUp(self):
         super().setUp()
-        competition_id = 1
         # self.path = reverse('cms:test_add_usergroup', args=[competition_id])
 
         self.path = 'test/add_usergroup/1'
@@ -50,7 +49,9 @@ class AddUserGroupTests(TestCase):
         # self.assertEqual(competitions, 1)
 
         # テスト対象を実行
-        response = self.client.get(self.path)
+        add_usergroup(1)
+        # competition = Competition.objects.get(id=1)
+        # response = self.client.get(self.path)
 
         # UserGroupを取得
         # user_group = UserGroup()
@@ -62,11 +63,16 @@ class AddUserGroupTests(TestCase):
         usergroup = UserGroup.objects.all().order_by('id')
 
         # テスト結果を確認
+        # self.assertEqual(response.content, 1)
+        # self.assertQuerysetEqual(
+        #     [competition],
+        #     ['<QuerySet [<UserGroup: UserGroup object (1)>']
+        # )
         self.assertQuerysetEqual(
             [usergroup],
-            ['<QuerySet [<UserGroup: UserGroup object (1)>']
+            ['<QuerySet [<UserGroup: UserGroup object (1)>]>']
         )
-        self.assertEqual(1, 1)
+        # self.assertEqual(1, 1)
 
 
 class TestAddUserGroupView(TemplateView):
