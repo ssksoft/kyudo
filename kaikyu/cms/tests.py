@@ -47,3 +47,30 @@ class AddUserGroupTests(TestCase):
             ['<QuerySet [<UserGroup: UserGroup object (1)>]>']
         )
     # TODO：UserGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
+
+
+class AddUserAndGroup(TestCase):
+    def test_add_userandgroup(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        Competition.objects.create(
+            name='test_name', competition_type='test_type')
+
+        competition_test = Competition.objects.get(id=1)
+
+        # ダミーデータをUserGroupに追加
+        UserGroup.objects.create(competition=competition_test)
+
+        # テスト対象を実行
+        usergroup_pk = 1
+        user_pk = 1
+        add_userandgroup(usergroup_pk, user_pk)
+        userandgroup = UserAndGroup.objects.all().order_by('id')
+
+        # テスト結果を確認
+        self.assertEqual(
+            str(userandgroup), '<QuerySet [<UserAndGroup: UserAndGroup object (1)>]>')
+
+        # TODO：UserAndGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい

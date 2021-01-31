@@ -77,8 +77,7 @@ def add_usergroup(competition_id):
         return -1
 
 
-@login_required
-def add_userandgroup(request, usergroup_pk, user_pk):
+def add_userandgroup(usergroup_pk, user_pk):
     if(int(usergroup_pk) != -1):
         userandgroup = UserAndGroup()
         userandgroup_form_dict = {}
