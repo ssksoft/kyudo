@@ -29,12 +29,6 @@ class AddCompetitionTests(TestCase):
 
 
 class AddUserGroupTests(TestCase):
-    urls = 'cms.test_urls'
-
-    def setUp(self):
-        super().setUp()
-        self.path = 'test/add_usergroup/1'
-
     def test_add_usergroup(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
@@ -52,3 +46,4 @@ class AddUserGroupTests(TestCase):
             [usergroup],
             ['<QuerySet [<UserGroup: UserGroup object (1)>]>']
         )
+    # TODO：UserGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
