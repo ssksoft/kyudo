@@ -113,3 +113,28 @@ class SaveCompetitionTests(TestCase):
         self.assertEqual(
             str(competition), '<QuerySet [<Competition: test_name>]>'
         )
+
+        # TODO：Competitionのデータ保存に失敗した時の動作確認用テストメソッドもほしい
+
+
+# TODO:GETとPOST両方のテストが必要
+class EditCompetitionTests(TestCase):
+    def test_get(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        Competition.objects.create(
+            name='test_name', competition_type='test_type')
+
+        competition_test = Competition.objects.get(id=1)
+
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        target_url = reverse('cms:edit_competition', kwargs=data)
+        response = self.client.get(target_url)
+
+        # テスト結果を確認
+        self.assertEqual(response.status_code, 200)
