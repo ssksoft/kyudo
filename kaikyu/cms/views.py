@@ -45,10 +45,10 @@ def add_competition(request):
         if request.method == 'POST':
             competition_id = save_competition(request, competition)
             usergroup_id = add_usergroup(competition_id)
-            userandgroup_id = add_userandgroup(request,
-                                               usergroup_id, request.user.id)
+            userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
             if(int(userandgroup_id) != -1):
-                return redirect('cms:competition_list')
+                competitions = Competition.objects.all().order_by('id')
+                return render(request, 'cms/competition_list.html', {'competitions': competitions})
             else:
                 return HttpResponse('保存に失敗しました。')
         else:

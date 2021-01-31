@@ -14,17 +14,37 @@ class HomeTests(TestCase):
 
 
 class AddCompetitionTests(TestCase):
-    def test_no_login(self):
+    def test_get_without_login(self):
         target_url = '/cms/add_competition/'
         response = self.client.get(target_url)
         expected_url = '/accounts/login/' + '?next=' + target_url
         self.assertRedirects(response, expected_url=expected_url,
                              status_code=302, target_status_code=200)
 
-    def test_login_as_unauthorized_user(self):
+    def test_get_with_login_user(self):
+        # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
         target_url = '/cms/add_competition/'
+
+        # GET実行
         response = self.client.get(target_url)
+
+        # テスト結果を確認
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_with_login_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+        target_url = '/cms/add_competition/'
+
+        # POST実行
+        data = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        response = self.client.post(target_url, data)
+
+        # テスト結果を確認
         self.assertEqual(response.status_code, 200)
 
 
@@ -49,7 +69,7 @@ class AddUserGroupTests(TestCase):
     # TODO：UserGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
 
-class AddUserAndGroup(TestCase):
+class AddUserAndGroupTests(TestCase):
     def test_add_userandgroup(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
