@@ -45,7 +45,7 @@ class AddCompetitionTests(TestCase):
         response = self.client.post(target_url, data)
 
         # テスト結果を確認
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
 
 class AddUserGroupTests(TestCase):

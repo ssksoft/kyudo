@@ -48,7 +48,7 @@ def add_competition(request):
             userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
             if(int(userandgroup_id) != -1):
                 competitions = Competition.objects.all().order_by('id')
-                return render(request, 'cms/competition_list.html', {'competitions': competitions})
+                return redirect('cms:competition_list')
             else:
                 return HttpResponse('保存に失敗しました。')
         else:
