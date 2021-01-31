@@ -43,7 +43,8 @@ def add_competition(request):
     with transaction.atomic():
         competition = Competition()
         if request.method == 'POST':
-            competition_id = save_competition(request, competition)
+            post_content = request.POST
+            competition_id = save_competition(post_content, competition)
             usergroup_id = add_usergroup(competition_id)
             userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
             if(int(userandgroup_id) != -1):
@@ -56,6 +57,18 @@ def add_competition(request):
     form = CompetitionForm(instance=competition)
 
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
+
+
+def save_competition(post_content, competition):
+    form = CompetitionForm(post_content, instance=competition)
+    if form.is_valid():
+        competition = form.save(commit=True)
+        latest_record_pk = Competition.objects.order_by(
+            'id').reverse().first().id
+    else:
+        latest_record_pk = -1
+
+    return latest_record_pk
 
 
 def add_usergroup(competition_id):
@@ -107,19 +120,6 @@ def edit_competition(request, competition_id):
         pass
     form = CompetitionForm(instance=competition)
     return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
-
-
-@login_required
-def save_competition(request, competition):
-    form = CompetitionForm(request.POST, instance=competition)
-    if form.is_valid():
-        competition = form.save(commit=True)
-        latest_record_pk = Competition.objects.order_by(
-            'id').reverse().first().id
-    else:
-        latest_record_pk = -1
-
-    return latest_record_pk
 
 
 @login_required

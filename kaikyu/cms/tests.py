@@ -94,3 +94,22 @@ class AddUserAndGroupTests(TestCase):
             str(userandgroup), '<QuerySet [<UserAndGroup: UserAndGroup object (1)>]>')
 
         # TODO：UserAndGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
+
+
+class SaveCompetitionTests(TestCase):
+    def test_save_competition(self):
+        # データ用意
+        competition_obj = Competition()
+        post_content = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+
+        # テスト対象を実行
+        save_competition(post_content, competition_obj)
+
+        # テスト結果を確認
+        competition = Competition.objects.all().order_by('id')
+        self.assertEqual(
+            str(competition), '<QuerySet [<Competition: test_name>]>'
+        )
