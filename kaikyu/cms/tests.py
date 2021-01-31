@@ -35,7 +35,7 @@ class AddUserGroupTests(TestCase):
         super().setUp()
         self.path = 'test/add_usergroup/1'
 
-    def test_valid_competition_id(self):
+    def test_add_usergroup(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -52,11 +52,3 @@ class AddUserGroupTests(TestCase):
             [usergroup],
             ['<QuerySet [<UserGroup: UserGroup object (1)>]>']
         )
-
-
-class TestAddUserGroupView(TemplateView):
-    def get(self, request, *args, **kwds):
-        return HttpResponse()
-
-    def post(self, request, *args, **kwds):
-        return HttpResponse('hi')
