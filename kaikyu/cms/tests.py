@@ -150,17 +150,8 @@ class DeleteCompaetitionTests(TestCase):
             'name': 'test_name',
             'competition_type': 'test_type'
         }
-        response_add_competition = self.client.post(
+        self.client.post(
             url_add_competition, data_competition)
-
-        competition = Competition.objects.get(id=1)
-
-        # num_current_login_user_in_userandgroup = UserAndGroup.objects.filter(
-        #     user=1)
-        # tmp = UserGroup.objects.get(id=1)
-
-        # self.assertEqual(competition, 302)
-        # self.assertEqual(num_current_login_user_in_userandgroup, 302)
 
         # テスト対象を実行
         data = {
@@ -173,6 +164,3 @@ class DeleteCompaetitionTests(TestCase):
 
         # テスト結果を確認
         self.assertEqual(response_target.status_code, 302)
-        # self.assertEqual(response.content, 302)
-
-    # def test_delete_failure(self):
