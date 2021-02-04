@@ -156,7 +156,8 @@ def edit_match(request, competition_id, match_id=None):
             match = form.save(commit=False)
             match.save()
             matches = Match.objects.all().order_by('id')
-            return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+            return redirect('cms:competition_list', competition_id=competition_id)
+
     else:
         initial_dict = dict(
             name=match.name,

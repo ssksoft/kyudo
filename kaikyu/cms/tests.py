@@ -191,3 +191,34 @@ class DeleteCompaetitionTests(TestCase):
 
         # テスト結果を確認
         self.assertEqual(403, response_target.status_code)
+
+
+class EditMatchTests(TestCase):
+    def add_match(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # テスト対象を実行
+        competition = Competition.objects.get(id=1)
+        data_target = {
+            'competition': competition,
+            'name': 'test_name'
+        }
+        url_target = reverse('cms:edit_competition', data_target)
+
+        # POST実行
+        response_target = self.client.post(url_target)
+
+        # テスト結果を確認
+        self.assertEqual(302, response_target.status_code)
+
+        # def edit_match:
