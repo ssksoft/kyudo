@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from accounts.models import CustomUser
+from accounts.models import CustomUser, UserGroup
 from .models import Competition
 from .views import *
 from django.views.generic import TemplateView
@@ -30,7 +30,7 @@ class AddCompetitionTests(TestCase):
         response = self.client.get(target_url)
 
         # テスト結果を確認
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_post_with_login_user(self):
         # ログイン
@@ -46,6 +46,27 @@ class AddCompetitionTests(TestCase):
 
         # テスト結果を確認
         self.assertEqual(response.status_code, 302)
+
+
+class SaveCompetitionTests(TestCase):
+    def test_save_competition(self):
+        # データ用意
+        competition_obj = Competition()
+        post_content = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+
+        # テスト対象を実行
+        save_competition(post_content, competition_obj)
+
+        # テスト結果を確認
+        competition = Competition.objects.all().order_by('id')
+        self.assertEqual(
+            str(competition), '<QuerySet [<Competition: test_name>]>'
+        )
+
+        # TODO：Competitionのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
 
 class AddUserGroupTests(TestCase):
@@ -86,35 +107,13 @@ class AddUserAndGroupTests(TestCase):
         # テスト対象を実行
         usergroup_pk = 1
         user_pk = 1
-        add_userandgroup(usergroup_pk, user_pk)
+        ret = add_userandgroup(usergroup_pk, user_pk)
         userandgroup = UserAndGroup.objects.all().order_by('id')
 
         # テスト結果を確認
-        self.assertEqual(
-            str(userandgroup), '<QuerySet [<UserAndGroup: UserAndGroup object (1)>]>')
+        self.assertEqual(ret, 1)
 
         # TODO：UserAndGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
-
-
-class SaveCompetitionTests(TestCase):
-    def test_save_competition(self):
-        # データ用意
-        competition_obj = Competition()
-        post_content = {
-            'name': 'test_name',
-            'competition_type': 'test_type'
-        }
-
-        # テスト対象を実行
-        save_competition(post_content, competition_obj)
-
-        # テスト結果を確認
-        competition = Competition.objects.all().order_by('id')
-        self.assertEqual(
-            str(competition), '<QuerySet [<Competition: test_name>]>'
-        )
-
-        # TODO：Competitionのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
 
 # TODO:GETとPOST両方のテストが必要
@@ -138,3 +137,42 @@ class EditCompetitionTests(TestCase):
 
         # テスト結果を確認
         self.assertEqual(response.status_code, 200)
+
+
+class DeleteCompaetitionTests(TestCase):
+    def test_delete_success(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        response_add_competition = self.client.post(
+            url_add_competition, data_competition)
+
+        competition = Competition.objects.get(id=1)
+
+        # num_current_login_user_in_userandgroup = UserAndGroup.objects.filter(
+        #     user=1)
+        # tmp = UserGroup.objects.get(id=1)
+
+        # self.assertEqual(competition, 302)
+        # self.assertEqual(num_current_login_user_in_userandgroup, 302)
+
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        target_url = reverse('cms:delete_competition', kwargs=data)
+
+        # GET実行
+        response_target = self.client.get(target_url)
+
+        # テスト結果を確認
+        self.assertEqual(response_target.status_code, 302)
+        # self.assertEqual(response.content, 302)
+
+    # def test_delete_failure(self):

@@ -27,6 +27,9 @@ import copy
 
 from django.db import transaction
 
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
+
 
 def home(request):
     competitions = Competition.objects.all().order_by('id')
@@ -40,23 +43,21 @@ def competition_list(request):
 
 @login_required
 def add_competition(request):
-    with transaction.atomic():
-        competition = Competition()
-        if request.method == 'POST':
+    if request.method == 'POST':
+        with transaction.atomic():
+            competition = Competition()
             post_content = request.POST
             competition_id = save_competition(post_content, competition)
             usergroup_id = add_usergroup(competition_id)
             userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
+
             if(int(userandgroup_id) != -1):
                 competitions = Competition.objects.all().order_by('id')
                 return redirect('cms:competition_list')
             else:
-                return HttpResponse('保存に失敗しました。')
-        else:
-            pass
-    form = CompetitionForm(instance=competition)
-
-    return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
+                raise PermissionDenied
+    else:
+        raise Http404
 
 
 def save_competition(post_content, competition):
@@ -131,7 +132,7 @@ def delete_competition(request, competition_id):
         competition = get_object_or_404(Competition, pk=competition_id)
         competition.delete()
     else:
-        return HttpResponse('権限がありません。')
+        raise PermissionDenied
     return redirect('cms:competition_list')
 
 
