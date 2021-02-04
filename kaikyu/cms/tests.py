@@ -30,7 +30,7 @@ class AddCompetitionTests(TestCase):
         response = self.client.get(target_url)
 
         # テスト結果を確認
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(404, response.status_code)
 
     def test_post_with_login_user(self):
         # ログイン
@@ -45,7 +45,7 @@ class AddCompetitionTests(TestCase):
         response = self.client.post(target_url, data)
 
         # テスト結果を確認
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(302, response.status_code)
 
 
 class SaveCompetitionTests(TestCase):
@@ -63,8 +63,7 @@ class SaveCompetitionTests(TestCase):
         # テスト結果を確認
         competition = Competition.objects.all().order_by('id')
         self.assertEqual(
-            str(competition), '<QuerySet [<Competition: test_name>]>'
-        )
+            '<QuerySet [<Competition: test_name>]>', str(competition))
 
         # TODO：Competitionのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
@@ -83,9 +82,8 @@ class AddUserGroupTests(TestCase):
         usergroup = UserGroup.objects.all().order_by('id')
 
         # テスト結果を確認
-        self.assertQuerysetEqual(
-            [usergroup],
-            ['<QuerySet [<UserGroup: UserGroup object (1)>]>']
+        self.assertEqual(
+            '<QuerySet [<UserGroup: UserGroup object (1)>]>', str(usergroup)
         )
     # TODO：UserGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
@@ -111,7 +109,7 @@ class AddUserAndGroupTests(TestCase):
         userandgroup = UserAndGroup.objects.all().order_by('id')
 
         # テスト結果を確認
-        self.assertEqual(ret, 1)
+        self.assertEqual(1, ret)
 
         # TODO：UserAndGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
@@ -136,7 +134,7 @@ class EditCompetitionTests(TestCase):
         response = self.client.get(target_url)
 
         # テスト結果を確認
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
 
 
 class DeleteCompaetitionTests(TestCase):
@@ -163,4 +161,33 @@ class DeleteCompaetitionTests(TestCase):
         response_target = self.client.get(target_url)
 
         # テスト結果を確認
-        self.assertEqual(response_target.status_code, 302)
+        self.assertEqual(302, response_target.status_code)
+
+    def test_delete_without_login(self):
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        target_url = reverse('cms:delete_competition', kwargs=data)
+
+        # GET実行
+        response_target = self.client.get(target_url)
+
+        # テスト結果を確認
+        self.assertEqual(302, response_target.status_code)
+
+    def test_delete_with_stranger(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        target_url = reverse('cms:delete_competition', kwargs=data)
+
+        # GET実行
+        response_target = self.client.get(target_url)
+
+        # テスト結果を確認
+        self.assertEqual(403, response_target.status_code)

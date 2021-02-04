@@ -131,9 +131,9 @@ def delete_competition(request, competition_id):
     if num_current_login_user_in_userandgroup:
         competition = get_object_or_404(Competition, pk=competition_id)
         competition.delete()
+        return redirect('cms:competition_list')
     else:
         raise PermissionDenied
-    return redirect('cms:competition_list')
 
 
 def match_list(request, competition_id):
