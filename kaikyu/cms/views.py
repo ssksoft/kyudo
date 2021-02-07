@@ -156,7 +156,6 @@ def edit_match(request, competition_id, match_id=None):
             match = form.save(commit=False)
             match.save()
             matches = Match.objects.all().order_by('id')
-            print(request.POST)
             return redirect('cms:match_list', competition_id=competition_id)
         else:
             raise Http404

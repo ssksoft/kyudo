@@ -218,11 +218,8 @@ class EditMatchTests(TestCase):
             'competition': str(competition.id),
             'name': 'test_match_name'
         }
-        form = MatchForm(post_contents)
-        # self.assertTrue(form.is_valid())
         response_target = self.client.post(
-            url_target, form)
-        # print(response_target)
+            url_target, post_contents)
 
         # テスト結果を確認
         self.assertEqual(302, response_target.status_code)
