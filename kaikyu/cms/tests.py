@@ -215,18 +215,16 @@ class EditMatchTests(TestCase):
         url_target = reverse('cms:add_match', kwargs=data_target)
         competition = Competition.objects.get(id=1)
         post_contents = {
-            'competition': '1',
+            'competition': str(competition.id),
             'name': 'test_match_name'
         }
         form = MatchForm(post_contents)
         # self.assertTrue(form.is_valid())
         response_target = self.client.post(
-            url_target, post_contents)
-        print(response_target)
+            url_target, form)
+        # print(response_target)
 
         # テスト結果を確認
-        # self.assertEqual(post_contents, response_target.content)
-
         self.assertEqual(302, response_target.status_code)
 
     # def edit_match(self):
