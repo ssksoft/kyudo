@@ -209,17 +209,18 @@ class EditMatchTests(TestCase):
             url_add_competition, data_competition)
 
         # テスト対象を実行
-        data_target = {
-            'competition_id': 1,
+        data = {
+            'competition_id': 1
         }
-        url_target = reverse('cms:add_match', kwargs=data_target)
+        url_target = reverse('cms:add_match', kwargs=data)
+
+        # POST実行
         competition = Competition.objects.get(id=1)
         post_contents = {
-            'competition': str(competition.id),
+            'competition': competition.id,
             'name': 'test_match_name'
         }
-        response_target = self.client.post(
-            url_target, post_contents)
+        response_target = self.client.post(url_target, post_contents)
 
         # テスト結果を確認
         self.assertEqual(302, response_target.status_code)
