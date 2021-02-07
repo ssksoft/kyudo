@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from accounts.models import CustomUser, UserGroup
 from .models import Competition
+from .forms import *
 from .views import *
 from django.views.generic import TemplateView
 
@@ -194,7 +195,7 @@ class DeleteCompaetitionTests(TestCase):
 
 
 class EditMatchTests(TestCase):
-    def add_match(self):
+    def test_add_match(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -208,17 +209,50 @@ class EditMatchTests(TestCase):
             url_add_competition, data_competition)
 
         # テスト対象を実行
-        competition = Competition.objects.get(id=1)
         data_target = {
-            'competition': competition,
-            'name': 'test_name'
+            'competition_id': 1,
         }
-        url_target = reverse('cms:edit_competition', data_target)
-
-        # POST実行
-        response_target = self.client.post(url_target)
+        url_target = reverse('cms:add_match', kwargs=data_target)
+        competition = Competition.objects.get(id=1)
+        post_contents = {
+            'competition': '1',
+            'name': 'test_match_name'
+        }
+        form = MatchForm(post_contents)
+        # self.assertTrue(form.is_valid())
+        response_target = self.client.post(
+            url_target, post_contents)
+        print(response_target)
 
         # テスト結果を確認
+        # self.assertEqual(post_contents, response_target.content)
+
         self.assertEqual(302, response_target.status_code)
 
-        # def edit_match:
+    # def edit_match(self):
+    #     # ダミーデータをCompetitionに追加
+    #     url_add_competition = reverse('cms:add_competition')
+    #     data_competition = {
+    #         'name': 'test_name',
+    #         'competition_type': 'test_type'
+    #     }
+    #     self.client.post(
+    #         url_add_competition, data_competition)
+
+    #     # ダミーデータをmatchに追加
+    #     competition = Competition.objects.get(id=1)
+    #     Match.objects.create(
+    #         competition=competition, name='test_match_name')
+
+    #     # テスト対象を実行
+    #     data_target = {
+    #         'competition': str(competition),
+    #         'name': 'test_match_name2'
+    #     }
+    #     url_target = reverse('cms:edit_competition', kwargs=data_target)
+
+    #     # POST実行
+    #     response_target = self.client.post(url_target)
+
+    #     # テスト結果を確認
+    #     self.assertEqual(1000, response_target.status_code)
