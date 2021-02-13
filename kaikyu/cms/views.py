@@ -144,6 +144,28 @@ def match_list(request, competition_id):
 
 
 @login_required
+def add_match(request, competition_id):
+    match = Match()
+
+    if request.method == 'POST':
+        form = MatchForm(request.POST, instance=match)
+        if form.is_valid():
+            match = form.save(commit=False)
+            match.save()
+            matches = Match.objects.all().order_by('id')
+            return redirect('cms:match_list', competition_id=competition_id)
+        else:
+            raise Http404
+
+    else:
+        initial_dict = dict(
+            name=match.name,
+            competition=Competition.objects.get(id=competition_id))
+        form = MatchForm(instance=match, initial=initial_dict)
+        return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
+
+
+@login_required
 def edit_match(request, competition_id, match_id=None):
     if match_id:
         match = get_object_or_404(Match, pk=match_id)
