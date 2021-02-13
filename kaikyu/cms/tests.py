@@ -223,7 +223,9 @@ class EditMatchTests(TestCase):
         response_target = self.client.post(url_target, post_contents)
 
         # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
+        match_after_add = Match.objects.get(id=1)
         self.assertEqual(302, response_target.status_code)
+        self.assertEqual(post_contents['name'], match_after_add.name)
 
     def test_edit_match(self):
         # ログイン
