@@ -314,44 +314,44 @@ class EditMatchTests(TestCase):
         self.assertRedirects(response_target, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-    # def test_add_match_with_not_authorized_user(self):
-    #     # ログイン
-    #     self.client.force_login(
-    #         CustomUser.objects.create_user('authorized_tester'))
+    def test_add_match_with_not_authorized_user(self):
+        # ログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('authorized_tester'))
 
-    #     # ダミーデータをCompetitionに追加
-    #     url_add_competition = reverse('cms:add_competition')
-    #     data_competition = {
-    #         'name': 'test_name',
-    #         'competition_type': 'test_type'
-    #     }
-    #     self.client.post(
-    #         url_add_competition, data_competition)
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
 
-    #     # ログアウト
-    #     self.client.logout()
+        # ログアウト
+        self.client.logout()
 
-    #     # 権限のないユーザでログイン
-    #     self.client.force_login(
-    #         CustomUser.objects.create_user('not_authorized_tester'))
+        # 権限のないユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('not_authorized_tester'))
 
-    #     # テスト対象を実行
-    #     data = {
-    #         'competition_id': 1
-    #     }
-    #     url_target = reverse('cms:add_match', kwargs=data)
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        url_target = reverse('cms:add_match', kwargs=data)
 
-    #     # POST実行
-    #     competition = Competition.objects.get(id=1)
-    #     post_contents = {
-    #         'competition': competition.id,
-    #         'name': 'test_match_name'
-    #     }
-    #     response_target = self.client.post(url_target, post_contents)
+        # POST実行
+        competition = Competition.objects.get(id=1)
+        post_contents = {
+            'competition': competition.id,
+            'name': 'test_match_name'
+        }
+        response_target = self.client.post(url_target, post_contents)
 
-    #     # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
-    #     self.assertEqual(302, response_target.status_code)
-    #     expected_url = settings.LOGIN_URL + '?next=' + url_target
+        # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
+        self.assertEqual(302, response_target.status_code)
+        expected_url = reverse('cms:notice_unauthorized_user')
 
-    #     self.assertRedirects(response_target, expected_url,
-    #                          status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+        self.assertRedirects(response_target, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)

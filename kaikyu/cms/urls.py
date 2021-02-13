@@ -4,6 +4,8 @@ from cms import views
 app_name = 'cms'
 urlpatterns = [
     path('home/', views.home, name='home'),
+    path('notice_unauthorized_user/', views.notice_unauthorized_user,
+         name='notice_unauthorized_user'),
     path('competition_list/', views.competition_list,
          name='competition_list'),
     path('add_competition/',
