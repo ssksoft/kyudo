@@ -222,33 +222,54 @@ class EditMatchTests(TestCase):
         }
         response_target = self.client.post(url_target, post_contents)
 
-        # テスト結果を確認
+        # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
         self.assertEqual(302, response_target.status_code)
 
-    # def edit_match(self):
-    #     # ダミーデータをCompetitionに追加
-    #     url_add_competition = reverse('cms:add_competition')
-    #     data_competition = {
-    #         'name': 'test_name',
-    #         'competition_type': 'test_type'
-    #     }
-    #     self.client.post(
-    #         url_add_competition, data_competition)
+    def test_edit_match(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
 
-    #     # ダミーデータをmatchに追加
-    #     competition = Competition.objects.get(id=1)
-    #     Match.objects.create(
-    #         competition=competition, name='test_match_name')
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
 
-    #     # テスト対象を実行
-    #     data_target = {
-    #         'competition': str(competition),
-    #         'name': 'test_match_name2'
-    #     }
-    #     url_target = reverse('cms:edit_competition', kwargs=data_target)
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        response_add = self.client.post(url_add_match, post_contents_add)
 
-    #     # POST実行
-    #     response_target = self.client.post(url_target)
+        # edit_match用URL用意
+        match = Match.objects.get(id=1)
+        # self.assertEqual(302, match.id)
+        # self.assertEqual(302, competition.id)
+        arguments_edit = {
+            'conmepetion_id': competition.id,
+            'match_id': match.id
+        }
+        # url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
+        url_edit_match = '/cms/edit_match/1/1'
+        post_contents_edit = {
+            'competition': competition.id,
+            'name': 'edited_match_name'
+        }
 
-    #     # テスト結果を確認
-    #     self.assertEqual(1000, response_target.status_code)
+        # テスト対象を実行
+        response_edit = self.client.post(url_edit_match,
+                                         post_contents_edit)
+
+        # テスト結果を確認((TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい))
+        self.assertEqual(302, response_edit.status_code)
+
+    # TODO：非ログイン状態、権限のないユーザでのログイン状態でのテストもしたい
