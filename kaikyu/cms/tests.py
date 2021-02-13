@@ -266,7 +266,9 @@ class EditMatchTests(TestCase):
         response_edit = self.client.post(url_edit_match,
                                          post_contents_edit)
 
-        # テスト結果を確認((TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい))
+        # テスト結果を確認
+        match_after_edit = Match.objects.get(id=1)
         self.assertEqual(302, response_edit.status_code)
+        self.assertEqual(post_contents_edit['name'], match_after_edit.name)
 
     # TODO：非ログイン状態、権限のないユーザでのログイン状態でのテストもしたい
