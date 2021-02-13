@@ -5,6 +5,8 @@ from .models import Competition
 from .forms import *
 from .views import *
 from django.views.generic import TemplateView
+import requests
+from kaikyu import settings
 
 
 class HomeTests(TestCase):
@@ -273,4 +275,39 @@ class EditMatchTests(TestCase):
         self.assertEqual(302, response_edit.status_code)
         self.assertEqual(post_contents_edit['name'], match_after_edit.name)
 
-    # TODO：非ログイン状態、権限のないユーザでのログイン状態でのテストもしたい
+    def test_add_match_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ログアウト
+        self.client.logout()
+
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        url_target = reverse('cms:add_match', kwargs=data)
+
+        # POST実行
+        competition = Competition.objects.get(id=1)
+        post_contents = {
+            'competition': competition.id,
+            'name': 'test_match_name'
+        }
+        response_target = self.client.post(url_target, post_contents)
+
+        # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
+        self.assertEqual(302, response_target.status_code)
+        expected_url = settings.LOGIN_URL + '?next=' + url_target
+
+        self.assertRedirects(response_target, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
