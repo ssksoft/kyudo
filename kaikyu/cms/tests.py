@@ -252,14 +252,11 @@ class EditMatchTests(TestCase):
 
         # edit_match用URL用意
         match = Match.objects.get(id=1)
-        # self.assertEqual(302, match.id)
-        # self.assertEqual(302, competition.id)
         arguments_edit = {
-            'conmepetion_id': competition.id,
+            'competition_id': competition.id,
             'match_id': match.id
         }
-        # url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
-        url_edit_match = '/cms/edit_match/1/1'
+        url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
         post_contents_edit = {
             'competition': competition.id,
             'name': 'edited_match_name'
