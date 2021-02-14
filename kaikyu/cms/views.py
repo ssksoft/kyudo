@@ -149,10 +149,7 @@ def add_match(request, competition_id):
     current_login_user = request.user
     authorized_users_and_groups = UserAndGroup.objects.filter(
         user_group=competition_id).values()
-    # print(authorized_users)
-    # tmp = [s for s in authorized_users if
-    #        current_login_user.id == s['user_id']]
-    # tmp = list(authorized_users.values()).count(current_login_user.id)
+
     authorized_users_id = [authorized_users_and_group.get(
         'user_id') for authorized_users_and_group in authorized_users_and_groups]
     is_authorized_user = authorized_users_id.count(current_login_user.id) > 0

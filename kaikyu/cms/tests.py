@@ -274,8 +274,17 @@ class EditMatchTests(TestCase):
 
         # テスト結果を確認
         match_after_edit = Match.objects.get(id=1)
-        self.assertEqual(302, response_edit.status_code)
+
+        # リダイレクト先が期待通りであることを確認
+        url_match_list = reverse('cms:match_list', args=[competition.id])
+        expected_url = url_match_list
+        self.assertRedirects(response_edit, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # レコードが保存されていることを確認
         self.assertEqual(post_contents_edit['name'], match_after_edit.name)
+        num_record_match = Match.objects.all().count()
+        self.assertEqual(1, num_record_match)
 
     def test_add_match_without_login(self):
         # ログイン
@@ -308,11 +317,15 @@ class EditMatchTests(TestCase):
         response_target = self.client.post(url_target, post_contents)
 
         # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
-        self.assertEqual(302, response_target.status_code)
+        # リダイレクト先が期待通りであることを確認
         expected_url = settings.LOGIN_URL + '?next=' + url_target
 
         self.assertRedirects(response_target, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # レコードが追加されていないことを確認
+        num_record_match = Match.objects.all().count()
+        self.assertEqual(0, num_record_match)
 
     def test_add_match_with_unauthorized_user(self):
         # ログイン
