@@ -196,7 +196,7 @@ class DeleteCompaetitionTests(TestCase):
         self.assertEqual(403, response_target.status_code)
 
 
-class EditMatchTests(TestCase):
+class AddMatchTests(TestCase):
     def test_add_match(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
@@ -230,61 +230,6 @@ class EditMatchTests(TestCase):
 
         match_after_add = Match.objects.get(id=1)
         self.assertEqual(post_contents['name'], match_after_add.name)
-
-    def test_edit_match(self):
-        # ログイン
-        self.client.force_login(CustomUser.objects.create_user('tester'))
-
-        # ダミーデータをCompetitionに追加
-        url_add_competition = reverse('cms:add_competition')
-        data_competition = {
-            'name': 'test_name',
-            'competition_type': 'test_type'
-        }
-        self.client.post(
-            url_add_competition, data_competition)
-
-        # ダミーデータをMatchに追加
-        competition_id = {
-            'competition_id': 1
-        }
-        url_add_match = reverse('cms:add_match', kwargs=competition_id)
-        competition = Competition.objects.get(id=1)
-        post_contents_add = {
-            'competition': competition.id,
-            'name': 'added_match_name'
-        }
-        response_add = self.client.post(url_add_match, post_contents_add)
-
-        # edit_match用URL用意
-        match = Match.objects.get(id=1)
-        arguments_edit = {
-            'competition_id': competition.id,
-            'match_id': match.id
-        }
-        url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
-        post_contents_edit = {
-            'competition': competition.id,
-            'name': 'edited_match_name'
-        }
-
-        # テスト対象を実行
-        response_edit = self.client.post(url_edit_match,
-                                         post_contents_edit)
-
-        # テスト結果を確認
-        match_after_edit = Match.objects.get(id=1)
-
-        # リダイレクト先が期待通りであることを確認
-        url_match_list = reverse('cms:match_list', args=[competition.id])
-        expected_url = url_match_list
-        self.assertRedirects(response_edit, expected_url,
-                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
-
-        # レコードが保存されていることを確認
-        self.assertEqual(post_contents_edit['name'], match_after_edit.name)
-        num_record_match = Match.objects.all().count()
-        self.assertEqual(1, num_record_match)
 
     def test_add_match_without_login(self):
         # ログイン
@@ -371,3 +316,164 @@ class EditMatchTests(TestCase):
         # レコードが追加されていないことの確認
         num_record_match = Match.objects.all().count()
         self.assertEqual(0, num_record_match)
+
+
+class EditMatchTests(TestCase):
+    def test_edit_match(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        response_add = self.client.post(url_add_match, post_contents_add)
+
+        # edit_match用URL用意
+        match = Match.objects.get(id=1)
+        arguments_edit = {
+            'competition_id': competition.id,
+            'match_id': match.id
+        }
+        url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
+        post_contents_edit = {
+            'competition': competition.id,
+            'name': 'edited_match_name'
+        }
+
+        # テスト対象を実行
+        response_edit = self.client.post(url_edit_match,
+                                         post_contents_edit)
+
+        # テスト結果を確認
+        match_after_edit = Match.objects.get(id=1)
+
+        # リダイレクト先が期待通りであることを確認
+        url_match_list = reverse('cms:match_list', args=[competition.id])
+        expected_url = url_match_list
+        self.assertRedirects(response_edit, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # レコードが保存されていることを確認
+        self.assertEqual(post_contents_edit['name'], match_after_edit.name)
+        num_record_match = Match.objects.all().count()
+        self.assertEqual(1, num_record_match)
+
+    def test_edit_match_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition = Competition.objects.get(id=1)
+
+        competition_id_dict = {
+            'competition_id': competition.id
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id_dict)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        response_add = self.client.post(url_add_match, post_contents_add)
+
+        # ログアウト
+        self.client.logout()
+
+        # テスト対象を実行
+        match_before_edit = Match.objects.get(id=1)
+        arguments_edit = {
+            'competition_id': competition.id,
+            'match_id': match_before_edit.id
+        }
+        url_edit_match = reverse('cms:edit_match', kwargs=arguments_edit)
+
+        # POST実行
+        post_contents_edit = {
+            'competition': competition.id,
+            'name': 'edited_match_name'
+        }
+        response_target = self.client.post(url_edit_match, post_contents_edit)
+
+        # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
+        # リダイレクト先が期待通りであることを確認
+        expected_url = settings.LOGIN_URL + '?next=' + url_edit_match
+
+        self.assertRedirects(response_target, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # レコードの数に変化がないことを確認
+        num_record_match = Match.objects.all().count()
+        self.assertEqual(1, num_record_match)
+
+        # レコードが編集されていないことを確認
+        match_after_edit = Match.objects.get(id=1)
+        self.assertEqual(match_before_edit.name, match_after_edit.name)
+
+    # def test_add_match_with_unauthorized_user(self):
+    #     # ログイン
+    #     self.client.force_login(
+    #         CustomUser.objects.create_user('authorized_tester'))
+
+    #     # ダミーデータをCompetitionに追加
+    #     url_add_competition = reverse('cms:add_competition')
+    #     data_competition = {
+    #         'name': 'test_name',
+    #         'competition_type': 'test_type'
+    #     }
+    #     self.client.post(
+    #         url_add_competition, data_competition)
+
+    #     # ログアウト
+    #     self.client.logout()
+
+    #     # 権限のないユーザでログイン
+    #     self.client.force_login(
+    #         CustomUser.objects.create_user('not_authorized_tester'))
+
+    #     # テスト対象を実行
+    #     data = {
+    #         'competition_id': 1
+    #     }
+    #     url_target = reverse('cms:add_match', kwargs=data)
+
+    #     # POST実行
+    #     competition = Competition.objects.get(id=1)
+    #     post_contents = {
+    #         'competition': competition.id,
+    #         'name': 'test_match_name'
+    #     }
+    #     response_target = self.client.post(url_target, post_contents)
+
+    #     # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
+    #     # 遷移先の確認
+    #     expected_url = reverse('cms:notice_unauthorized_user')
+    #     self.assertRedirects(response_target, expected_url,
+    #                          status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+    #     # レコードが追加されていないことの確認
+    #     num_record_match = Match.objects.all().count()
+    #     self.assertEqual(0, num_record_match)
