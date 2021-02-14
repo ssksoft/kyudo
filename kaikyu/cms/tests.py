@@ -495,3 +495,12 @@ class EditMatchTests(TestCase):
         # レコードが編集されていないことを確認
         match_after_edit = Match.objects.get(id=1)
         self.assertEqual(match_before_edit.name, match_after_edit.name)
+
+
+class NoticeUnauthorizedUserTests(TestCase):
+    def test_render(self):
+        target_url = reverse('cms:notice_unauthorized_user')
+
+        # テスト対象を実行
+        response_target = self.client.get(target_url)
+        self.assertEqual(200, response_target.status_code)
