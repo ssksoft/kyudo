@@ -688,3 +688,14 @@ class DeleteMatchTests(TestCase):
         expected_url = reverse('cms:notice_unauthorized_user')
         self.assertRedirects(response_delete, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+
+class EditHitTests(TestCase):
+    def test_add_hit(self):
+        args_add_hit = {
+            'competition_id': 1,
+            'match_id': 1
+        }
+        add_hit_url = reverse('cms:edit_hit', kwargs=args_add_hit)
+        response_add_hit = self.client.get(add_hit_url)
+        self.assertEqual(200, response_add_hit.status_code)
