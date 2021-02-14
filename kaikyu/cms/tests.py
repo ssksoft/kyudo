@@ -504,3 +504,23 @@ class NoticeUnauthorizedUserTests(TestCase):
         # テスト対象を実行
         response_target = self.client.get(target_url)
         self.assertEqual(200, response_target.status_code)
+
+
+class IsAuthorizedUserTests(TestCase):
+    def test_authorized_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        request = self.client.post(
+            url_add_competition, data_competition)
+
+        # テスト対象を実行
+        competition_id = 1
+        current_login_user = CustomUser.objects.get(id=1)
+        self.assertTrue(is_authorized_user(competition_id, current_login_user))
