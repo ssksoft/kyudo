@@ -314,7 +314,7 @@ class EditMatchTests(TestCase):
         self.assertRedirects(response_target, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-    def test_add_match_with_not_authorized_user(self):
+    def test_add_match_with_unauthorized_user(self):
         # ログイン
         self.client.force_login(
             CustomUser.objects.create_user('authorized_tester'))
@@ -350,8 +350,11 @@ class EditMatchTests(TestCase):
         response_target = self.client.post(url_target, post_contents)
 
         # テスト結果を確認(TODO:matchオブジェクトのcompetitionとnameの値も期待通りか確認したい)
-        self.assertEqual(302, response_target.status_code)
+        # 遷移先の確認
         expected_url = reverse('cms:notice_unauthorized_user')
-
         self.assertRedirects(response_target, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # レコードが追加されていないことの確認
+        num_record_match = Match.objects.all().count()
+        self.assertEqual(0, num_record_match)
