@@ -209,10 +209,14 @@ def is_authorized_user(competition_id, current_login_user):
 
 @login_required
 def delete_match(request, competition_id, match_id):
-    match = get_object_or_404(Match, pk=match_id)
-    match.delete()
-    matches = Match.objects.all().order_by('id')
-    return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+    current_login_user = request.user
+    if is_authorized_user(competition_id, current_login_user):
+        match = get_object_or_404(Match, pk=match_id)
+        match.delete()
+        matches = Match.objects.all().order_by('id')
+        return render(request, 'cms/match_list.html', dict(matches=matches, competition_id=competition_id))
+    else:
+        return redirect('cms:notice_unauthorized_user')
 
 
 def edit_hit(request, competition_id, match_id):

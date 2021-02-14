@@ -676,9 +676,15 @@ class DeleteMatchTests(TestCase):
         }
         url_delete_match = reverse(
             'cms:delete_match', kwargs=args_delete_match)
-        self.client.post(
+        response_delete = self.client.post(
             url_delete_match, data_competition)
 
+        # 試合が削除されていないことを確認
         num_record_match_after_delete = Match.objects.all().count()
         self.assertEqual(1, num_record_match_before_delete)
         self.assertEqual(1, num_record_match_after_delete)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = reverse('cms:notice_unauthorized_user')
+        self.assertRedirects(response_delete, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
