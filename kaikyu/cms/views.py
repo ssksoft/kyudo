@@ -178,6 +178,15 @@ def notice_unauthorized_user(request):
     return render(request, 'cms/notice_unauthorized_user.html')
 
 
+def is_authorized_user(competition_id, current_login_user):
+    authorized_users_and_groups = UserAndGroup.objects.filter(
+        user_group=competition_id).values()
+    authorized_users_id = [authorized_users_and_group.get(
+        'user_id') for authorized_users_and_group in authorized_users_and_groups]
+    is_authorized_user = authorized_users_id.count(current_login_user.id) > 0
+    return is_authorized_user
+
+
 @login_required
 def edit_match(request, competition_id, match_id=None):
     if match_id:
@@ -185,22 +194,26 @@ def edit_match(request, competition_id, match_id=None):
     else:
         match = Match()
 
-    if request.method == 'POST':
-        form = MatchForm(request.POST, instance=match)
-        if form.is_valid():
-            match = form.save(commit=False)
-            match.save()
-            matches = Match.objects.all().order_by('id')
-            return redirect('cms:match_list', competition_id=competition_id)
-        else:
-            raise Http404
+    current_login_user = request.user
+    if is_authorized_user(competition_id, current_login_user):
+        if request.method == 'POST':
+            form = MatchForm(request.POST, instance=match)
+            if form.is_valid():
+                match = form.save(commit=False)
+                match.save()
+                matches = Match.objects.all().order_by('id')
+                return redirect('cms:match_list', competition_id=competition_id)
+            else:
+                raise Http404
 
+        else:
+            initial_dict = dict(
+                name=match.name,
+                competition=Competition.objects.get(id=competition_id))
+            form = MatchForm(instance=match, initial=initial_dict)
+            return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
     else:
-        initial_dict = dict(
-            name=match.name,
-            competition=Competition.objects.get(id=competition_id))
-        form = MatchForm(instance=match, initial=initial_dict)
-        return render(request, 'cms/edit_match.html', dict(form=form, competition_id=competition_id, match_id=match_id))
+        return redirect('cms:notice_unauthorized_user')
 
 
 @login_required
