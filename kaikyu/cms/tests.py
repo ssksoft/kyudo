@@ -291,7 +291,7 @@ class AddMatchTests(TestCase):
 
         # 権限のないユーザでログイン
         self.client.force_login(
-            CustomUser.objects.create_user('not_authorized_tester'))
+            CustomUser.objects.create_user('unauthorized_tester'))
 
         # テスト対象を実行
         data = {
@@ -524,3 +524,29 @@ class IsAuthorizedUserTests(TestCase):
         competition_id = 1
         current_login_user = CustomUser.objects.get(id=1)
         self.assertTrue(is_authorized_user(competition_id, current_login_user))
+
+    def test_unauthorized_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        request = self.client.post(
+            url_add_competition, data_competition)
+
+        # ログアウト
+        self.client.logout()
+
+        # 権限のないユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_tester'))
+
+        # テスト対象を実行
+        competition_id = 1
+        current_login_user = CustomUser.objects.get(id=2)
+        self.assertFalse(is_authorized_user(
+            competition_id, current_login_user))
