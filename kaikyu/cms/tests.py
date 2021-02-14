@@ -636,4 +636,49 @@ class DeleteMatchTests(TestCase):
         self.assertEqual(1, num_record_match_before_delete)
         self.assertEqual(1, num_record_match_after_delete)
 
-        # def test_delete_with_unauthorized_user(self):
+    def test_delete_with_unauthorized_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        self.client.post(url_add_match, post_contents_add)
+        num_record_match_before_delete = Match.objects.all().count()
+
+        # ログアウト
+        self.client.logout()
+
+        # 非認証ユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_user'))
+
+        # テスト対象を実行
+        args_delete_match = {
+            'competition_id': 1,
+            'match_id': 1
+        }
+        url_delete_match = reverse(
+            'cms:delete_match', kwargs=args_delete_match)
+        self.client.post(
+            url_delete_match, data_competition)
+
+        num_record_match_after_delete = Match.objects.all().count()
+        self.assertEqual(1, num_record_match_before_delete)
+        self.assertEqual(1, num_record_match_after_delete)
