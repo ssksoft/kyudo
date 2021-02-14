@@ -145,19 +145,12 @@ def match_list(request, competition_id):
 
 @login_required
 def add_match(request, competition_id):
-    match = Match()
     current_login_user = request.user
-    authorized_users_and_groups = UserAndGroup.objects.filter(
-        user_group=competition_id).values()
-
-    authorized_users_id = [authorized_users_and_group.get(
-        'user_id') for authorized_users_and_group in authorized_users_and_groups]
-    is_authorized_user = authorized_users_id.count(current_login_user.id) > 0
-
-    if is_authorized_user:
+    if is_authorized_user(competition_id, current_login_user):
         if request.method == 'POST':
             form = MatchForm(request.POST, instance=match)
             if form.is_valid():
+                match = Match()
                 match = form.save(commit=False)
                 match.save()
                 matches = Match.objects.all().order_by('id')
@@ -189,14 +182,13 @@ def is_authorized_user(competition_id, current_login_user):
 
 @login_required
 def edit_match(request, competition_id, match_id=None):
-    if match_id:
-        match = get_object_or_404(Match, pk=match_id)
-    else:
-        match = Match()
-
     current_login_user = request.user
     if is_authorized_user(competition_id, current_login_user):
         if request.method == 'POST':
+            if match_id:
+                match = get_object_or_404(Match, pk=match_id)
+            else:
+                match = Match()
             form = MatchForm(request.POST, instance=match)
             if form.is_valid():
                 match = form.save(commit=False)
