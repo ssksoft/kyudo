@@ -791,7 +791,7 @@ class AddPlayerTests(TestCase):
 
 
 class EditPlayerTests(TestCase):
-    def edit_hit_player_get(self):
+    def test_edit_hit_player_get(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -825,7 +825,54 @@ class EditPlayerTests(TestCase):
         }
         url_edit_player = reverse('cms:edit_player', kwargs=args_edit_player)
         response_edit_player = self.client.get(url_edit_player)
-        self.assertEqual(200, response_edit_player)
+        self.assertEqual(200, response_edit_player.status_code)
+
+    def test_edit_hit_player_post(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        post_contents_add_player = add_player = {
+            'competition': 1,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        self.client.post(url_add_player, post_contents_add_player)
+        player = Player.objects.get(id=1)
+
+        # テスト対象を実行
+        get_args_edit_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+
+        post_contents_edit_player = add_player = {
+            'competition': 1,
+            'name': 'test_player_name22',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        url_edit_player = reverse(
+            'cms:edit_player', kwargs=get_args_edit_player)
+        response_edit_player = self.client.post(
+            url_edit_player, post_contents_edit_player)
+        self.assertEqual(302, response_edit_player.status_code)
 
 
 class EditHitTests(TestCase):
@@ -971,7 +1018,7 @@ class AddHitTests(TestCase):
         }
         url_add_hit = reverse('cms:add_hit', kwargs=args_add_hit)
         response_add_hit = self.client.post(url_add_hit, post_contents_add_hit)
-        print(response_add_hit.content)
+        # print(response_add_hit.content)
         # self.assertEqual(200, response_add_hit.status_code)
 
         # # リダイレクト先が期待通りであることを確認

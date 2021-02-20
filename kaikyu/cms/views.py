@@ -255,7 +255,7 @@ def edit_player(request, competition_id, player_id):
 
             players = Player.objects.filter(
                 competition_id=competition_id).values()
-            return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+            return redirect('cms:player_list', competition_id=competition_id)
         else:
             raise Http404
     else:
