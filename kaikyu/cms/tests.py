@@ -751,6 +751,44 @@ class AddPlayerTests(TestCase):
         self.assertRedirects(response_add_player, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    def test_add_player_post(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # テスト対象を実行
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        player = Player
+        competition = Competition.objects.get(id=1)
+
+        post_contents = {
+            'competition': 2,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        response_add_player = self.client.post(url_add_player, post_contents)
+
+        # リダイレクト先が期待通りであることを確認
+        args_player_list = {
+            'competition_id': 1,
+        }
+        expected_url = reverse(
+            'cms:player_list', kwargs=args_player_list)
+        self.assertEqual(404, response_add_player.status_code)
+
 
 class EditHitTests(TestCase):
     def test_input_playerid_for_hit(self):
