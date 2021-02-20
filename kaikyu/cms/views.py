@@ -245,9 +245,8 @@ def add_player(request, competition_id):
 
 
 @login_required
-def edit_player(request, competition_id, player_id=None):
+def edit_player(request, competition_id, player_id):
     player = get_object_or_404(Player, pk=player_id)
-
     if request.method == 'POST':
         form = PlayerForm(request.POST, instance=player)
         if form.is_valid():
@@ -257,6 +256,8 @@ def edit_player(request, competition_id, player_id=None):
             players = Player.objects.filter(
                 competition_id=competition_id).values()
             return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+        else:
+            raise Http404
     else:
         initial_dict = dict(
             competition=Competition.objects.get(id=competition_id),
@@ -265,8 +266,7 @@ def edit_player(request, competition_id, player_id=None):
             dan=player.dan,
             rank=player.rank)
         form = PlayerForm(instance=player, initial=initial_dict)
-
-    return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
+        return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
 
 
 def player_list(request, competition_id):

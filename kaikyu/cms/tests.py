@@ -790,6 +790,44 @@ class AddPlayerTests(TestCase):
         self.assertEqual(404, response_add_player.status_code)
 
 
+class EditPlayerTests(TestCase):
+    def edit_hit_player_get(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        add_player_post_contents = {
+            'competition': 1,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        self.client.post(url_add_player, add_player_post_contents)
+
+        # テスト対象を実行
+        args_edit_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+        url_edit_player = reverse('cms:edit_player', kwargs=args_edit_player)
+        response_edit_player = self.client.get(url_edit_player)
+        self.assertEqual(200, response_edit_player)
+
+
 class EditHitTests(TestCase):
     def test_input_playerid_for_hit(self):
         # ログイン
