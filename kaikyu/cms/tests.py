@@ -698,4 +698,13 @@ class EditHitTests(TestCase):
         }
         add_hit_url = reverse('cms:edit_hit', kwargs=args_add_hit)
         response_add_hit = self.client.get(add_hit_url)
-        self.assertEqual(200, response_add_hit.status_code)
+
+        args_input_playerid = {
+            'competition_id': 1,
+            'match_id': 1,
+            'NUM_PLAYER': 6
+        }
+        expected_url = reverse(
+            'cms:input_playerid_for_hit', kwargs=args_input_playerid)
+        self.assertRedirects(response_add_hit, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)

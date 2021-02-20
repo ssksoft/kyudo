@@ -24,6 +24,8 @@ urlpatterns = [
          views.delete_match, name='delete_match'),
     path('edit_hit/<int:competition_id>/<int:match_id>',
          views.edit_hit, name='edit_hit'),
+    path('input_playerid_for_hit/<int:competition_id>/<int:match_id>/<int:NUM_PLAYER>:',
+         views.input_playerid_for_hit, name='input_playerid_for_hit'),
     path('get_players/<int:competition_id>/<int:match_id>',
          views.get_players, name='get_players'),
     path('save_hit/<int:competition_id>/<int:match_id>',

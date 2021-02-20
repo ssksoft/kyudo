@@ -244,13 +244,16 @@ def edit_hit(request, competition_id, match_id):
                 'shot_num': current_shot+1,
                 'hit': copy.deepcopy(current_row_hits)
             })
+        return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
 
     # 記録の追加
     else:
-        player_ids = ['']*NUM_PLAYER
-        return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
+        return redirect('cms:input_playerid_for_hit', competition_id=competition_id, match_id=match_id, NUM_PLAYER=NUM_PLAYER)
 
-    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
+
+def input_playerid_for_hit(request, competition_id, match_id, NUM_PLAYER):
+    player_ids = ['']*NUM_PLAYER
+    return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
 
 
 def get_players(request, competition_id, match_id):
