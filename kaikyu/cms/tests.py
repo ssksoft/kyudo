@@ -751,7 +751,7 @@ class AddPlayerTests(TestCase):
         self.assertRedirects(response_add_player, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-    def test_add_player_post(self):
+    def test_add_player_post_invalid(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
