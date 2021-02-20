@@ -5,7 +5,7 @@
 
 <h4 class="mt-4 mb-5 border-bottom">選手IDの入力</h4>
 
-<form action="{% url 'cms:get_players' competition_id=competition_id match_id=match_id %}" method="POST">
+<form action="{% url 'cms:add_hit' competition_id=competition_id match_id=match_id %}" method="POST">
   <table class="table">
     <tr>
       <td>選手ID</td>

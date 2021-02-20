@@ -43,21 +43,21 @@ def competition_list(request):
 
 @login_required
 def add_competition(request):
+    competition = Competition()
     if request.method == 'POST':
-        with transaction.atomic():
-            competition = Competition()
-            post_content = request.POST
-            competition_id = save_competition(post_content, competition)
-            usergroup_id = add_usergroup(competition_id)
-            userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
+        post_content = request.POST
+        competition_id = save_competition(post_content, competition)
+        usergroup_id = add_usergroup(competition_id)
+        userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
 
-            if(int(userandgroup_id) != -1):
-                competitions = Competition.objects.all().order_by('id')
-                return redirect('cms:competition_list')
-            else:
-                raise PermissionDenied
+        if(int(userandgroup_id) != -1):
+            competitions = Competition.objects.all().order_by('id')
+            return redirect('cms:competition_list')
+        else:
+            raise PermissionDenied
     else:
-        raise Http404
+        form = CompetitionForm(instance=competition)
+        return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
 
 
 def save_competition(post_content, competition):
@@ -220,6 +220,77 @@ def delete_match(request, competition_id, match_id):
 
 
 @login_required
+def add_player(request, competition_id):
+    player = Player()
+    if request.method == 'POST':
+        form = PlayerForm(request.POST, instance=player)
+        if form.is_valid():
+            player = form.save(commit=False)
+            player.save()
+
+            players = Player.objects.filter(
+                competition_id=competition_id).values()
+            return redirect('cms:player_list', competition_id=competition_id)
+        else:
+            raise Http404
+    else:
+        initial_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            name=player.name,
+            team_name=player.team_name,
+            dan=player.dan,
+            rank=player.rank)
+        form = PlayerForm(instance=player, initial=initial_dict)
+        return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=None))
+
+
+@login_required
+def edit_player(request, competition_id, player_id=None):
+    player = get_object_or_404(Player, pk=player_id)
+
+    if request.method == 'POST':
+        form = PlayerForm(request.POST, instance=player)
+        if form.is_valid():
+            player = form.save(commit=False)
+            player.save()
+
+            players = Player.objects.filter(
+                competition_id=competition_id).values()
+            return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+    else:
+        initial_dict = dict(
+            competition=Competition.objects.get(id=competition_id),
+            name=player.name,
+            team_name=player.team_name,
+            dan=player.dan,
+            rank=player.rank)
+        form = PlayerForm(instance=player, initial=initial_dict)
+
+    return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
+
+
+def player_list(request, competition_id):
+    players = Player.objects.filter(
+        competition_id=competition_id).values()
+
+    return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
+
+
+@login_required
+def change_player(request, competition_id, match_id):
+    player_ids = request.POST.getlist('player_ids')
+    return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
+
+
+@login_required
+def delete_player(request, competition_id, player_id):
+    player = get_object_or_404(Player, pk=player_id)
+    player.delete()
+    players = Player.objects.all().order_by('id')
+    return render(request, 'cms/player_list.html', dict(players=players, competition_id=competition_id))
+
+
+@login_required
 def edit_hit(request, competition_id, match_id):
     NUM_HIT = 4
     NUM_PLAYER = 6
@@ -261,12 +332,16 @@ def input_playerid_for_hit(request, competition_id, match_id, NUM_PLAYER):
     return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
 
 
-def get_players(request, competition_id, match_id):
+def add_hit(request, competition_id, match_id):
     players_id = request.POST.getlist('player_id')
     players = []
     for player_id in players_id:
         players.append(get_object_or_404(Player, pk=player_id))
 
+    render_edit_hit(request, competition_id, match_id, players)
+
+
+def render_edit_hit(request, competition_id, match_id, players):
     return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
 
 
@@ -331,52 +406,3 @@ def save_hit(request, competition_id, match_id):
     matches = Match.objects.filter(
         competition_id=competition_id).values()
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
-
-
-def player_list(request, competition_id):
-    players = Player.objects.filter(
-        competition_id=competition_id).values()
-
-    return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
-
-
-@login_required
-def edit_player(request, competition_id, player_id=None):
-    if player_id:
-        player = get_object_or_404(Player, pk=player_id)
-    else:
-        player = Player()
-
-    if request.method == 'POST':
-        form = PlayerForm(request.POST, instance=player)
-        if form.is_valid():
-            player = form.save(commit=False)
-            player.save()
-
-            players = Player.objects.filter(
-                competition_id=competition_id).values()
-            return render(request, 'cms/player_list.html', {'players': players, 'competition_id': competition_id})
-    else:
-        initial_dict = dict(
-            competition=Competition.objects.get(id=competition_id),
-            name=player.name,
-            team_name=player.team_name,
-            dan=player.dan,
-            rank=player.rank)
-        form = PlayerForm(instance=player, initial=initial_dict)
-
-    return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=player_id))
-
-
-@login_required
-def change_player(request, competition_id, match_id):
-    player_ids = request.POST.getlist('player_ids')
-    return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
-
-
-@login_required
-def delete_player(request, competition_id, player_id):
-    player = get_object_or_404(Player, pk=player_id)
-    player.delete()
-    players = Player.objects.all().order_by('id')
-    return render(request, 'cms/player_list.html', dict(players=players, competition_id=competition_id))
