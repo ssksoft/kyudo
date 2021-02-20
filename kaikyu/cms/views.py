@@ -219,36 +219,41 @@ def delete_match(request, competition_id, match_id):
         return redirect('cms:notice_unauthorized_user')
 
 
+@login_required
 def edit_hit(request, competition_id, match_id):
     NUM_HIT = 4
     NUM_PLAYER = 6
 
     # 記録の編集
-    if Hit.objects.filter(match_id=match_id).exists():
-        hits = Hit.objects.filter(match_id=match_id).order_by('id').values()
-        player_ids = []
-        for current_record in range(len(hits)):
-            player_ids.append(hits[current_record]['player_id'])
+    current_login_user = request.user
+    if is_authorized_user(competition_id, current_login_user):
+        if Hit.objects.filter(match_id=match_id).exists():
+            hits = Hit.objects.filter(
+                match_id=match_id).order_by('id').values()
+            player_ids = []
+            for current_record in range(len(hits)):
+                player_ids.append(hits[current_record]['player_id'])
 
-        players = []
-        for player_id in player_ids:
-            players.append(get_object_or_404(Player, pk=player_id))
+            players = []
+            for player_id in player_ids:
+                players.append(get_object_or_404(Player, pk=player_id))
 
-        current_row_hits = ['×'] * NUM_PLAYER
-        existing_hits = []
+            current_row_hits = ['×'] * NUM_PLAYER
+            existing_hits = []
 
-        for current_shot in range(NUM_HIT-1, -1, -1):
-            for current_player in range(NUM_PLAYER):
-                current_row_hits[current_player] = hits[current_player]['hit'][current_shot]
-            existing_hits.append({
-                'shot_num': current_shot+1,
-                'hit': copy.deepcopy(current_row_hits)
-            })
-        return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
-
-    # 記録の追加
+            for current_shot in range(NUM_HIT-1, -1, -1):
+                for current_player in range(NUM_PLAYER):
+                    current_row_hits[current_player] = hits[current_player]['hit'][current_shot]
+                existing_hits.append({
+                    'shot_num': current_shot+1,
+                    'hit': copy.deepcopy(current_row_hits)
+                })
+            return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
+        # 記録の追加
+        else:
+            return redirect('cms:input_playerid_for_hit', competition_id=competition_id, match_id=match_id, NUM_PLAYER=NUM_PLAYER)
     else:
-        return redirect('cms:input_playerid_for_hit', competition_id=competition_id, match_id=match_id, NUM_PLAYER=NUM_PLAYER)
+        return redirect('cms:notice_unauthorized_user')
 
 
 def input_playerid_for_hit(request, competition_id, match_id, NUM_PLAYER):

@@ -691,7 +691,7 @@ class DeleteMatchTests(TestCase):
 
 
 class EditHitTests(TestCase):
-    def test_add_hit(self):
+    def test_input_playerid_for_hit(self):
         args_add_hit = {
             'competition_id': 1,
             'match_id': 1
@@ -704,7 +704,25 @@ class EditHitTests(TestCase):
             'match_id': 1,
             'NUM_PLAYER': 6
         }
-        expected_url = reverse(
-            'cms:input_playerid_for_hit', kwargs=args_input_playerid)
+        # リダイレクト先が期待通りであることを確認
+        expected_url = settings.LOGIN_URL + '?next=' + add_hit_url
         self.assertRedirects(response_add_hit, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+    # def test_input_playerid_for_hit_without_login(self):
+    #     args_add_hit = {
+    #         'competition_id': 1,
+    #         'match_id': 1
+    #     }
+    #     add_hit_url = reverse('cms:edit_hit', kwargs=args_add_hit)
+    #     response_add_hit = self.client.get(add_hit_url)
+
+    #     args_input_playerid = {
+    #         'competition_id': 1,
+    #         'match_id': 1,
+    #         'NUM_PLAYER': 6
+    #     }
+    #     expected_url = reverse(
+    #         'cms:input_playerid_for_hit', kwargs=args_input_playerid)
+    #     self.assertRedirects(response_add_hit, expected_url,
+    #                          status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
