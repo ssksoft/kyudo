@@ -222,26 +222,30 @@ def delete_match(request, competition_id, match_id):
 @login_required
 def add_player(request, competition_id):
     player = Player()
-    if request.method == 'POST':
-        form = PlayerForm(request.POST, instance=player)
-        if form.is_valid():
-            player = form.save(commit=False)
-            player.save()
+    current_login_user = request.user
+    if is_authorized_user(competition_id, current_login_user):
+        if request.method == 'POST':
+            form = PlayerForm(request.POST, instance=player)
+            if form.is_valid():
+                player = form.save(commit=False)
+                player.save()
 
-            players = Player.objects.filter(
-                competition_id=competition_id).values()
-            return redirect('cms:player_list', competition_id=competition_id)
+                players = Player.objects.filter(
+                    competition_id=competition_id).values()
+                return redirect('cms:player_list', competition_id=competition_id)
+            else:
+                raise Http404
         else:
-            raise Http404
+            initial_dict = dict(
+                competition=Competition.objects.get(id=competition_id),
+                name=player.name,
+                team_name=player.team_name,
+                dan=player.dan,
+                rank=player.rank)
+            form = PlayerForm(instance=player, initial=initial_dict)
+            return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=None))
     else:
-        initial_dict = dict(
-            competition=Competition.objects.get(id=competition_id),
-            name=player.name,
-            team_name=player.team_name,
-            dan=player.dan,
-            rank=player.rank)
-        form = PlayerForm(instance=player, initial=initial_dict)
-        return render(request, 'cms/edit_player.html', dict(form=form, competition_id=competition_id, player_id=None))
+        return redirect('cms:notice_unauthorized_user')
 
 
 @login_required
