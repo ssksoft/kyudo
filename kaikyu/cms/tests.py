@@ -140,7 +140,6 @@ class EditCompetitionTests(TestCase):
         response_edit_competition = self.client.get(url_edit_competition)
 
         # テスト結果を確認
-        print(response_edit_competition.status_code)
         self.assertEqual(200, response_edit_competition.status_code)
 
     def test_get_without_login(self):
@@ -1385,149 +1384,173 @@ class EditPlayerTests(TestCase):
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
 
-class EditHitTests(TestCase):
-    def test_input_playerid_for_hit(self):
+class PlayerListTests(TestCase):
+    def test_show_player_list(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
         # ダミーデータをCompetitionに追加
         url_add_competition = reverse('cms:add_competition')
         data_competition = {
-            'name': 'test_name',
+            'name': 'test_competition',
             'competition_type': 'test_type'
         }
         self.client.post(
             url_add_competition, data_competition)
 
-        # ダミーデータをMatchに追加
-        competition_id = {
+        # テスト対象を実行
+        args_url_player_list = {
             'competition_id': 1
         }
-        url_add_match = reverse('cms:add_match', kwargs=competition_id)
-        competition = Competition.objects.get(id=1)
-        post_contents_add = {
-            'competition': competition.id,
-            'name': 'added_match_name'
-        }
-        self.client.post(url_add_match, post_contents_add)
-
-        # テスト対象を実行
-        args_add_hit = {
-            'competition_id': 1,
-            'match_id': 1
-        }
-        url_edit_hit = reverse('cms:edit_hit', kwargs=args_add_hit)
-        response_add_hit = self.client.get(url_edit_hit)
-
-        # リダイレクト先が期待通りであることを確認
-        args_input_playerid = {
-            'competition_id': 1,
-            'match_id': 1,
-            'NUM_PLAYER': 6
-        }
-        expected_url = reverse(
-            'cms:input_playerid_for_hit', kwargs=args_input_playerid)
-        self.assertRedirects(response_add_hit, expected_url,
-                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
-
-    def test_input_playerid_for_hit_without_login(self):
-        args_add_hit = {
-            'competition_id': 1,
-            'match_id': 1
-        }
-        url_edit_hit = reverse('cms:edit_hit', kwargs=args_add_hit)
-        response_add_hit = self.client.get(url_edit_hit)
-
-        # リダイレクト先が期待通りであることを確認
-        expected_url = settings.LOGIN_URL + '?next=' + url_edit_hit
-        self.assertRedirects(response_add_hit, expected_url,
-                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
-
-    def test_input_playerid_for_hit_with_unauthorized_user(self):
-        # ログイン
-        self.client.force_login(CustomUser.objects.create_user('tester'))
-
-        # ダミーデータをCompetitionに追加
-        url_add_competition = reverse('cms:add_competition')
-        data_competition = {
-            'name': 'test_name',
-            'competition_type': 'test_type'
-        }
-        self.client.post(
-            url_add_competition, data_competition)
-
-        # ダミーデータをMatchに追加
-        competition_id = {
-            'competition_id': 1
-        }
-        url_add_match = reverse('cms:add_match', kwargs=competition_id)
-        competition = Competition.objects.get(id=1)
-        post_contents_add = {
-            'competition': competition.id,
-            'name': 'added_match_name'
-        }
-        self.client.post(url_add_match, post_contents_add)
-
-        # ログアウト
-        self.client.logout()
-
-        # 権限のないユーザでログイン
-        self.client.force_login(
-            CustomUser.objects.create_user('unauthorized_tester'))
-
-        # テスト対象を実行
-        args_edit_hit = {
-            'competition_id': 1,
-            'match_id': 1
-        }
-        url_edit_hit = reverse('cms:edit_hit', kwargs=args_edit_hit)
-        response_edit_hit = self.client.get(url_edit_hit)
-
-        # リダイレクト先が期待通りであることを確認
-        expected_url = reverse('cms:notice_unauthorized_user')
-        self.assertRedirects(response_edit_hit, expected_url,
-                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+        url_player_list = reverse(
+            'cms:player_list', kwargs=args_url_player_list)
+        response_player_list = self.client.get(url_player_list)
+        self.assertEqual(200, response_player_list.status_code)
 
 
-class AddHitTests(TestCase):
-    def test_add_hit_succsess(self):
-        # ログイン
-        self.client.force_login(CustomUser.objects.create_user('tester'))
+# class EditHitTests(TestCase):
+#     def test_input_playerid_for_hit(self):
+#         # ログイン
+#         self.client.force_login(CustomUser.objects.create_user('tester'))
 
-        # ダミーデータをCompetitionに追加
-        url_add_competition = reverse('cms:add_competition')
-        data_competition = {
-            'name': 'test_name',
-            'competition_type': 'test_type'
-        }
-        self.client.post(
-            url_add_competition, data_competition)
+#         # ダミーデータをCompetitionに追加
+#         url_add_competition = reverse('cms:add_competition')
+#         data_competition = {
+#             'name': 'test_name',
+#             'competition_type': 'test_type'
+#         }
+#         self.client.post(
+#             url_add_competition, data_competition)
 
-        # ダミーデータをMatchに追加
-        competition_id = {
-            'competition_id': 1
-        }
-        url_add_match = reverse('cms:add_match', kwargs=competition_id)
-        competition = Competition.objects.get(id=1)
-        post_contents_add = {
-            'competition': competition.id,
-            'name': 'added_match_name'
-        }
-        self.client.post(url_add_match, post_contents_add)
+#         # ダミーデータをMatchに追加
+#         competition_id = {
+#             'competition_id': 1
+#         }
+#         url_add_match = reverse('cms:add_match', kwargs=competition_id)
+#         competition = Competition.objects.get(id=1)
+#         post_contents_add = {
+#             'competition': competition.id,
+#             'name': 'added_match_name'
+#         }
+#         self.client.post(url_add_match, post_contents_add)
 
-        # ダミーの選手登録
+#         # テスト対象を実行
+#         args_add_hit = {
+#             'competition_id': 1,
+#             'match_id': 1
+#         }
+#         url_edit_hit = reverse('cms:edit_hit', kwargs=args_add_hit)
+#         response_add_hit = self.client.get(url_edit_hit)
 
-        # テスト対象を実行
-        args_add_hit = {
-            'competition_id': 1,
-            'match_id': 1
-        }
-        # TODO：選手登録を事前に実施する必要あり
-        post_contents_add_hit = {
-            'player_id': [1, 2, 3, 4, 5, 6],
-        }
-        url_add_hit = reverse('cms:add_hit', kwargs=args_add_hit)
-        response_add_hit = self.client.post(url_add_hit, post_contents_add_hit)
+#         # リダイレクト先が期待通りであることを確認
+#         args_input_playerid = {
+#             'competition_id': 1,
+#             'match_id': 1,
+#             'NUM_PLAYER': 6
+#         }
+#         expected_url = reverse(
+#             'cms:input_playerid_for_hit', kwargs=args_input_playerid)
+#         self.assertRedirects(response_add_hit, expected_url,
+#                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+#     def test_input_playerid_for_hit_without_login(self):
+#         args_add_hit = {
+#             'competition_id': 1,
+#             'match_id': 1
+#         }
+#         url_edit_hit = reverse('cms:edit_hit', kwargs=args_add_hit)
+#         response_add_hit = self.client.get(url_edit_hit)
+
+#         # リダイレクト先が期待通りであることを確認
+#         expected_url = settings.LOGIN_URL + '?next=' + url_edit_hit
+#         self.assertRedirects(response_add_hit, expected_url,
+#                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+#     def test_input_playerid_for_hit_with_unauthorized_user(self):
+#         # ログイン
+#         self.client.force_login(CustomUser.objects.create_user('tester'))
+
+#         # ダミーデータをCompetitionに追加
+#         url_add_competition = reverse('cms:add_competition')
+#         data_competition = {
+#             'name': 'test_name',
+#             'competition_type': 'test_type'
+#         }
+#         self.client.post(
+#             url_add_competition, data_competition)
+
+#         # ダミーデータをMatchに追加
+#         competition_id = {
+#             'competition_id': 1
+#         }
+#         url_add_match = reverse('cms:add_match', kwargs=competition_id)
+#         competition = Competition.objects.get(id=1)
+#         post_contents_add = {
+#             'competition': competition.id,
+#             'name': 'added_match_name'
+#         }
+#         self.client.post(url_add_match, post_contents_add)
+
+#         # ログアウト
+#         self.client.logout()
+
+#         # 権限のないユーザでログイン
+#         self.client.force_login(
+#             CustomUser.objects.create_user('unauthorized_tester'))
+
+#         # テスト対象を実行
+#         args_edit_hit = {
+#             'competition_id': 1,
+#             'match_id': 1
+#         }
+#         url_edit_hit = reverse('cms:edit_hit', kwargs=args_edit_hit)
+#         response_edit_hit = self.client.get(url_edit_hit)
+
+#         # リダイレクト先が期待通りであることを確認
+#         expected_url = reverse('cms:notice_unauthorized_user')
+#         self.assertRedirects(response_edit_hit, expected_url,
+#                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+
+# class AddHitTests(TestCase):
+#     def test_add_hit_succsess(self):
+#         # ログイン
+#         self.client.force_login(CustomUser.objects.create_user('tester'))
+
+#         # ダミーデータをCompetitionに追加
+#         url_add_competition = reverse('cms:add_competition')
+#         data_competition = {
+#             'name': 'test_name',
+#             'competition_type': 'test_type'
+#         }
+#         self.client.post(
+#             url_add_competition, data_competition)
+
+#         # ダミーデータをMatchに追加
+#         competition_id = {
+#             'competition_id': 1
+#         }
+#         url_add_match = reverse('cms:add_match', kwargs=competition_id)
+#         competition = Competition.objects.get(id=1)
+#         post_contents_add = {
+#             'competition': competition.id,
+#             'name': 'added_match_name'
+#         }
+#         self.client.post(url_add_match, post_contents_add)
+
+#         # ダミーの選手登録
+
+#         # テスト対象を実行
+#         args_add_hit = {
+#             'competition_id': 1,
+#             'match_id': 1
+#         }
+#         # TODO：選手登録を事前に実施する必要あり
+#         post_contents_add_hit = {
+#             'player_id': [1, 2, 3, 4, 5, 6],
+#         }
+#         url_add_hit = reverse('cms:add_hit', kwargs=args_add_hit)
+#         response_add_hit = self.client.post(url_add_hit, post_contents_add_hit)
         # print(response_add_hit.content)
         # self.assertEqual(200, response_add_hit.status_code)
 
