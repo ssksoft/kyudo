@@ -115,12 +115,17 @@ def add_userandgroup(usergroup_pk, user_pk):
 @login_required
 def edit_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
-    if request.method == 'POST':
-        saved_pk = save_competition(request, competition)
+    current_login_user = request.user
+    print(is_authorized_user(competition_id, current_login_user))
+    if is_authorized_user(competition_id, current_login_user):
+        if request.method == 'POST':
+            saved_pk = save_competition(request, competition)
+        else:
+            pass
+        form = CompetitionForm(instance=competition)
+        return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
     else:
-        pass
-    form = CompetitionForm(instance=competition)
-    return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
+        return redirect('cms:notice_unauthorized_user')
 
 
 @login_required

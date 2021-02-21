@@ -118,9 +118,32 @@ class AddUserAndGroupTests(TestCase):
         # TODO：UserAndGroupへのデータ保存に失敗した時の動作確認用テストメソッドもほしい
 
 
-# TODO:GETとPOST両方のテストが必要
 class EditCompetitionTests(TestCase):
     def test_get(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        post_contents_add_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        response = self.client.post(
+            url_add_competition, post_contents_add_competition)
+
+        # テスト対象を実行
+        args_get = {
+            'competition_id': 1
+        }
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_get)
+        response_edit_competition = self.client.get(url_edit_competition)
+
+        # テスト結果を確認
+        print(response_edit_competition.status_code)
+        self.assertEqual(200, response_edit_competition.status_code)
+
+    def test_get_without_login(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -128,19 +151,22 @@ class EditCompetitionTests(TestCase):
         Competition.objects.create(
             name='test_name', competition_type='test_type')
 
-        competition_test = Competition.objects.get(id=1)
+        # ログアウト
+        self.client.logout()
 
         # テスト対象を実行
         data = {
             'competition_id': 1
         }
-        target_url = reverse('cms:edit_competition', kwargs=data)
-        response = self.client.get(target_url)
+        url_edit_competition = reverse('cms:edit_competition', kwargs=data)
+        response = self.client.get(url_edit_competition)
 
-        # テスト結果を確認
-        self.assertEqual(200, response.status_code)
+        # リダイレクト先が期待通りであることを確認
+        expected_url = expected_url = settings.LOGIN_URL + '?next=' + url_edit_competition
+        self.assertRedirects(response, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-    def test_get_without_login(self):
+    def test_get_with_unauthorized_user(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -153,6 +179,10 @@ class EditCompetitionTests(TestCase):
         # ログアウト
         self.client.logout()
 
+        # 非認証ユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_user'))
+
         # テスト対象を実行
         data = {
             'competition_id': 1
@@ -160,9 +190,8 @@ class EditCompetitionTests(TestCase):
         url_edit_competition = reverse('cms:edit_competition', kwargs=data)
         response = self.client.get(url_edit_competition)
 
-        # テスト結果を確認
         # リダイレクト先が期待通りであることを確認
-        expected_url = expected_url = settings.LOGIN_URL + '?next=' + url_edit_competition
+        expected_url = reverse('cms:notice_unauthorized_user')
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
