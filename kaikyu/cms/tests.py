@@ -791,7 +791,7 @@ class AddPlayerTests(TestCase):
 
 
 class EditPlayerTests(TestCase):
-    def test_edit_hit_player_get(self):
+    def test_edit_player_get(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -827,7 +827,7 @@ class EditPlayerTests(TestCase):
         response_edit_player = self.client.get(url_edit_player)
         self.assertEqual(200, response_edit_player.status_code)
 
-    def test_edit_hit_player_post(self):
+    def test_edit_player_post(self):
         # ログイン
         self.client.force_login(CustomUser.objects.create_user('tester'))
 
@@ -845,7 +845,7 @@ class EditPlayerTests(TestCase):
             'competition_id': 1
         }
         url_add_player = reverse('cms:add_player', kwargs=args_add_player)
-        post_contents_add_player = add_player = {
+        post_contents_add_player = {
             'competition': 1,
             'name': 'test_player_name',
             'team_name': 'test_team',
@@ -853,7 +853,6 @@ class EditPlayerTests(TestCase):
             'rank': '-'
         }
         self.client.post(url_add_player, post_contents_add_player)
-        player = Player.objects.get(id=1)
 
         # テスト対象を実行
         get_args_edit_player = {
@@ -861,7 +860,7 @@ class EditPlayerTests(TestCase):
             'player_id': 1
         }
 
-        post_contents_edit_player = add_player = {
+        post_contents_edit_player = {
             'competition': 1,
             'name': 'test_player_name22',
             'team_name': 'test_team',
@@ -873,6 +872,10 @@ class EditPlayerTests(TestCase):
         response_edit_player = self.client.post(
             url_edit_player, post_contents_edit_player)
         self.assertEqual(302, response_edit_player.status_code)
+
+        player = Player.objects.get(id=1)
+        print(player.name)
+        self.assertEqual(post_contents_edit_player['name'], player.name)
 
 
 class EditHitTests(TestCase):
