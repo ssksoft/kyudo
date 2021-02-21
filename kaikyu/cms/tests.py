@@ -140,6 +140,32 @@ class EditCompetitionTests(TestCase):
         # テスト結果を確認
         self.assertEqual(200, response.status_code)
 
+    def test_get_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        Competition.objects.create(
+            name='test_name', competition_type='test_type')
+
+        competition_test = Competition.objects.get(id=1)
+
+        # ログアウト
+        self.client.logout()
+
+        # テスト対象を実行
+        data = {
+            'competition_id': 1
+        }
+        url_edit_competition = reverse('cms:edit_competition', kwargs=data)
+        response = self.client.get(url_edit_competition)
+
+        # テスト結果を確認
+        # リダイレクト先が期待通りであることを確認
+        expected_url = expected_url = settings.LOGIN_URL + '?next=' + url_edit_competition
+        self.assertRedirects(response, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
 
 class DeleteCompaetitionTests(TestCase):
     def test_delete_success(self):
@@ -1166,7 +1192,7 @@ class EditPlayerTests(TestCase):
         self.assertRedirects(response_edit_player, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-        # TODO：できたら、ここの期待動作はログイン画面への遷移がいいなあ
+        # TODO：notice_unauthorized_user画面にログインへのリンクを表示させたい
 
     def test_edit_player_post_without_login(self):
         # ログイン
