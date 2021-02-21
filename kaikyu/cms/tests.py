@@ -817,6 +817,38 @@ class AddPlayerTests(TestCase):
         self.assertRedirects(response_add_player, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    def test_add_player_get_with_unauthorized_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        self.client.post(url_add_competition, data_competition)
+
+        # ログアウト
+        self.client.logout()
+
+        # ログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_user'))
+
+        # テスト対象を実行
+        args_add_player = {
+            'competition_id': 1
+        }
+
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        response_add_player = self.client.get(url_add_player)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = reverse('cms:notice_unauthorized_user')
+        self.assertRedirects(response_add_player, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
 
 class EditPlayerTests(TestCase):
     def test_edit_player_get(self):
