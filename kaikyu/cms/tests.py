@@ -1113,6 +1113,118 @@ class EditPlayerTests(TestCase):
         response_edit_player = self.client.get(url_edit_player)
         self.assertEqual(200, response_edit_player.status_code)
 
+    def test_edit_player_post_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        post_contents_add_player = {
+            'competition': 1,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        self.client.post(url_add_player, post_contents_add_player)
+
+        # ログアウト
+        self.client.logout()
+
+        # テスト対象を実行
+        get_args_edit_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+
+        post_contents_edit_player = {
+            'competition': 1,
+            'name': 'test_player_name22',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        url_edit_player = reverse(
+            'cms:edit_player', kwargs=get_args_edit_player)
+        response_edit_player = self.client.post(
+            url_edit_player, post_contents_edit_player)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = reverse('cms:notice_unauthorized_user')
+        self.assertRedirects(response_edit_player, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+        # TODO：できたら、ここの期待動作はログイン画面への遷移がいいなあ
+
+    def test_edit_player_post_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        post_contents_add_player = {
+            'competition': 1,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        self.client.post(url_add_player, post_contents_add_player)
+
+        # ログアウト
+        self.client.logout()
+
+        # 非認証ユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_user'))
+
+        # テスト対象を実行
+        get_args_edit_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+
+        post_contents_edit_player = {
+            'competition': 1,
+            'name': 'test_player_name22',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        url_edit_player = reverse(
+            'cms:edit_player', kwargs=get_args_edit_player)
+        response_edit_player = self.client.post(
+            url_edit_player, post_contents_edit_player)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = reverse('cms:notice_unauthorized_user')
+        self.assertRedirects(response_edit_player, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
 
 class EditHitTests(TestCase):
     def test_input_playerid_for_hit(self):
