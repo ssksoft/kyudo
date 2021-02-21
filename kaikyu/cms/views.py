@@ -248,20 +248,23 @@ def add_player(request, competition_id):
         return redirect('cms:notice_unauthorized_user')
 
 
-@login_required
 def edit_player(request, competition_id, player_id):
     player = get_object_or_404(Player, pk=player_id)
+    current_login_user = request.user
     if request.method == 'POST':
-        form = PlayerForm(request.POST, instance=player)
-        if form.is_valid():
-            player = form.save(commit=False)
-            player.save()
+        if is_authorized_user(competition_id, current_login_user):
+            form = PlayerForm(request.POST, instance=player)
+            if form.is_valid():
+                player = form.save(commit=False)
+                player.save()
 
-            players = Player.objects.filter(
-                competition_id=competition_id).values()
-            return redirect('cms:player_list', competition_id=competition_id)
+                players = Player.objects.filter(
+                    competition_id=competition_id).values()
+                return redirect('cms:player_list', competition_id=competition_id)
+            else:
+                raise Http404
         else:
-            raise Http404
+            return redirect('cms:notice_unauthorized_user')
     else:
         initial_dict = dict(
             competition=Competition.objects.get(id=competition_id),

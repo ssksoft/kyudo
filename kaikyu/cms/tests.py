@@ -1064,10 +1064,54 @@ class EditPlayerTests(TestCase):
         url_edit_player = reverse('cms:edit_player', kwargs=args_edit_player)
         response_edit_player = self.client.get(url_edit_player)
 
-        # リダイレクト先が期待通りであることを確認
-        expected_url = settings.LOGIN_URL + '?next=' + url_edit_player
-        self.assertRedirects(response_edit_player, expected_url,
-                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+        url_edit_player = reverse('cms:edit_player', kwargs=args_edit_player)
+        response_edit_player = self.client.get(url_edit_player)
+        self.assertEqual(200, response_edit_player.status_code)
+
+    def test_edit_player_get_with_unauthorized_user(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        add_player_post_contents = {
+            'competition': 1,
+            'name': 'test_player_name',
+            'team_name': 'test_team',
+            'dan': '初段',
+            'rank': '-'
+        }
+        self.client.post(url_add_player, add_player_post_contents)
+
+        # ログアウト
+        self.client.logout()
+
+        # 非認証ユーザでログイン
+        self.client.force_login(
+            CustomUser.objects.create_user('unauthorized_user'))
+
+        # テスト対象を実行
+        args_edit_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+        url_edit_player = reverse('cms:edit_player', kwargs=args_edit_player)
+        response_edit_player = self.client.get(url_edit_player)
+
+        response_edit_player = self.client.get(url_edit_player)
+        self.assertEqual(200, response_edit_player.status_code)
 
 
 class EditHitTests(TestCase):
