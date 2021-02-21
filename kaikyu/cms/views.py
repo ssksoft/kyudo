@@ -46,7 +46,7 @@ def add_competition(request):
     competition = Competition()
     if request.method == 'POST':
         post_content = request.POST
-        competition_id = save_competition(post_content, competition)
+        competition_id = save_competition(post_content)
         usergroup_id = add_usergroup(competition_id)
         userandgroup_id = add_userandgroup(usergroup_id, request.user.id)
 
@@ -60,10 +60,11 @@ def add_competition(request):
         return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=None))
 
 
-def save_competition(post_content, competition):
+def save_competition(post_content):
+    competition = Competition()
     form = CompetitionForm(post_content, instance=competition)
     if form.is_valid():
-        competition = form.save(commit=True)
+        form.save(commit=True)
         latest_record_pk = Competition.objects.order_by(
             'id').reverse().first().id
     else:
@@ -116,14 +117,14 @@ def add_userandgroup(usergroup_pk, user_pk):
 def edit_competition(request, competition_id):
     competition = get_object_or_404(Competition, pk=competition_id)
     current_login_user = request.user
-    print(is_authorized_user(competition_id, current_login_user))
     if is_authorized_user(competition_id, current_login_user):
         if request.method == 'POST':
-            saved_pk = save_competition(request, competition)
+            post_content = request.POST
+            saved_pk = save_competition(post_content)
+            return redirect('cms:competition_list')
         else:
-            pass
-        form = CompetitionForm(instance=competition)
-        return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
+            form = CompetitionForm(instance=competition)
+            return render(request, 'cms/edit_competition.html', dict(form=form, competition_id=competition_id))
     else:
         return redirect('cms:notice_unauthorized_user')
 

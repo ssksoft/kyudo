@@ -62,7 +62,7 @@ class SaveCompetitionTests(TestCase):
         }
 
         # テスト対象を実行
-        save_competition(post_content, competition_obj)
+        save_competition(post_content)
 
         # テスト結果を確認
         competition = Competition.objects.all().order_by('id')
@@ -133,10 +133,10 @@ class EditCompetitionTests(TestCase):
             url_add_competition, post_contents_add_competition)
 
         # テスト対象を実行
-        args_get = {
+        args_url = {
             'competition_id': 1
         }
-        url_edit_competition = reverse('cms:edit_competition', kwargs=args_get)
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_url)
         response_edit_competition = self.client.get(url_edit_competition)
 
         # テスト結果を確認
@@ -155,10 +155,10 @@ class EditCompetitionTests(TestCase):
         self.client.logout()
 
         # テスト対象を実行
-        data = {
+        args_url = {
             'competition_id': 1
         }
-        url_edit_competition = reverse('cms:edit_competition', kwargs=data)
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_url)
         response = self.client.get(url_edit_competition)
 
         # リダイレクト先が期待通りであることを確認
@@ -184,14 +184,45 @@ class EditCompetitionTests(TestCase):
             CustomUser.objects.create_user('unauthorized_user'))
 
         # テスト対象を実行
-        data = {
+        args_url = {
             'competition_id': 1
         }
-        url_edit_competition = reverse('cms:edit_competition', kwargs=data)
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_url)
         response = self.client.get(url_edit_competition)
 
         # リダイレクト先が期待通りであることを確認
         expected_url = reverse('cms:notice_unauthorized_user')
+        self.assertRedirects(response, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+    def test_post(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        post_contents_add_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        response = self.client.post(
+            url_add_competition, post_contents_add_competition)
+
+        # テスト対象を実行
+        args_url = {
+            'competition_id': 1
+        }
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_url)
+        post_contents_edit_competition = {
+            'name': 'edited_name',
+            'competition_type': 'test_type'
+        }
+
+        response_edit_competition = self.client.post(
+            url_edit_competition, post_contents_edit_competition)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = reverse('cms:competition_list')
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
