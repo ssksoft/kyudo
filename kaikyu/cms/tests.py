@@ -226,6 +226,40 @@ class EditCompetitionTests(TestCase):
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    def test_post_without_login(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        post_contents_add_competition = {
+            'name': 'test_name',
+            'competition_type': 'test_type'
+        }
+        response_add_competition = self.client.post(
+            url_add_competition, post_contents_add_competition)
+
+        # ログアウト
+        self.client.logout()
+
+        # テスト対象を実行
+        args_url = {
+            'competition_id': 1
+        }
+        url_edit_competition = reverse('cms:edit_competition', kwargs=args_url)
+        post_contents_edit_competition = {
+            'name': 'edited_name',
+            'competition_type': 'test_type'
+        }
+
+        response_edit_competition = self.client.post(
+            url_edit_competition, post_contents_edit_competition)
+
+        # リダイレクト先が期待通りであることを確認
+        expected_url = expected_url = settings.LOGIN_URL + '?next=' + url_edit_competition
+        self.assertRedirects(response_edit_competition, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
 
 class DeleteCompaetitionTests(TestCase):
     def test_delete_success(self):
