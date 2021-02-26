@@ -1408,6 +1408,44 @@ class PlayerListTests(TestCase):
         self.assertEqual(200, response_player_list.status_code)
 
 
+class InputPlayeridForHitTests(TestCase):
+    def test_render(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        self.client.post(url_add_match, post_contents_add)
+
+        # テスト対象を実行
+        args_url_input_playerid_for_hit = {
+            'competition_id': 1,
+            'match_id': 1,
+            'NUM_PLAYER': 6
+        }
+        url_input_playerid_for_hit = reverse(
+            'cms:input_playerid_for_hit', kwargs=args_url_input_playerid_for_hit)
+        response = self.client.get(url_input_playerid_for_hit)
+        self.assertEqual(200, response.status_code)
+
+
 # class EditHitTests(TestCase):
 #     def test_input_playerid_for_hit(self):
 #         # ログイン
