@@ -290,22 +290,37 @@ def player_list(request, competition_id):
 
 
 def input_playerid_for_hit(request, competition_id, match_id, NUM_PLAYER):
-    player_ids = ['']*NUM_PLAYER
+    player = Hit.objects.filter(match=match_id).values()
+    player_ids = []
+    if len(player) == 0:
+        player_ids = ['']*NUM_PLAYER
+    else:
+        for i in range(len(player)):
+            player_ids.append(player[i]['id'])
+
     return render(request, 'cms/input_playerid.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
+
+
+def add_hit(request, competition_id, match_id):
+    players_id = request.POST.getlist('player_id')
+    players = []
+    for player_id in players_id:
+        players.append(get_object_or_404(Player, pk=player_id))
+
+    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
 
 
 @login_required
 def change_player(request, competition_id, match_id):
-    player_ids = request.POST.getlist('player_ids')
     args = {
         'competition_id': competition_id,
         'match_id': match_id,
-        'NUM_PLAYER': 6
+        'NUM_PLAYER': 6,
     }
     url_input_playerid_for_hit = reverse(
         'cms:input_playerid_for_hit', kwargs=args)
 
-    return redirect('cms:input_playerid_for_hit',)
+    return redirect(url_input_playerid_for_hit)
 
 
 @login_required
@@ -351,19 +366,6 @@ def edit_hit(request, competition_id, match_id):
             return redirect('cms:input_playerid_for_hit', competition_id=competition_id, match_id=match_id, NUM_PLAYER=NUM_PLAYER)
     else:
         return redirect('cms:notice_unauthorized_user')
-
-
-def add_hit(request, competition_id, match_id):
-    players_id = request.POST.getlist('player_id')
-    players = []
-    for player_id in players_id:
-        players.append(get_object_or_404(Player, pk=player_id))
-
-    render_edit_hit(request, competition_id, match_id, players)
-
-
-def render_edit_hit(request, competition_id, match_id, players):
-    return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
 
 
 @login_required
