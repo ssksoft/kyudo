@@ -327,8 +327,11 @@ def change_player(request, competition_id, match_id):
 def delete_player(request, competition_id, player_id):
     player = get_object_or_404(Player, pk=player_id)
     player.delete()
-    players = Player.objects.all().order_by('id')
-    return render(request, 'cms/player_list.html', dict(players=players, competition_id=competition_id))
+    args_player_list = {
+        'competition_id': competition_id
+    }
+    url_player_list = reverse('cms:player_list', kwargs=args_player_list)
+    return redirect(url_player_list)
 
 
 @login_required

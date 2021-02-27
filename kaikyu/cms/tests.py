@@ -1569,6 +1569,73 @@ class ChengePlayerTests(TestCase):
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+
+class DeletePlayerTests(TestCase):
+    def test_delete(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        self.client.post(url_add_match, post_contents_add)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        player = Player
+        competition = Competition.objects.get(id=1)
+
+        for i in range(6):
+            post_contents = {
+                'competition': competition.id,
+                'name': 'test_player_name',
+                'team_name': 'test_team',
+                'dan': '初段',
+                'rank': '-'
+            }
+            response_add_player = self.client.post(
+                url_add_player, post_contents)
+
+        # テスト対象を実行
+        args_url_delete_player = {
+            'competition_id': 1,
+            'player_id': 1
+        }
+        url_delete_player = reverse(
+            'cms:delete_player', kwargs=args_url_delete_player)
+
+        args_url_player_list = {
+            'competition_id': 1,
+        }
+        url_player_list = reverse(
+            'cms:player_list', kwargs=args_url_player_list)
+
+        response = self.client.get(url_delete_player)
+        expected_url = url_player_list
+
+        self.assertRedirects(response, expected_url,
+                             status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+
 # class EditHitTests(TestCase):
 #     def test_input_playerid_for_hit(self):
 #         # ログイン
