@@ -1635,6 +1635,12 @@ class DeletePlayerTests(TestCase):
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+        # 削除されていることを確認
+        try:
+            player = Player.objects.get(id=1)
+        except:
+            self.assertRaises(Player.DoesNotExist)
+
 
 # class EditHitTests(TestCase):
 #     def test_input_playerid_for_hit(self):
