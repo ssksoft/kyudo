@@ -397,7 +397,6 @@ def save_hit(request, competition_id, match_id):
 
     # 記録の保存
     hit_form_dict = []
-    a = 0
     existing_hit_records = Hit.objects.filter(match_id=match_id)
     num_existing_record = existing_hit_records.count()
 
@@ -425,7 +424,6 @@ def save_hit(request, competition_id, match_id):
             form = HitForm(hit_form_dict, instance=hit)
 
         if form.is_valid():
-            a = a+1
             hit_save_obj = form.save()
             hit_save_obj.save()
 

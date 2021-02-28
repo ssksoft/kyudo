@@ -1445,6 +1445,8 @@ class InputPlayeridForHitTests(TestCase):
         response = self.client.get(url_input_playerid_for_hit)
         self.assertEqual(200, response.status_code)
 
+    # TODO：認証ユーザでないと入力できないことを確認したい
+
 
 class AddHitTests(TestCase):
     def test_render(self):
@@ -1570,6 +1572,8 @@ class ChengePlayerTests(TestCase):
         self.assertRedirects(response, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    # TODO：認証ユーザでないと変更できないことを確認したい
+
 
 class DeletePlayerTests(TestCase):
     def test_delete(self):
@@ -1641,6 +1645,7 @@ class DeletePlayerTests(TestCase):
             player = Player.objects.get(id=1)
         except:
             self.assertRaises(Player.DoesNotExist)
+    # TODO：認証ユーザでないと削除できないことを確認したい
 
 
 class EditHitTests(TestCase):
@@ -1745,3 +1750,162 @@ class EditHitTests(TestCase):
         expected_url = reverse('cms:notice_unauthorized_user')
         self.assertRedirects(response_edit_hit, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+
+class SaveHitTests(TestCase):
+    def test_new_record_save(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        self.client.post(url_add_match, post_contents_add)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        player = Player
+        competition = Competition.objects.get(id=1)
+
+        for i in range(6):
+            post_contents = {
+                'competition': competition.id,
+                'name': 'test_player_name',
+                'team_name': 'test_team',
+                'dan': '初段',
+                'rank': '-'
+            }
+            response_add_player = self.client.post(
+                url_add_player, post_contents)
+
+        # テスト対象を実行
+        args_url_save_hit = {
+            'competition_id': 1,
+            'match_id': 1
+        }
+        post_contents = {
+            'player_ids': [1, 2, 3, 4, 5, 6],
+            'grounds': [2, 2, 2, 1, 1, 1],
+            'shoot_orders': [3, 2, 1, 3, 2, 1],
+            'hit_records':
+            ['〇', '×', '×', '×', '×', '×',
+             '〇', '×', '〇', ' ', '×', '×',
+             '×', ' ', '×', '×', '×', '×',
+             '×', '×', '×', '×', '×', '×']
+        }
+        url_save_hit = reverse('cms:save_hit', kwargs=args_url_save_hit)
+        response_save_hit = self.client.post(url_save_hit, post_contents)
+
+        # 動作確認
+        hit1 = Hit.objects.get(id=1)
+        hit2 = Hit.objects.get(id=2)
+        hit3 = Hit.objects.get(id=3)
+
+        self.assertEqual('××〇〇', hit1.hit)
+        self.assertEqual('×-××', hit2.hit)
+        self.assertEqual('××〇×', hit3.hit)
+
+    def test_existing_record_save(self):
+        # ログイン
+        self.client.force_login(CustomUser.objects.create_user('tester'))
+
+        # ダミーデータをCompetitionに追加
+        url_add_competition = reverse('cms:add_competition')
+        data_competition = {
+            'name': 'test_competition',
+            'competition_type': 'test_type'
+        }
+        self.client.post(
+            url_add_competition, data_competition)
+
+        # ダミーデータをMatchに追加
+        competition_id = {
+            'competition_id': 1
+        }
+        url_add_match = reverse('cms:add_match', kwargs=competition_id)
+        competition = Competition.objects.get(id=1)
+        post_contents_add = {
+            'competition': competition.id,
+            'name': 'added_match_name'
+        }
+        self.client.post(url_add_match, post_contents_add)
+
+        # ダミーデータをPlayerに追加
+        args_add_player = {
+            'competition_id': 1
+        }
+        url_add_player = reverse('cms:add_player', kwargs=args_add_player)
+        player = Player
+        competition = Competition.objects.get(id=1)
+
+        for i in range(6):
+            post_contents = {
+                'competition': competition.id,
+                'name': 'test_player_name',
+                'team_name': 'test_team',
+                'dan': '初段',
+                'rank': '-'
+            }
+            response_add_player = self.client.post(
+                url_add_player, post_contents)
+
+        # テスト対象を実行
+        args_url_save_hit = {
+            'competition_id': 1,
+            'match_id': 1
+        }
+        post_contents_new = {
+            'player_ids': [1, 2, 3, 4, 5, 6],
+            'grounds': [2, 2, 2, 1, 1, 1],
+            'shoot_orders': [3, 2, 1, 3, 2, 1],
+            'hit_records':
+            ['〇', '×', '×', '×', '×', '×',
+             '〇', '×', '〇', ' ', '×', '×',
+             '×', ' ', '×', '×', '×', '×',
+             '×', '×', '×', '×', '×', '×']
+        }
+        url_save_hit_new = reverse('cms:save_hit', kwargs=args_url_save_hit)
+        response_save_hit_new = self.client.post(
+            url_save_hit_new, post_contents_new)
+
+        post_contents_edit = {
+            'player_ids': [1, 2, 3, 4, 5, 6],
+            'grounds': [2, 2, 2, 1, 1, 1],
+            'shoot_orders': [3, 2, 1, 3, 2, 1],
+            'hit_records':
+            ['〇', '×', '×', '×', '×', '×',
+             '〇', '×', '〇', ' ', '×', '×',
+             '×', '〇', '×', '×', '×', '×',
+             '×', '×', '×', '×', '×', '×']
+        }
+        url_save_hit_edit = reverse('cms:save_hit', kwargs=args_url_save_hit)
+        response_save_hit_edit = self.client.post(
+            url_save_hit_edit, post_contents_edit)
+
+        # 動作確認
+        hit1 = Hit.objects.get(id=1)
+        hit2 = Hit.objects.get(id=2)
+        hit3 = Hit.objects.get(id=3)
+
+        self.assertEqual('××〇〇', hit1.hit)
+        self.assertEqual('×〇××', hit2.hit)
+        self.assertEqual('××〇×', hit3.hit)
