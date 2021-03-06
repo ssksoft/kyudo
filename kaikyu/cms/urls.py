@@ -36,10 +36,12 @@ urlpatterns = [
          views.delete_player, name='delete_player'),
     path('input_playerid_for_hit/<int:competition_id>/<int:match_id>/<int:NUM_PLAYER>:',
          views.input_playerid_for_hit, name='input_playerid_for_hit'),
+    path('input_playerid_for_hit_general/<int:competition_id>/<int:match_id>/<int:NUM_PLAYER>:',
+         views.input_playerid_for_hit_general, name='input_playerid_for_hit_general'),
     path('add_hit/<int:competition_id>/<int:match_id>',
          views.add_hit, name='add_hit'),
     path('save_hit/<int:competition_id>/<int:match_id>',
          views.save_hit, name='save_hit'),
-
-
+    path('input_playerid_for_hit_general/<int:competition_id>/<int:match_id>',
+         views.input_playerid_for_hit_general, name='input_playerid_for_hit_general'),
 ]

@@ -366,7 +366,7 @@ def edit_hit(request, competition_id, match_id):
             return render(request, 'cms/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5], existing_hits=existing_hits))
         # 記録の追加
         else:
-            return redirect('cms:input_playerid_for_hit', competition_id=competition_id, match_id=match_id, NUM_PLAYER=NUM_PLAYER)
+            return redirect('cms:input_playerid_for_hit_general', competition_id=competition_id, match_id=match_id)
     else:
         return redirect('cms:notice_unauthorized_user')
 
@@ -430,3 +430,15 @@ def save_hit(request, competition_id, match_id):
     matches = Match.objects.filter(
         competition_id=competition_id).values()
     return render(request, 'cms/match_list.html', {'matches': matches, 'competition_id': competition_id})
+
+
+def input_playerid_for_hit_general(request, competition_id, match_id):
+    player = Hit.objects.filter(match=match_id).values()
+    player_ids = []
+    if len(player) == 0:
+        player_ids = ['']
+    else:
+        for i in range(len(player)):
+            player_ids.append(player[i]['id'])
+
+    return render(request, 'cms/input_playerid_general.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
