@@ -1726,11 +1726,10 @@ class EditHitTests(TestCase):
         # リダイレクト先が期待通りであることを確認
         args_input_playerid = {
             'competition_id': 1,
-            'match_id': 1,
-            'NUM_PLAYER': 6
+            'match_id': 1
         }
         expected_url = reverse(
-            'hit_record_app:input_playerid_for_hit', kwargs=args_input_playerid)
+            'hit_record_app:input_playerid_for_hit_general', kwargs=args_input_playerid)
         self.assertRedirects(response_add_hit, expected_url,
                              status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
