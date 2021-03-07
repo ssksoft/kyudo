@@ -49,11 +49,14 @@
     table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
     // セルの挿入
     var row = table.insertRow(0);
-
-    // html_player_id_form = '<input class="form-control" type="text" value="{{ player_id }}"  name="player_id">'
     
     cell1 = row.insertCell(0);
     cell1.innerHTML = 'test';
+
+    // 追加ボタンを追加
+    var cell = table.insertRow(0)
+    new_button = '<input type="button" value="追加" onclick="insert_column(' + '\'' + id + '\'' +')">';
+    cell.innerHTML = new_button;
 
     // // 2行目
     // var cell = table.rows[1].insertCell(-1);
