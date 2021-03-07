@@ -1,0 +1,23 @@
+{% extends "hit_record_app/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}試合の編集{% endblock title %}
+
+{% block content %}
+<h4 class="mt-4 mb-5 border-bottom">試合の編集</h4>
+
+{% if match_id %}
+<form action="{% url 'hit_record_app:edit_match' competition_id=competition_id match_id=match_id %}" method="post">
+{% else %}
+<form action="{% url 'hit_record_app:add_match' competition_id=competition_id %}" method="post">
+{% endif %}
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
+    <div class="form-group row">
+      <div class="offset-md-3 col-md-9">
+        <button type="submit" class="btn btn-primary">送信</button>
+      </div>
+    </div>
+  </form>
+  <a href="{% url 'hit_record_app:match_list' competition_id=competition_id %}" class="btn btn-secondary btn-sm">戻る</a>
+  {% endblock content %}

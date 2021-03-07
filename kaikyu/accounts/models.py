@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from cms.models import Competition
+from hit_record_app.models import Competition
 
 
 class CustomUser(AbstractUser):

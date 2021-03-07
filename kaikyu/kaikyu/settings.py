@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cms.apps.CmsConfig',
+    'hit_record_app.apps.hit_record_appConfig',
     'bootstrap4',
     'accounts.apps.AccountsConfig',
     'django.contrib.sites',
@@ -132,7 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/cms/home'
+LOGIN_REDIRECT_URL = '/hit_record_app/home'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 

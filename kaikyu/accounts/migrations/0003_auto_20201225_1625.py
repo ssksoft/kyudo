@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cms', '0005_auto_20201220_1659'),
+        ('hit_record_app', '0005_auto_20201220_1659'),
         ('accounts', '0002_auto_20201220_1659'),
     ]
 
@@ -20,14 +20,18 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='usergroup',
             name='competition',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='cms.competition', verbose_name='大会'),
+            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE,
+                                    to='hit_record_app.competition', verbose_name='大会'),
         ),
         migrations.CreateModel(
             name='UserAndGroup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='ユーザ')),
-                ('user_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.usergroup', verbose_name='ユーザグループ')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                           to=settings.AUTH_USER_MODEL, verbose_name='ユーザ')),
+                ('user_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                 to='accounts.usergroup', verbose_name='ユーザグループ')),
             ],
             options={
                 'verbose_name_plural': 'UserAndGroup',
