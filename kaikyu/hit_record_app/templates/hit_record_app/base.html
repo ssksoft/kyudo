@@ -44,15 +44,10 @@
     var rows = table.rows.length;
   
     // 各行末尾にセルを追加
-    // for(var i = 0; i < rows; i++){
-      // var cell = table.rows[i].insertCell(-1);
-      // var cols = table.rows[i].cells.length;
-      // cell.innerHTML = (i + 1) + '-' + (cols -1);
-    // }
     table.rows[0].deleteCell(-1);
-    // table.rows[1].deleteCell(-1);
     var cell = table.rows[0].insertCell(-1);
-    cell.innerHTML = '1';
+    html_player_id_form = '<input class="form-control" type="text" value="{{ player_id }}"  name="player_id">'
+    cell.innerHTML = html_player_id_form;
     var cell = table.rows[1].insertCell(-1);
     cell.innerHTML = '2';
     var cell = table.rows[0].insertCell(-1);
