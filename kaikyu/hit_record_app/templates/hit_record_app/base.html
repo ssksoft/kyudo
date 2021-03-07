@@ -40,21 +40,29 @@
     // テーブル取得
     var table = document.getElementById(id);
     console.log(table);
-    // 行数取得
-    var rows = table.rows.length;
-  
+ 
     // 各行末尾にセルを追加
-    table.rows[0].deleteCell(-1);
+    // 1行目
+    table.rows[0].deleteCell(-1); // 追加ボタンを一旦削除
     var cell = table.rows[0].insertCell(-1);
     html_player_id_form = '<input class="form-control" type="text" value="{{ player_id }}"  name="player_id">'
     cell.innerHTML = html_player_id_form;
+
+    // 2行目
     var cell = table.rows[1].insertCell(-1);
-    cell.innerHTML = '2';
+    html_shoot_order_form = '<input class="form-control" type="text" value="" name="shoot_order">'
+    cell.innerHTML = html_shoot_order_form;
+    
+    var columns = table.rows[1].cells.length
+    current_x_table = String(columns);
+    html_x_table = '<input class="form-control" type="hiddden" value=' + current_x_table + 'name="x_table">'
+    
+    // 追加ボタンを追加
     var cell = table.rows[0].insertCell(-1);
+
     new_button = '<input type="button" value="追加" onclick="insert_column(' + '\'' + id + '\'' +')">';
     console.log(new_button);
     cell.innerHTML = new_button;
-
   }
   
   // 列削除

@@ -53,8 +53,10 @@ class Hit(models.Model):
     player = models.ForeignKey(
         Player, verbose_name='選手', on_delete=models.CASCADE)
     ground = models.CharField('射場', max_length=255)
-    shoot_order = models.CharField('立ち位置', max_length=255)
+    shoot_order = models.CharField('立ち順', max_length=255)
     hit = models.CharField('的中', max_length=255)
+    x_table = models.PositiveSmallIntegerField(
+        verbose_name='テーブル上x座標', default=0)
 
     def __str__(self):
         return self.hit
