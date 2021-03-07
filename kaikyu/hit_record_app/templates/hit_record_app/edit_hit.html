@@ -47,11 +47,17 @@
     // 各列先頭にセルを追加
     // 1行目
     table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
-    // セルの挿入
+    // 行射番号の描画
     var row = table.insertRow(0);
+    cell_shot_number = row.insertCell(0);
+    var number_shot = table.rows.length-4;
+    cell_shot_number.innerHTML = String(number_shot) + '本目';
     
-    cell1 = row.insertCell(0);
-    cell1.innerHTML = 'test';
+    // 的中入力セルの追加
+    var cell_shot = table.rows[0].insertCell(-1);
+    html_hit_form = '<div class="button" data-text-default="Click" data-text-clicked="Done"><input type="hidden" name="hit_records" value=" "></div>'
+    cell_shot.innerHTML = html_hit_form;
+
 
     // 追加ボタンを追加
     var cell = table.insertRow(0)
