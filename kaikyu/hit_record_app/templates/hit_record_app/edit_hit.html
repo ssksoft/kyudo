@@ -38,6 +38,40 @@
       }
     });
   });
+
+  // 的中行追加
+  function insert_hit_row(id){
+    // テーブル取得
+    var table = document.getElementById(id);
+ 
+    // 各列先頭にセルを追加
+    // 1行目
+    table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
+    // セルの挿入
+    var row = table.insertRow(0);
+
+    // html_player_id_form = '<input class="form-control" type="text" value="{{ player_id }}"  name="player_id">'
+    
+    cell1 = row.insertCell(0);
+    cell1.innerHTML = 'test';
+
+    // // 2行目
+    // var cell = table.rows[1].insertCell(-1);
+    // html_shoot_order_form = '<input class="form-control" type="text" value="" name="shoot_order">'
+    // cell.innerHTML = html_shoot_order_form;
+    
+    // var columns = table.rows[1].cells.length
+    // current_x_table = String(columns);
+    // html_x_table = '<input class="form-control" type="hiddden" value=' + current_x_table + 'name="x_table">'
+    
+    // // 追加ボタンを追加
+    // var cell = table.rows[0].insertCell(-1);
+
+    // new_button = '<input type="button" value="追加" onclick="insert_column(' + '\'' + id + '\'' +')">';
+    // console.log(new_button);
+    // cell.innerHTML = new_button;
+  }
+
 </script>
 {% endblock %}
 
@@ -50,7 +84,12 @@
 <h4 class="mt-4 mb-5 border-bottom">的中記録の編集</h4>
 
 <form action="{% url 'hit_record_app:save_hit' competition_id=competition_id match_id=match_id %}" method="post">
-  <table class="table">
+  <table class="table" id="hit_table">
+    <tr>
+      <td>
+        <input type="button" value="追加" onclick="insert_hit_row('hit_table')">
+      </td>
+    </tr>
     {% if existing_hits %}
     {% for current_shot in existing_hits %}
     <tr>
@@ -68,10 +107,9 @@
     </tr>
     {% endfor %}
     {% else %}
-    {% for current_shot in shots %}
     <tr>
       <td>
-        {{current_shot}}本目
+        1本目
       </td>
       {% for current_shot in shoot_order %}
       <td align="center">
@@ -79,7 +117,6 @@
           <input type="hidden" name="hit_records" value=" ">
         </div>
       </td>
-      {% endfor %}
     </tr>
     {% endfor %}
     {% endif %}
@@ -107,42 +144,6 @@
         <input type="hidden" name="shoot_orders" value={{ current_shoot_order }} />
       </td>
       {% endfor %}
-    </tr>
-    <tr>
-      <td>団体名</td>
-      {% if players.0.team_name == players.1.team_name and players.1.team_name == players.2.team_name and players.0.team_name == players.2.team_name %}
-      <td colspan="3" align="center">
-        {{players.0.team_name}}
-      </td>
-      {% else %}
-      <td colspan="3" align="center">
-        団体名が一致していません
-      </td>
-      {% endif %}
-      {% if players.3.team_name == players.4.team_name and players.4.team_name == players.5.team_name and players.3.team_name == players.5.team_name %}
-      <td colspan="3" align="center">
-        {{players.3.team_name}}
-      </td>
-      {% else %}
-      <td colspan="3" align="center">
-        団体名が一致していません
-      </td>
-      {% endif %}
-    </tr>
-    <tr>
-      <td>射場</td>
-      <td colspan="3" align="center">
-        <input type="hidden" name="grounds" value="2" />
-        <input type="hidden" name="grounds" value="2" />
-        <input type="hidden" name="grounds" value="2" />
-        第2射場
-      </td>
-      <td colspan="3" align="center">
-        <input type="hidden" name="grounds" value="1" />
-        <input type="hidden" name="grounds" value="1" />
-        <input type="hidden" name="grounds" value="1" />
-        第1射場
-      </td>
     </tr>
   </table>
   <br />

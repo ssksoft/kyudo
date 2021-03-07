@@ -304,11 +304,12 @@ def input_playerid_for_hit(request, competition_id, match_id, NUM_PLAYER):
 
 def add_hit(request, competition_id, match_id):
     players_id = request.POST.getlist('player_id')
+    shoot_orders = request.POST.getlist('shoot_order')
     players = []
     for player_id in players_id:
         players.append(get_object_or_404(Player, pk=player_id))
 
-    return render(request, 'hit_record_app/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1]))
+    return render(request, 'hit_record_app/edit_hit.html', dict(players=players, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=shoot_orders))
 
 
 @login_required
@@ -443,4 +444,4 @@ def input_playerid_for_hit_general(request, competition_id, match_id):
         for i in range(len(player)):
             player_ids.append(player[i]['id'])
 
-    return render(request, 'hit_record_app/input_playerid_general.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id, shots=[4, 3, 2, 1], shoot_order=[3, 2, 1, 3, 2, 1], columns=[0, 1, 2, 3, 4, 5]))
+    return render(request, 'hit_record_app/input_playerid_general.html', dict(player_ids=player_ids, competition_id=competition_id, match_id=match_id))
