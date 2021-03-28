@@ -1,1 +1,1 @@
-venv_kaikyu\Scripts\activate.bat
+venv\Scripts\activate.bat
