@@ -3,6 +3,7 @@ beautifulsoup4==4.9.3
 certifi==2020.12.5
 cffi==1.14.4
 chardet==3.0.4
+coverage==5.4
 cryptography==3.2.1
 defusedxml==0.6.0
 Django==3.1.4
@@ -11,6 +12,7 @@ django-bootstrap4==2.3.1
 django-user-sessions==1.7.1
 idna==2.10
 importlib-metadata==2.1.1
+more-itertools==8.6.0
 oauthlib==3.1.0
 pycparser==2.20
 PyJWT==1.7.1
