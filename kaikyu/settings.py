@@ -25,7 +25,8 @@ SECRET_KEY = 'y^5)$g1q+8ouye7&dqu+bt@p5f7d0ek)f93@kjmmbl=4kk&xu^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vast-garden-23098.herokuapp.com']
+ALLOWED_HOSTS = ['vast-garden-23098.herokuapp.com',
+                 '127.0.0.1']
 
 
 # Application definition
@@ -129,7 +130,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/hit_record_app/static/'
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/hit_record_app/home'
