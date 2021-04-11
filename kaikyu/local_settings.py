@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from socket import gethostname
-import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,11 +24,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'y^5)$g1q+8ouye7&dqu+bt@p5f7d0ek)f93@kjmmbl=4kk&xu^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+hostname = gethostname()
+DEBUG = True
 
 
-ALLOWED_HOSTS = ['.herokuapp.com',
-                 '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -94,8 +93,6 @@ DATABASES = {
         'Atomic_REQUESTS': True,
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env)
 
 
 # Password validation
