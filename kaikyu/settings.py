@@ -31,7 +31,7 @@ else:
     DEBUG = False
 
 
-ALLOWED_HOSTS = ['vast-garden-23098.herokuapp.com',
+ALLOWED_HOSTS = ['.herokuapp.com',
                  '127.0.0.1']
 
 
