@@ -1,3 +1,4 @@
 venv_kaikyu
 /kaikyu/sqlite3.exe
 /kaikyu/venv
+/kaikyu/local_settings.py

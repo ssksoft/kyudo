@@ -154,3 +154,9 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # django-allauthで利用するdjango.contrib.sitesを使うためにサイト識別用IDを設定
 SITE_ID = 1
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
