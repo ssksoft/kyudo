@@ -42,27 +42,32 @@
   // 的中行追加
   function insert_hit_row(id){
     // テーブル取得
-    var table = document.getElementById(id);
+    const table = document.getElementById(id);
  
     // 各列先頭にセルを追加
     // 1行目
     table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
     // 行射番号の描画
-    cell_shot_number = table.rows[0].insertCell(0);
-    var number_shot = table.rows.length-3;
+    const cell_shot_number = table.rows[0].insertCell(0);
+    const number_shot = table.rows.length-3;
     cell_shot_number.innerHTML = String(number_shot) + '本目';
     
     // 的中入力セルの追加
-    var cell_shot = table.rows[0].insertCell(-1);
-    html_hit_form = '<div class="button" data-text-default="Click" data-text-clicked="Done"><input type="hidden" name="hit_records" value=" "></div>'
-    cell_shot.innerHTML = html_hit_form;
-    cell_shot.align = "center";
+    const num_shooter = table.rows[1].cells.length-1;
+    const html_hit_form = '<div class="button" data-text-default="Click" data-text-clicked="Done"><input type="hidden" name="hit_records" value=" "></div>'
+    for (let current_shooter = 0; current_shooter < num_shooter; current_shooter++){
+      let cell_shot = table.rows[0].insertCell(-1);
+      cell_shot.innerHTML = html_hit_form;
+      cell_shot.align = "center";
+
+    }
+    
 
 
     // 追加ボタンを追加
-    var row_new_add_button = table.insertRow(0)
-    var cell_new_add_button = row_new_add_button.insertCell(0)
-    var new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
+    const row_new_add_button = table.insertRow(0)
+    const cell_new_add_button = row_new_add_button.insertCell(0)
+    const new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
     cell_new_add_button.innerHTML = new_button_html;
   }
 
