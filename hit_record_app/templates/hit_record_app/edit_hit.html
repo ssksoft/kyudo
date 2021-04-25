@@ -48,9 +48,9 @@
     // 1行目
     table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
     // 行射番号の描画
-    var row = table.insertRow(0);
-    cell_shot_number = row.insertCell(0);
-    var number_shot = table.rows.length-4;
+    // var row = table.insertRow(0);
+    cell_shot_number = table.rows[0].insertCell(0);
+    var number_shot = table.rows.length-3;
     cell_shot_number.innerHTML = String(number_shot) + '本目';
     
     // 的中入力セルの追加
@@ -61,25 +61,11 @@
 
 
     // 追加ボタンを追加
-    var cell = table.insertRow(0)
-    new_button = '<input type="button" value="追加" onclick="insert_column(' + '\'' + id + '\'' +')">';
-    cell.innerHTML = new_button;
-
-    // // 2行目
-    // var cell = table.rows[1].insertCell(-1);
-    // html_shoot_order_form = '<input class="form-control" type="text" value="" name="shoot_order">'
-    // cell.innerHTML = html_shoot_order_form;
-    
-    // var columns = table.rows[1].cells.length
-    // current_x_table = String(columns);
-    // html_x_table = '<input class="form-control" type="hiddden" value=' + current_x_table + 'name="x_table">'
-    
-    // // 追加ボタンを追加
-    // var cell = table.rows[0].insertCell(-1);
-
-    // new_button = '<input type="button" value="追加" onclick="insert_column(' + '\'' + id + '\'' +')">';
-    // console.log(new_button);
-    // cell.innerHTML = new_button;
+    var row_new_add_button = table.insertRow(0)
+    var cell_new_add_button = row_new_add_button.insertCell(0)
+    // cell_new_add_button.innerHTML = 'aa';
+    var new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
+    cell_new_add_button.innerHTML = new_button_html;
   }
 
 </script>
