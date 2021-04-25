@@ -62,7 +62,6 @@
     // 追加ボタンを追加
     var row_new_add_button = table.insertRow(0)
     var cell_new_add_button = row_new_add_button.insertCell(0)
-    // cell_new_add_button.innerHTML = 'aa';
     var new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
     cell_new_add_button.innerHTML = new_button_html;
   }
@@ -88,9 +87,7 @@
     {% if existing_hits %}
     {% for current_shot in existing_hits %}
     <tr>
-      <td>
-        {{current_shot.shot_num}}本目
-      </td>
+      <td>{{current_shot.shot_num}}本目</td>
       {% for current_player_hit in current_shot.hit %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
@@ -103,17 +100,15 @@
     {% endfor %}
     {% else %}
     <tr>
-      <td>
-        1本目
-      </td>
-      {% for current_shot in shoot_order %}
+      <td>1本目</td>
+      {% for current_shooter in shoot_order %}
       <td align="center">
         <div class="button" data-text-default="Click" data-text-clicked="Done">
           <input type="hidden" name="hit_records" value=" ">
         </div>
       </td>
+      {% endfor %}
     </tr>
-    {% endfor %}
     {% endif %}
     <tr>
       <td>選手ID</td>
