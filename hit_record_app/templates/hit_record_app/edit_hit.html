@@ -1,9 +1,7 @@
 {% extends "hit_record_app/base.html" %}
 {% block extra_css %}
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <style>
-  .button {
+  .input_hit {
     display: flex;
     width: 48px;
     height: 32px;
@@ -14,64 +12,6 @@
     align-items: center;
   }
 </style>
-<script>
-  $(function () {
-    $('.button').on('click', function (event) {
-      event.preventDefault();
-      var classVal = $(this).attr('class')
-      if (classVal == 'button') {
-        $(this).addClass('hit')
-        $(this).empty()
-        $(this).append('<input type="hidden" name="hit_records" value= "〇"/>')
-        $(this).append('〇')
-      }
-      else if (classVal == 'button hit') {
-        $(this).addClass('miss').removeClass('hit')
-        $(this).empty()
-        $(this).append('<input type="hidden" name="hit_records" value= "×"/>')
-        $(this).append('×')
-      }
-      else if (classVal == 'button miss') {
-        $(this).removeClass('miss')
-        $(this).empty()
-        $(this).append('<input type="hidden" name="hit_records" value= " "/>')
-      }
-    });
-  });
-
-  // 的中行追加
-  function insert_hit_row(id){
-    // テーブル取得
-    const table = document.getElementById(id);
- 
-    // 各列先頭にセルを追加
-    // 1行目
-    table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
-    // 行射番号の描画
-    const cell_shot_number = table.rows[0].insertCell(0);
-    const number_shot = table.rows.length-3;
-    cell_shot_number.innerHTML = String(number_shot) + '本目';
-    
-    // 的中入力セルの追加
-    const num_shooter = table.rows[1].cells.length-1;
-    const html_hit_form = '<div class="button" data-text-default="Click" data-text-clicked="Done"><input type="hidden" name="hit_records" value=" "></div>'
-    for (let current_shooter = 0; current_shooter < num_shooter; current_shooter++){
-      let cell_shot = table.rows[0].insertCell(-1);
-      cell_shot.innerHTML = html_hit_form;
-      cell_shot.align = "center";
-
-    }
-    
-
-
-    // 追加ボタンを追加
-    const row_new_add_button = table.insertRow(0)
-    const cell_new_add_button = row_new_add_button.insertCell(0)
-    const new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
-    cell_new_add_button.innerHTML = new_button_html;
-  }
-
-</script>
 {% endblock %}
 
 {% load bootstrap4 %}
@@ -95,7 +35,7 @@
       <td>{{current_shot.shot_num}}本目</td>
       {% for current_player_hit in current_shot.hit %}
       <td align="center">
-        <div class="button" data-text-default="Click" data-text-clicked="Done">
+        <div class="input_hit">
           <input type="hidden" name="hit_records" value={{ current_player_hit }}>
           {{ current_player_hit }}
         </div>
@@ -108,7 +48,7 @@
       <td>1本目</td>
       {% for current_shooter in shoot_order %}
       <td align="center">
-        <div class="button" data-text-default="Click" data-text-clicked="Done">
+        <div class="input_hit">
           <input type="hidden" name="hit_records" value=" ">
         </div>
       </td>
@@ -162,4 +102,69 @@
 <a href="{% url 'hit_record_app:match_list' competition_id=competition_id %}" class="btn btn-secondary btn-sm">
   戻る
 </a>
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+
+<script>
+  $(function () {
+    $('.input_hit').on('click',function () {
+      console.log('Hello');
+      event.preventDefault();
+      var classVal = $(this).attr('class')
+      if (classVal == 'input_hit') {
+        $(this).addClass('hit')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit_records" value= "〇"/>')
+        $(this).append('〇')
+      }
+      else if (classVal == 'input_hit hit') {
+        $(this).addClass('miss').removeClass('hit')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit_records" value= "×"/>')
+        $(this).append('×')
+      }
+      else if (classVal == 'input_hit miss') {
+        $(this).removeClass('miss')
+        $(this).empty()
+        $(this).append('<input type="hidden" name="hit_records" value= " "/>')
+      }
+    });
+  });
+
+  // 的中行追加
+  function insert_hit_row(id){
+    // テーブル取得
+    const table = document.getElementById(id);
+ 
+    // 各列先頭にセルを追加
+    // 1行目
+    table.rows[0].deleteCell(0); // 追加ボタンを一旦削除
+    // 行射番号の描画
+    const cell_shot_number = table.rows[0].insertCell(0);
+    const number_shot = table.rows.length-3;
+    cell_shot_number.innerHTML = String(number_shot) + '本目';
+    
+    // 的中入力セルの追加
+    const num_shooter = table.rows[1].cells.length-1;
+    const html_hit_form = '<div class="button"><input type="hidden" name="hit_records" value=" "></div>'
+    for (let current_shooter = 0; current_shooter < num_shooter; current_shooter++){
+      let cell_shot = table.rows[0].insertCell(-1);
+      cell_shot.innerHTML = html_hit_form;
+      cell_shot.align = "center";
+
+    }
+
+    // 追加ボタンを追加
+    const row_new_add_button = table.insertRow(0)
+    const cell_new_add_button = row_new_add_button.insertCell(0)
+    const new_button_html = '<input type="button" value="追加" onclick="insert_hit_row(' + '\'' + id + '\'' +')">';
+    cell_new_add_button.innerHTML = new_button_html;
+  }
+
+</script>
 {% endblock content %}
+
+
+
+
+
