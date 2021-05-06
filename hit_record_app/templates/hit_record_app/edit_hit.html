@@ -23,11 +23,8 @@
 <h4 class="mt-4 mb-5 border-bottom">的中記録の編集</h4>
 
 <form action="{% url 'hit_record_app:save_hit' competition_id=competition_id match_id=match_id %}" method="post">
-  <table class="table" id="hit_table">
-    <div class="hit_table">
-      <div class="input_hit">
-        <input type="hidden" name="hit_records" value=" ">
-      </div>
+  <div class="hit_table_area">
+    <table class="table" id="hit_table">
       <tr>
         <td>
           <input type="button" value="追加" onclick="insert_hit_row('hit_table')">
@@ -84,8 +81,8 @@
         </td>
         {% endfor %}
       </tr>
-    </div>
-  </table>
+    </table>
+  </div>
   <br />
   {% csrf_token %}
   <button type="submit" class="btn btn-primary">記録を保存する</button>
@@ -112,7 +109,7 @@
 
 <script>
   $(function () {
-    $('.hit_table').on('click','.input_hit',function () {
+    $('.hit_table_area').on('click','.input_hit',function () {
       console.log('Hello');
       event.preventDefault();
       var classVal = $(this).attr('class')
@@ -151,7 +148,7 @@
     
     // 的中入力セルの追加
     const num_shooter = table.rows[1].cells.length-1;
-    const html_hit_form = '<div class="button"><input type="hidden" name="hit_records" value=" "></div>'
+    const html_hit_form = '<div class="input_hit"><input type="hidden" name="hit_records" value=" "></div>'
     for (let current_shooter = 0; current_shooter < num_shooter; current_shooter++){
       let cell_shot = table.rows[0].insertCell(-1);
       cell_shot.innerHTML = html_hit_form;
