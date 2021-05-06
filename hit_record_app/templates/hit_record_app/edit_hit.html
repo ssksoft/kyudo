@@ -24,62 +24,67 @@
 
 <form action="{% url 'hit_record_app:save_hit' competition_id=competition_id match_id=match_id %}" method="post">
   <table class="table" id="hit_table">
-    <tr>
-      <td>
-        <input type="button" value="追加" onclick="insert_hit_row('hit_table')">
-      </td>
-    </tr>
-    {% if existing_hits %}
-    {% for current_shot in existing_hits %}
-    <tr>
-      <td>{{current_shot.shot_num}}本目</td>
-      {% for current_player_hit in current_shot.hit %}
-      <td align="center">
-        <div class="input_hit">
-          <input type="hidden" name="hit_records" value={{ current_player_hit }}>
-          {{ current_player_hit }}
-        </div>
-      </td>
+    <div class="hit_table">
+      <div class="input_hit">
+        <input type="hidden" name="hit_records" value=" ">
+      </div>
+      <tr>
+        <td>
+          <input type="button" value="追加" onclick="insert_hit_row('hit_table')">
+        </td>
+      </tr>
+      {% if existing_hits %}
+      {% for current_shot in existing_hits %}
+      <tr>
+        <td>{{current_shot.shot_num}}本目</td>
+        {% for current_player_hit in current_shot.hit %}
+        <td align="center">
+          <div class="input_hit">
+            <input type="hidden" name="hit_records" value={{ current_player_hit }}>
+            {{ current_player_hit }}
+          </div>
+        </td>
+        {% endfor %}
+      </tr>
       {% endfor %}
-    </tr>
-    {% endfor %}
-    {% else %}
-    <tr>
-      <td>1本目</td>
-      {% for current_shooter in shoot_order %}
-      <td align="center">
-        <div class="input_hit">
-          <input type="hidden" name="hit_records" value=" ">
-        </div>
-      </td>
-      {% endfor %}
-    </tr>
-    {% endif %}
-    <tr>
-      <td>選手ID</td>
-      {% for player in players %}
-      <td align="center">
-        <input type="hidden" name="player_ids" value={{ player.id }} />
-        {{player.id}}
-      </td>
-      {% endfor %}
-    <tr>
-      <td>選手名</td>
-      {% for player in players %}
-      <td align="center">
-        {{player.name}}
-      </td>
-      {% endfor %}
-    </tr>
-    <tr>
-      <td>立順</td>
-      {% for current_shoot_order in shoot_order %}
-      <td align="center">
-        {{ current_shoot_order }}
-        <input type="hidden" name="shoot_orders" value={{ current_shoot_order }} />
-      </td>
-      {% endfor %}
-    </tr>
+      {% else %}
+      <tr>
+        <td>1本目</td>
+        {% for current_shooter in shoot_order %}
+        <td align="center">
+          <div class="input_hit">
+            <input type="hidden" name="hit_records" value=" ">
+          </div>
+        </td>
+        {% endfor %}
+      </tr>
+      {% endif %}
+      <tr>
+        <td>選手ID</td>
+        {% for player in players %}
+        <td align="center">
+          <input type="hidden" name="player_ids" value={{ player.id }} />
+          {{player.id}}
+        </td>
+        {% endfor %}
+      <tr>
+        <td>選手名</td>
+        {% for player in players %}
+        <td align="center">
+          {{player.name}}
+        </td>
+        {% endfor %}
+      </tr>
+      <tr>
+        <td>立順</td>
+        {% for current_shoot_order in shoot_order %}
+        <td align="center">
+          {{ current_shoot_order }}
+          <input type="hidden" name="shoot_orders" value={{ current_shoot_order }} />
+        </td>
+        {% endfor %}
+      </tr>
+    </div>
   </table>
   <br />
   {% csrf_token %}
@@ -107,7 +112,7 @@
 
 <script>
   $(function () {
-    $('.input_hit').on('click',function () {
+    $('.hit_table').on('click','.input_hit',function () {
       console.log('Hello');
       event.preventDefault();
       var classVal = $(this).attr('class')
